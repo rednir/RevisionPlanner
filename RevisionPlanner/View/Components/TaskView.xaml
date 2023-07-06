@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RevisionPlanner.View.Components.TaskView">
+    <Grid Padding="16">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="56" />
+	    </Grid.ColumnDefinitions>
+        <VerticalStackLayout Grid.Column="0">
+            <Label FontSize="Subtitle" Text="Physics" />
+            <Label FontSize="Small" Text="Energy / Energy Resources and their Uses" />
+	    </VerticalStackLayout>
+        <CheckBox Grid.Column="1" />
+    </Grid>
+</ContentView>
+
