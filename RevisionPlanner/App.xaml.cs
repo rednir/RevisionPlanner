@@ -1,4 +1,6 @@
-﻿namespace RevisionPlanner;
+﻿using RevisionPlanner.View;
+
+namespace RevisionPlanner;
 
 public partial class App : Application
 {
@@ -6,7 +8,7 @@ public partial class App : Application
 	{
 		InitializeComponent();
 
-		MainPage = new AppShell();
+		MainPage = new MainTabbedView();
 	}
 }
 
