@@ -1,4 +1,5 @@
 ﻿using RevisionPlanner.View;
+using RevisionPlanner.ViewModel.Setup;
 
 namespace RevisionPlanner;
 
@@ -8,7 +9,7 @@ public partial class App : Application
 	{
 		InitializeComponent();
 
-		MainPage = new MainTabbedView();
+		MainPage = new SelectQualificationPage(new SelectQualificationViewModel());
 	}
 }
 

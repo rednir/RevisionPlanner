@@ -57,6 +57,8 @@
 	  <None Remove="Model\" />
 	  <None Remove="View\Components\" />
 	  <None Remove="Resources\Images\" />
+	  <None Remove="View\Setup\" />
+	  <None Remove="ViewModel\Setup\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="View\" />
@@ -64,5 +66,7 @@
 	  <Folder Include="Model\" />
 	  <Folder Include="View\Components\" />
 	  <Folder Include="Resources\Images\" />
+	  <Folder Include="View\Setup\" />
+	  <Folder Include="ViewModel\Setup\" />
 	</ItemGroup>
 </Project>
