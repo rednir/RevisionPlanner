@@ -1,6 +1,6 @@
 ﻿namespace RevisionPlanner.Model;
 
-public class Subject : CourseContent
+public class Subject
 {
     public uint ID { get; set; }
 

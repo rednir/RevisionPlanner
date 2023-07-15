@@ -1,6 +1,6 @@
 ﻿namespace RevisionPlanner.Model;
 
-public class Subtopic : CourseContent
+public class Subtopic
 {
     public uint ID { get; set; }
 

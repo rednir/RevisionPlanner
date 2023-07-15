@@ -7,9 +7,9 @@ public class SelectQualificationViewModel : ViewModelBase
 {
     public ICommand NextCommand { get; private set; }
 
-    public SelectQualificationViewModel()
+    public SelectQualificationViewModel(Action next)
     {
-        NextCommand = new Command(() => throw new NotImplementedException());
+        NextCommand = new Command(next);
     }
 }
 

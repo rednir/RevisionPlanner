@@ -8,5 +8,5 @@ public class Task
 
     //public string Notes { get; set; }
 
-    public CourseContent Content { get; set; }
+    //public CourseContent Content { get; set; }
 }
