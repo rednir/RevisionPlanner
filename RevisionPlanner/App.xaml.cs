@@ -7,9 +7,14 @@ public partial class App : Application
 {
 	public App()
 	{
-		MainPage = new SetupView();
+		MainPage = new SetupView(OnSetupNext);
 
 		InitializeComponent();
 	}
+
+	private void OnSetupNext()
+	{
+		MainPage = new MainTabbedView();
+    }
 }
 
