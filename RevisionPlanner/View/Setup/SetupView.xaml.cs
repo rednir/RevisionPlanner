@@ -30,8 +30,15 @@ public partial class SetupView : NavigationPage
 		_selectSubjectsPage = new SelectSubjectsPage(new SelectSubjectsViewModel(
 			next: async () => await OnSelectSubjectsNext()));
 
-		_selectQualificationPage = new SelectQualificationPage(new SelectQualificationViewModel(
-			next: async () => await OnSelectQualificationNext()));
+		_selectQualificationPage = new SelectQualificationPage(
+			new SelectQualificationViewModel
+			{
+				Next = async q =>
+				{
+					await OnSelectSubjectsNext();
+				},
+			}
+	    );
     }
 
     private async Task OnSelectQualificationNext()

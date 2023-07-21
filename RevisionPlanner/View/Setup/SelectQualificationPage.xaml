@@ -4,7 +4,11 @@
              x:Class="RevisionPlanner.View.SelectQualificationPage"
              Title="Qualification">
     <VerticalStackLayout>
-        <Button Text="Navigate"
-                Command="{Binding NextCommand}" />
+        <Button Text="GCSE"
+                Command="{Binding GcseCommand}" />
+        <Button Text="A-Level"
+                Command="{Binding ALevelCommand}" />
+        <Button Text="Other"
+                Command="{Binding OtherCommand}" />
     </VerticalStackLayout>
 </ContentPage>
