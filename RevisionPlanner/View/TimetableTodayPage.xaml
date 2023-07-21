@@ -7,8 +7,8 @@
              Title="Timetable">
     <CollectionView>
         <CollectionView.ItemsSource>
-            <x:Array Type="{x:Type model:Task}">
-	            <model:Task />
+            <x:Array Type="{x:Type model:UserTask}">
+	            <model:UserTask />
 	        </x:Array>
 	    </CollectionView.ItemsSource>
         <CollectionView.ItemTemplate>

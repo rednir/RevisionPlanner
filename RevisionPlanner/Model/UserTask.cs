@@ -1,6 +1,6 @@
 ﻿namespace RevisionPlanner.Model;
 
-public class Task
+public class UserTask
 {
     public uint ID { get; set; }
 

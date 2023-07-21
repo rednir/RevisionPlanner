@@ -1,4 +1,5 @@
-﻿using RevisionPlanner.ViewModel.Setup;
+﻿using RevisionPlanner.Model;
+using RevisionPlanner.ViewModel.Setup;
 
 namespace RevisionPlanner.View;
 
@@ -20,7 +21,7 @@ public partial class SetupView : NavigationPage
 		InitializeComponent();
 
 		PushAsync(_selectQualificationPage);
-	}
+    }
 
 	private void InitialisePages()
 	{
@@ -43,7 +44,7 @@ public partial class SetupView : NavigationPage
 
     private async Task OnSelectQualificationNext()
 	{
-		await PushAsync(_selectSubjectsPage);
+        await PushAsync(_selectSubjectsPage);
     }
 
 	private async Task OnSelectSubjectsNext()
