@@ -36,7 +36,7 @@ public partial class SetupView : NavigationPage
 			{
 				Next = async q =>
 				{
-					await OnSelectSubjectsNext();
+					await OnSelectQualificationNext();
 				},
 			}
 	    );
