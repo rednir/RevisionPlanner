@@ -1,4 +1,5 @@
-﻿using SQLite;
+﻿using System.Diagnostics;
+using SQLite;
 
 namespace RevisionPlanner.Model;
 
@@ -12,15 +13,73 @@ public class UserDatabase
 
     private SQLiteAsyncConnection _connection;
 
+    public async Task SetUserAsync(User user)
+    {
+        await Init();
+
+        bool userExists = await GetUserAsync(user.ID) is not null;
+
+        if (userExists)
+        {
+            await _connection.ExecuteAsync(
+		        @"
+                    UPDATE user
+                    SET user_qualification = ?, study_day = ?
+                    WHERE id = ?;
+                ",
+                (int)user.UserQualification,
+                (int)user.StudyDay,
+                user.ID
+		    );
+            
+	        return;
+	    }
+
+        await _connection.ExecuteAsync(
+            @"
+                INSERT INTO user
+                VALUES (?, ?, ?)
+            ",
+            user.ID,
+            (int)user.UserQualification,
+            (int)user.StudyDay
+        );
+    }
+
+    public async Task<User> GetUserAsync(int id = 0)
+    {
+        await Init();
+
+        List<User> result = await _connection.QueryAsync<User>(
+            @"
+                SELECT * FROM user
+                WHERE id = ?
+            ",
+            id
+        );
+
+        return result.FirstOrDefault();
+    }
+
     /// <summary>
     /// Initialises the SQL connection and creates the database tables if necessary.
     /// </summary>
-    public async Task Init()
+    private async Task Init()
     {
+        // Avoid running the initialisation process more than once.
         if (_connection is not null)
             return;
 
         _connection = new SQLiteAsyncConnection(FilePath, Flags);
-        await _connection.CreateTableAsync<Subject>();
+
+        await _connection.ExecuteAsync(
+	        @"
+	        CREATE TABLE IF NOT EXISTS user (
+	            id INT PRIMARY KEY,
+	            user_qualification INT,
+	            study_day INT
+            )
+	        "
+	    );
     }
 }
