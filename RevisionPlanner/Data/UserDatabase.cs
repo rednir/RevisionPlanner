@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using SQLite;
+﻿using SQLite;
 
 namespace RevisionPlanner.Model;
 
@@ -13,6 +12,9 @@ public class UserDatabase
 
     private SQLiteAsyncConnection _connection;
 
+    /// <summary>
+    /// Updates or creates a user record in the database according to a user object.
+    /// </summary>
     public async Task SetUserAsync(User user)
     {
         await Init();
@@ -46,6 +48,12 @@ public class UserDatabase
         );
     }
 
+    /// <summary>
+    /// Gets data about a user record in the database from its ID.
+    /// </summary>
+    /// <returns>
+    /// Returns a user object representing the record or null if there is no user with that ID.
+    /// </returns>
     public async Task<User> GetUserAsync(int id = 0)
     {
         await Init();
