@@ -25,21 +25,14 @@ public partial class SetupView : NavigationPage
 
 	private void InitialisePages()
 	{
-		_selectStudyDaysPage = new SelectStudyDaysPage(new SelectStudyDaysViewModel(
-			next: async () => await OnSelectStudyDaysNext()));
+		_selectStudyDaysPage = new SelectStudyDaysPage(
+			new SelectStudyDaysViewModel(async () => await OnSelectStudyDaysNext()));
 
-		_selectSubjectsPage = new SelectSubjectsPage(new SelectSubjectsViewModel(
-			next: async () => await OnSelectSubjectsNext()));
+		_selectSubjectsPage = new SelectSubjectsPage(
+			new SelectSubjectsViewModel(async () => await OnSelectSubjectsNext()));
 
 		_selectQualificationPage = new SelectQualificationPage(
-			new SelectQualificationViewModel
-			{
-				Next = async q =>
-				{
-					await OnSelectQualificationNext();
-				},
-			}
-	    );
+			new SelectQualificationViewModel(async () => await OnSelectQualificationNext()));
     }
 
     private async Task OnSelectQualificationNext()
@@ -53,7 +46,7 @@ public partial class SetupView : NavigationPage
     }
 
     private async Task OnSelectStudyDaysNext()
-    {
+	{
 		_nextAction();
     }
 }

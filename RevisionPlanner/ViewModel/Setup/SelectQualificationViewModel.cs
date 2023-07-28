@@ -6,16 +6,18 @@ namespace RevisionPlanner.ViewModel.Setup;
 
 public class SelectQualificationViewModel : ViewModelBase
 {
-    public Action<UserQualification> Next { get; set; }
-
     public ICommand GcseCommand { get; private set; }
 
     public ICommand ALevelCommand { get; private set; }
 
     public ICommand OtherCommand { get; private set; }
 
-    public SelectQualificationViewModel()
+    private Action _next;
+
+    public SelectQualificationViewModel(Action next)
     {
+        _next = next;
+
         GcseCommand = new Command(() => OnQualificationSelected(UserQualification.Gcse));
         ALevelCommand = new Command(() => OnQualificationSelected(UserQualification.ALevel));
         OtherCommand = new Command(() => OnQualificationSelected(UserQualification.Other));
@@ -23,7 +25,7 @@ public class SelectQualificationViewModel : ViewModelBase
 
     private void OnQualificationSelected(UserQualification qualification)
     {
-        Next(qualification);
+        _next();
 	}
 }
 
