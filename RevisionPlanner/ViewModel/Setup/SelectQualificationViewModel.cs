@@ -12,7 +12,7 @@ public class SelectQualificationViewModel : ViewModelBase
 
     public ICommand OtherCommand { get; private set; }
 
-    private Action _next;
+    private readonly Action _next;
 
     public SelectQualificationViewModel(Action next)
     {
