@@ -2,7 +2,7 @@
 
 public enum UserQualification
 {
+    Other,
     Gcse,
     ALevel,
-    Other
 }
