@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace RevisionPlanner.ViewModel.Setup;
+namespace RevisionPlanner.ViewModel;
 
 public class ViewModelBase : INotifyPropertyChanged
 {
