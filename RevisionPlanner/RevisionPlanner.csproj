@@ -62,6 +62,7 @@
 	  <None Remove="View\Setup\" />
 	  <None Remove="ViewModel\Setup\" />
 	  <None Remove="Data\" />
+	  <None Remove="Model\Enums\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="View\" />
@@ -72,5 +73,6 @@
 	  <Folder Include="View\Setup\" />
 	  <Folder Include="ViewModel\Setup\" />
 	  <Folder Include="Data\" />
+	  <Folder Include="Model\Enums\" />
 	</ItemGroup>
 </Project>

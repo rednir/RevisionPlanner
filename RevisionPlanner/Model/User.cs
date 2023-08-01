@@ -1,4 +1,6 @@
-﻿namespace RevisionPlanner.Model;
+﻿using RevisionPlanner.Model.Enums;
+
+namespace RevisionPlanner.Model;
 
 public class User
 {

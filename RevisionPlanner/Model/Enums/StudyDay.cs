@@ -1,4 +1,4 @@
-﻿namespace RevisionPlanner.Model;
+﻿namespace RevisionPlanner.Model.Enums;
 
 [Flags]
 public enum StudyDay
