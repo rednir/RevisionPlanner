@@ -22,10 +22,10 @@ public class UserDatabase
         await Init();
 
         await _connection.ExecuteAsync(
-            @"
+            $@"
                 UPDATE user
                 SET user_qualification = ?
-                WHERE id = 0
+                WHERE id = {userId}
             ",
             (int)userQualification
         );
@@ -38,31 +38,30 @@ public class UserDatabase
         await Init();
 
         await _connection.ExecuteAsync(
-            @"
+            $@"
                 UPDATE user
                 SET study_day = ?
-                WHERE id = 0
+                WHERE id = {userId}
             ",
             (int)studyDay
         );
     }
 
     /// <summary>
-    /// Gets data about a user record in the database from its ID.
+    /// Gets data about the current user record in the database.
     /// </summary>
     /// <returns>
-    /// Returns a user object representing the record or null if there is no user with that ID.
+    /// Returns a user object representing the record.
     /// </returns>
-    public async Task<User> GetUserAsync(int id = 0)
+    public async Task<User> GetUserAsync()
     {
         await Init();
 
         List<User> result = await _connection.QueryAsync<User>(
-            @"
+            $@"
                 SELECT * FROM user
-                WHERE id = ?
-            ",
-            id
+                WHERE id = {userId}
+            "
         );
 
         return result.FirstOrDefault();
