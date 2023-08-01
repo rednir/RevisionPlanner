@@ -92,6 +92,40 @@ public class UserDatabase
 
         await _connection.ExecuteAsync(
             @"
+                CREATE TABLE IF NOT EXISTS user_subject (
+                    id INT PRIMARY KEY,
+                    name VARCHAR(50) NOT NULL,
+                    exam_board VARCHAR(50),
+                    qualification VARCHAR(50)
+                );
+            "
+        );
+
+        await _connection.ExecuteAsync(
+            @"
+                CREATE TABLE IF NOT EXISTS user_topic (
+                    id INT PRIMARY KEY,
+                    user_subject_id NOT NULL,
+                    name VARCHAR(50) NOT NULL,
+                    FOREIGN KEY (user_subject_id) REFERENCES user_subject(id)
+                );
+            "
+        );
+
+        await _connection.ExecuteAsync(
+            @"
+                CREATE TABLE IF NOT EXISTS user_subtopic (
+                    id INT PRIMARY KEY,
+                    user_topic_id NOT NULL,
+                    name VARCHAR(50) NOT NULL,
+                    FOREIGN KEY (user_topic_id) REFERENCES user_topic(id)
+                );
+            "
+        );
+
+        // Insert the default user into the user table.
+        await _connection.ExecuteAsync(
+            @"
                 INSERT OR IGNORE INTO user (id, user_qualification, study_day)
                 VALUES (0, 0, 0);
             "

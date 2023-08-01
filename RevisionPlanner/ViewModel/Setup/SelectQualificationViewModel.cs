@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows.Input;
 using RevisionPlanner.Model;
+using RevisionPlanner.Model.Enums;
 
 namespace RevisionPlanner.ViewModel.Setup;
 
