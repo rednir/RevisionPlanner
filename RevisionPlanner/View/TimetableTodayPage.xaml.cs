@@ -1,10 +1,14 @@
-﻿namespace RevisionPlanner.View;
+﻿using RevisionPlanner.ViewModel;
+
+namespace RevisionPlanner.View;
 
 public partial class TimetableTodayPage : ContentPage
 {
-	public TimetableTodayPage()
+	public TimetableTodayPage(TimetableTodayViewModel viewModel)
 	{
 		InitializeComponent();
+
+		BindingContext = viewModel;
 	}
 }
 
