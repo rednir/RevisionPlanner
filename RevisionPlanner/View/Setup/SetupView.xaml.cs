@@ -11,10 +11,13 @@ public partial class SetupView : NavigationPage
 
 	private SelectStudyDaysPage _selectStudyDaysPage;
 
+	private UserDatabase _userDatabase;
+
 	private Action _nextAction;
 
-	public SetupView(Action next)
+	public SetupView(UserDatabase userDatabase, Action next)
 	{
+		_userDatabase = userDatabase;
 		_nextAction = next;
 
 		InitialisePages();
@@ -32,7 +35,7 @@ public partial class SetupView : NavigationPage
 			new SelectSubjectsViewModel(async () => await OnSelectSubjectsNext()));
 
 		_selectQualificationPage = new SelectQualificationPage(
-			new SelectQualificationViewModel(async () => await OnSelectQualificationNext()));
+			new SelectQualificationViewModel(_userDatabase, async () => await OnSelectQualificationNext()));
     }
 
     private async Task OnSelectQualificationNext()

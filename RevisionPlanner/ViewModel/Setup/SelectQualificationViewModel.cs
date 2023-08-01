@@ -12,19 +12,30 @@ public class SelectQualificationViewModel : ViewModelBase
 
     public ICommand OtherCommand { get; private set; }
 
+    private readonly UserDatabase _userDatabase;
+
     private readonly Action _next;
 
-    public SelectQualificationViewModel(Action next)
+    public SelectQualificationViewModel(UserDatabase userDatabase, Action next)
     {
+        _userDatabase = userDatabase;
         _next = next;
 
-        GcseCommand = new Command(() => OnQualificationSelected(UserQualification.Gcse));
-        ALevelCommand = new Command(() => OnQualificationSelected(UserQualification.ALevel));
-        OtherCommand = new Command(() => OnQualificationSelected(UserQualification.Other));
+        GcseCommand = new Command(async () => await OnQualificationSelected(UserQualification.Gcse));
+        ALevelCommand = new Command(async () => await OnQualificationSelected(UserQualification.ALevel));
+        OtherCommand = new Command(async () => await OnQualificationSelected(UserQualification.Other));
     }
 
-    private void OnQualificationSelected(UserQualification qualification)
+    private async Task OnQualificationSelected(UserQualification qualification)
     {
+        await _userDatabase.ExecuteCommandAsync(
+	    @"
+            UPDATE user
+            SET user_qualification = ?
+            WHERE id = 0
+        ",
+        (int)qualification);
+
         _next();
 	}
 }

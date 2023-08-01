@@ -1,4 +1,5 @@
-﻿using SQLite;
+﻿using System.Diagnostics;
+using SQLite;
 
 namespace RevisionPlanner.Model;
 
@@ -13,39 +14,13 @@ public class UserDatabase
     private SQLiteAsyncConnection _connection;
 
     /// <summary>
-    /// Updates or creates a user record in the database according to a user object.
     /// </summary>
-    public async Task SetUserAsync(User user)
+    public async Task ExecuteCommandAsync(string command, params object[] args)
     {
         await Init();
-
-        bool userExists = await GetUserAsync(user.ID) is not null;
-
-        if (userExists)
-        {
-            await _connection.ExecuteAsync(
-		        @"
-                    UPDATE user
-                    SET user_qualification = ?, study_day = ?
-                    WHERE id = ?;
-                ",
-                (int)user.UserQualification,
-                (int)user.StudyDay,
-                user.ID
-		    );
-            
-	        return;
-	    }
-
-        await _connection.ExecuteAsync(
-            @"
-                INSERT INTO user
-                VALUES (?, ?, ?)
-            ",
-            user.ID,
-            (int)user.UserQualification,
-            (int)user.StudyDay
-        );
+        Debug.WriteLine($"Executing command: {command}");
+        await _connection.ExecuteAsync(command, args);
+	    return;
     }
 
     /// <summary>
@@ -80,14 +55,24 @@ public class UserDatabase
 
         _connection = new SQLiteAsyncConnection(FilePath, Flags);
 
+        // Create the user table and insert the default user.
         await _connection.ExecuteAsync(
 	        @"
-	        CREATE TABLE IF NOT EXISTS user (
-	            id INT PRIMARY KEY,
-	            user_qualification INT,
-	            study_day INT
-            )
+	            CREATE TABLE IF NOT EXISTS user (
+	                id INT PRIMARY KEY,
+	                user_qualification INT,
+	                study_day INT
+                );
 	        "
 	    );
+
+        await _connection.ExecuteAsync(
+            @"
+                INSERT OR IGNORE INTO user (id, user_qualification, study_day)
+                VALUES (0, 0, 0);
+            "
+        );
+
+        Debug.WriteLine("Initialised user database.");
     }
 }
