@@ -5,6 +5,8 @@ namespace RevisionPlanner.Model;
 
 public class UserDatabase
 {
+    public const int userId = 0;
+
     public const SQLiteOpenFlags Flags = SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create;
 
     public const string FileName = "user.db3";
@@ -15,12 +17,34 @@ public class UserDatabase
 
     /// <summary>
     /// </summary>
-    public async Task ExecuteCommandAsync(string command, params object[] args)
+    public async Task SetUserQualificationAsync(UserQualification userQualification)
     {
         await Init();
-        Debug.WriteLine($"Executing command: {command}");
-        await _connection.ExecuteAsync(command, args);
-	    return;
+
+        await _connection.ExecuteAsync(
+            @"
+                UPDATE user
+                SET user_qualification = ?
+                WHERE id = 0
+            ",
+            (int)userQualification
+        );
+    }
+
+    /// <summary>
+    /// </summary>
+    public async Task SetStudyDayAsync(StudyDay studyDay)
+    {
+        await Init();
+
+        await _connection.ExecuteAsync(
+            @"
+                UPDATE user
+                SET study_day = ?
+                WHERE id = 0
+            ",
+            (int)studyDay
+        );
     }
 
     /// <summary>

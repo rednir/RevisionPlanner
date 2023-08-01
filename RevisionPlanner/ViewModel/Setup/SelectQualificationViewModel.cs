@@ -28,14 +28,7 @@ public class SelectQualificationViewModel : ViewModelBase
 
     private async Task OnQualificationSelected(UserQualification qualification)
     {
-        await _userDatabase.ExecuteCommandAsync(
-	    @"
-            UPDATE user
-            SET user_qualification = ?
-            WHERE id = 0
-        ",
-        (int)qualification);
-
+        await _userDatabase.SetUserQualificationAsync(qualification);
         _next();
 	}
 }
