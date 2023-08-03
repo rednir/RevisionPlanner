@@ -1,6 +1,6 @@
 ﻿namespace RevisionPlanner.Model;
 
-public class Subject
+public class UserSubject : CourseContent
 {
     public uint ID { get; set; }
 
@@ -10,5 +10,5 @@ public class Subject
 
     //public Color Color { get; set; }
 
-    public Topic[] Topics { get; set; }
+    public UserTopic[] Topics { get; set; }
 }

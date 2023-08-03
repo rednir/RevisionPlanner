@@ -2,11 +2,56 @@
 
 public class UserTask
 {
-    public uint ID { get; set; }
+    public uint Id { get; set; }
 
     public DateOnly Date { get; set; }
 
-    //public string Notes { get; set; }
+    public CourseContent CourseContent { get; set; } = new UserSubtopic
+    {
+        Name = "Subtopic name",
+        Topic = new UserTopic
+        {
+            Name = "Topic name",
+            Subject = new UserSubject
+            {
+                Name = "Subject name",
+            },
+        },
+    };
 
-    //public CourseContent Content { get; set; }
+    public string Title
+    {
+	    get
+        {
+            if (CourseContent is UserSubject subject)
+                return subject.Name;
+
+            if (CourseContent is UserTopic topic)
+                return topic.Subject.Name;
+
+            if (CourseContent is UserSubtopic subtopic)
+                return subtopic.Topic.Subject.Name;
+
+            return "Title";
+	    } 
+    }
+
+    public string Subtitle
+    {
+        get
+        {
+            if (CourseContent is UserSubject subject)
+                return string.Empty;
+
+            if (CourseContent is UserTopic topic)
+                return topic.Name;
+
+            if (CourseContent is UserSubtopic subtopic)
+                return $"{subtopic.Topic.Name} / {subtopic.Name}";
+
+            return "Subtitle";
+        }
+    }
+
+    //public string Notes { get; set; }
 }

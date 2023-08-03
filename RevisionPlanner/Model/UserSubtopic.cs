@@ -2,9 +2,11 @@
 
 namespace RevisionPlanner.Model;
 
-public class Subtopic
+public class UserSubtopic : CourseContent
 {
     public uint ID { get; set; }
 
     public Confidence Confidence { get; set; }
+
+    public UserTopic Topic { get; set; }
 }
