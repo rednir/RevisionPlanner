@@ -49,18 +49,17 @@ public class UserDatabase
     }
 
     /// <summary>
-    /// Gets data about the current user record in the database.
     /// </summary>
     /// <returns>
-    /// Returns a user object representing the record.
     /// </returns>
-    public async Task<User> GetUserAsync()
+    public async Task<UserQualification> GetUserQualificationAsync()
     {
         await Init();
 
-        List<User> result = await _connection.QueryAsync<User>(
+        List<UserQualification> result = await _connection.QueryAsync<UserQualification>(
             $@"
-                SELECT * FROM user
+                SELECT user_qualification
+                FROM user
                 WHERE id = {userId}
             "
         );
