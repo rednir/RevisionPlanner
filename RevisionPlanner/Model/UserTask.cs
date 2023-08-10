@@ -40,7 +40,7 @@ public class UserTask
     {
         get
         {
-            if (CourseContent is UserSubject subject)
+            if (CourseContent is UserSubject)
                 return string.Empty;
 
             if (CourseContent is UserTopic topic)
