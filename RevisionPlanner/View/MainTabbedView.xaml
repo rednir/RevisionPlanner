@@ -5,15 +5,20 @@
 	         xmlns:local="clr-namespace:RevisionPlanner"
              xmlns:view="clr-namespace:RevisionPlanner.View">
     <TabBar>
-        <ShellContent Title="Dashboard"
-                      ContentTemplate="{DataTemplate view:DashboardPage}" />
-        <Tab Title="Timetable">
+        <Tab Title="Dashboard"
+	         Icon="dashboard.png">
+            <ShellContent ContentTemplate="{DataTemplate view:DashboardPage}" />
+	    </Tab>
+        <Tab Title="Timetable"
+	         Icon="timetable.png">
             <ShellContent Title="Today"
                           ContentTemplate="{DataTemplate view:TimetableTodayPage}" />
             <ShellContent Title="Upcoming"
                           ContentTemplate="{DataTemplate view:TimetableUpcomingPage}" />
 	    </Tab>
-        <ShellContent Title="Subjects"
-                ContentTemplate="{DataTemplate view:SubjectsPage}" />
+        <Tab Title="Subjects"
+	         Icon="subjects.png">
+            <ShellContent ContentTemplate="{DataTemplate view:SubjectsPage}" />
+	    </Tab>
     </TabBar>
 </Shell>
