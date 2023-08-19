@@ -1,6 +1,7 @@
 ﻿using RevisionPlanner.Model;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
 
 namespace RevisionPlanner.ViewModel;
 
@@ -16,6 +17,8 @@ public class TimetableTodayViewModel : ViewModelBase
         }
     }
 
+    public ICommand AddCustomTaskCommand { get; set; }
+
     private IEnumerable<UserTask> _tasks = new List<UserTask>()
     {
         new UserTask(),
@@ -30,5 +33,7 @@ public class TimetableTodayViewModel : ViewModelBase
     public TimetableTodayViewModel(UserDatabase userDatabase)
     {
         _userDatabase = userDatabase;
+
+        AddCustomTaskCommand = new Command(() => throw new NotImplementedException());
     }
 }
