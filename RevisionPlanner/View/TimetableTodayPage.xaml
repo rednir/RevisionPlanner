@@ -6,7 +6,7 @@
              x:Class="RevisionPlanner.View.TimetableTodayPage"
 	         x:DataType="viewmodel:TimetableTodayViewModel"
              Title="Timetable">
-    <Grid Padding="32 0 0 0">
+    <Grid Padding="0, 32, 0, 0">
         <CollectionView ItemsSource="{Binding Tasks}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
