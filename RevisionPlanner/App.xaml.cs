@@ -7,8 +7,9 @@ public partial class App : Application
 {
 	private UserDatabase _userDatabase = new();
 
-	public App()
+	public App(UserDatabase userDatabase)
 	{
+		_userDatabase = userDatabase;
 		MainPage = new SetupView(_userDatabase, OnSetupNext);
 	}
 
