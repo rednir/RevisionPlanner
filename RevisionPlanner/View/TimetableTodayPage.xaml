@@ -6,11 +6,17 @@
              x:Class="RevisionPlanner.View.TimetableTodayPage"
 	         x:DataType="viewmodel:TimetableTodayViewModel"
              Title="Timetable">
-    <CollectionView ItemsSource="{Binding Tasks}">
-        <CollectionView.ItemTemplate>
-            <DataTemplate>
-                <components:TaskView />
-	        </DataTemplate>
-	    </CollectionView.ItemTemplate>
-    </CollectionView>
+    <Grid Padding="32 0 0 0">
+        <CollectionView ItemsSource="{Binding Tasks}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <components:TaskView />
+	            </DataTemplate>
+	        </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Button Text="Add custom task"
+		        HorizontalOptions="End"
+		        VerticalOptions="End"
+		        Margin="16" />
+    </Grid>
 </ContentPage>
