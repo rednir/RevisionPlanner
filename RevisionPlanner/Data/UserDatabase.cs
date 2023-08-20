@@ -32,8 +32,6 @@ public class UserDatabase
         );
     }
 
-    /// <summary>
-    /// </summary>
     public async Task SetStudyDayAsync(StudyDay studyDay)
     {
         await Init();
@@ -48,10 +46,6 @@ public class UserDatabase
         );
     }
 
-    /// <summary>
-    /// </summary>
-    /// <returns>
-    /// </returns>
     public async Task<UserQualification> GetUserQualificationAsync()
     {
         await Init();
