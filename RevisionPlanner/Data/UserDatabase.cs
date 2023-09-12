@@ -32,20 +32,6 @@ public class UserDatabase
         );
     }
 
-    public async Task SetStudyDayAsync(StudyDay studyDay)
-    {
-        await Init();
-
-        await _connection.ExecuteAsync(
-            $@"
-                UPDATE user
-                SET study_day = ?
-                WHERE id = {userId}
-            ",
-            (int)studyDay
-        );
-    }
-
     public async Task<UserQualification> GetUserQualificationAsync()
     {
         await Init();
@@ -59,6 +45,20 @@ public class UserDatabase
         );
 
         return result.FirstOrDefault();
+    }
+
+    public async Task SetStudyDayAsync(StudyDay studyDay)
+    {
+        await Init();
+
+        await _connection.ExecuteAsync(
+            $@"
+                UPDATE user
+                SET study_day = ?
+                WHERE id = {userId}
+            ",
+            (int)studyDay
+        );
     }
 
     /// <summary>
