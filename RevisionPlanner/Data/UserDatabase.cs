@@ -150,6 +150,15 @@ public class UserDatabase
             "
         );
 
+        await _connection.ExecuteAsync(
+            @"
+                CREATE TABLE IF NOT EXISTS user_task (
+                    id INT PRIMARY KEY,
+                    deadline DATE NOT NULL,
+                );
+            "
+        );
+
         // Insert the default user into the user table.
         await _connection.ExecuteAsync(
             @"
