@@ -1,4 +1,4 @@
-﻿using RevisionPlanner.Model;
+﻿using RevisionPlanner.Data;
 using RevisionPlanner.View;
 
 namespace RevisionPlanner;

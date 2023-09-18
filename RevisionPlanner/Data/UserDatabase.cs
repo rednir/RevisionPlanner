@@ -2,7 +2,7 @@
 using RevisionPlanner.Model.Enums;
 using SQLite;
 
-namespace RevisionPlanner.Model;
+namespace RevisionPlanner.Data;
 
 public class UserDatabase
 {
@@ -16,49 +16,28 @@ public class UserDatabase
 
     private SQLiteAsyncConnection _connection;
 
-    /// <summary>
-    /// </summary>
     public async Task SetUserQualificationAsync(UserQualification userQualification)
     {
         await Init();
-
-        await _connection.ExecuteAsync(
-            $@"
-                UPDATE user
-                SET user_qualification = ?
-                WHERE id = {userId}
-            ",
-            (int)userQualification
-        );
+        await _connection.ExecuteAsync(UserDatabaseStatements.SetUserQualification, userId, (int)userQualification);
     }
 
     public async Task<UserQualification> GetUserQualificationAsync()
     {
         await Init();
-
-        List<UserQualification> result = await _connection.QueryAsync<UserQualification>(
-            $@"
-                SELECT user_qualification
-                FROM user
-                WHERE id = {userId}
-            "
-        );
-
-        return result.FirstOrDefault();
+        throw new NotImplementedException();
     }
 
     public async Task SetStudyDayAsync(StudyDay studyDay)
     {
         await Init();
+        await _connection.ExecuteAsync(UserDatabaseStatements.SetStudyDay, userId, (int)studyDay);
+    }
 
-        await _connection.ExecuteAsync(
-            $@"
-                UPDATE user
-                SET study_day = ?
-                WHERE id = {userId}
-            ",
-            (int)studyDay
-        );
+    public async Task<StudyDay> GetStudyDayAsync()
+    {
+        await Init();
+        throw new NotImplementedException();
     }
 
     /// <summary>
@@ -70,102 +49,12 @@ public class UserDatabase
         if (_connection is not null)
             return;
 
+        // Connect to the SQL database located in FilePath.
         _connection = new SQLiteAsyncConnection(FilePath, Flags);
 
-        // Create the user table and insert the default user.
-        await _connection.ExecuteAsync(
-	        @"
-	            CREATE TABLE IF NOT EXISTS user (
-	                id INT PRIMARY KEY,
-	                user_qualification INT,
-	                study_day INT
-                );
-	        "
-	    );
-
-        await _connection.ExecuteAsync(
-            @"
-                CREATE TABLE IF NOT EXISTS user_subject (
-                    id INT PRIMARY KEY,
-                    name VARCHAR(50) NOT NULL,
-                    exam_board VARCHAR(50),
-                    qualification VARCHAR(50)
-                );
-            "
-        );
-
-        await _connection.ExecuteAsync(
-            @"
-                CREATE TABLE IF NOT EXISTS user_topic (
-                    id INT PRIMARY KEY,
-                    user_subject_id NOT NULL,
-                    name VARCHAR(50) NOT NULL,
-                    FOREIGN KEY (user_subject_id) REFERENCES user_subject(id)
-                );
-            "
-        );
-
-        await _connection.ExecuteAsync(
-            @"
-                CREATE TABLE IF NOT EXISTS user_subtopic (
-                    id INT PRIMARY KEY,
-                    user_topic_id NOT NULL,
-                    name VARCHAR(50) NOT NULL,
-                    FOREIGN KEY (user_topic_id) REFERENCES user_topic(id)
-                );
-            "
-        );
-
-        await _connection.ExecuteAsync(
-            @"
-                CREATE TABLE IF NOT EXISTS exam (
-                    id INT PRIMARY KEY,
-                    user_subject_id INT NOT NULL,
-                    deadline DATE NOT NULL,
-                    name VARCHAR(50),
-                    FOREIGN KEY (user_subject_id) REFERENCES user_subject(id)
-                );
-            "
-        );
-
-        await _connection.ExecuteAsync(
-            @"
-                CREATE TABLE IF NOT EXISTS exam_topic (
-                    exam_id INT,
-                    user_topic_id INT,
-                    PRIMARY KEY (exam_id, user_topic_id)
-                    FOREIGN KEY (user_topic_id) REFERENCES user_topic(id)
-                );
-            "
-        );
-
-        await _connection.ExecuteAsync(
-            @"
-                CREATE TABLE IF NOT EXISTS exam_subtopic (
-                    exam_id INT,
-                    user_subtopic_id INT,
-                    PRIMARY KEY (exam_id, user_subtopic_id)
-                    FOREIGN KEY (user_subtopic_id) REFERENCES user_subtopic(id)
-                );
-            "
-        );
-
-        await _connection.ExecuteAsync(
-            @"
-                CREATE TABLE IF NOT EXISTS user_task (
-                    id INT PRIMARY KEY,
-                    deadline DATE NOT NULL,
-                );
-            "
-        );
-
-        // Insert the default user into the user table.
-        await _connection.ExecuteAsync(
-            @"
-                INSERT OR IGNORE INTO user (id, user_qualification, study_day)
-                VALUES (0, 0, 0);
-            "
-        );
+        // Create the database tables.
+        foreach (string statement in UserDatabaseStatements.CreateTables)
+            await _connection.ExecuteAsync(statement);
 
         Debug.WriteLine("Initialised user database.");
     }

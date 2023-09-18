@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using RevisionPlanner.Model;
+using RevisionPlanner.Data;
 using RevisionPlanner.View;
 using RevisionPlanner.ViewModel;
 using RevisionPlanner.ViewModel.Setup;
