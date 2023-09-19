@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using RevisionPlanner.Data;
 using RevisionPlanner.View;
+using RevisionPlanner.View.Setup;
 using RevisionPlanner.ViewModel;
 using RevisionPlanner.ViewModel.Setup;
 

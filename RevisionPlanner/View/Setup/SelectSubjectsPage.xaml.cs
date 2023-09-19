@@ -1,6 +1,6 @@
 ﻿using RevisionPlanner.ViewModel.Setup;
 
-namespace RevisionPlanner.View;
+namespace RevisionPlanner.View.Setup;
 
 public partial class SelectSubjectsPage : ContentPage
 {
