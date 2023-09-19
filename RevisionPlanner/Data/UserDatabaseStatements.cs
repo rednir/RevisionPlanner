@@ -86,8 +86,8 @@ public static class UserDatabaseStatements
     public const string SetUserQualification =
     $@"
         UPDATE user
-        WHERE id = ?
         SET user_qualification = ?
+        WHERE id = ?
     ";
 
     /// <summary>
@@ -106,8 +106,8 @@ public static class UserDatabaseStatements
     public const string SetStudyDay =
     @"
         UPDATE user
-        WHERE id = ?
         SET study_day = ?
+        WHERE id = ?
     ";
 
     /// <summary>

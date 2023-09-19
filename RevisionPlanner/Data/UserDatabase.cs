@@ -19,7 +19,7 @@ public class UserDatabase
     public async Task SetUserQualificationAsync(UserQualification userQualification)
     {
         await Init();
-        await _connection.ExecuteAsync(UserDatabaseStatements.SetUserQualification, userId, (int)userQualification);
+        await _connection.ExecuteAsync(UserDatabaseStatements.SetUserQualification, (int)userQualification, userId);
     }
 
     public async Task<UserQualification> GetUserQualificationAsync()
@@ -31,7 +31,7 @@ public class UserDatabase
     public async Task SetStudyDayAsync(StudyDay studyDay)
     {
         await Init();
-        await _connection.ExecuteAsync(UserDatabaseStatements.SetStudyDay, userId, (int)studyDay);
+        await _connection.ExecuteAsync(UserDatabaseStatements.SetStudyDay, (int)studyDay, userId);
     }
 
     public async Task<StudyDay> GetStudyDayAsync()
