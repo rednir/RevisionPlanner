@@ -14,11 +14,14 @@ public partial class SetupView : NavigationPage
 
 	private UserDatabase _userDatabase;
 
+	private StaticDatabase _staticDatabase;
+
 	private Action _nextAction;
 
-	public SetupView(UserDatabase userDatabase, Action next)
+	public SetupView(UserDatabase userDatabase, StaticDatabase staticDatabase, Action next)
 	{
 		_userDatabase = userDatabase;
+		_staticDatabase = staticDatabase;
 		_nextAction = next;
 
 		InitialisePages();

@@ -10,7 +10,7 @@ public class StaticDatabase
 
     public const string FileName = "static.db";
 
-    public static string FilePath => Path.Combine(FileSystem.AppDataDirectory, FileName);
+    public static string FilePath => Path.Combine(App.AppDataRoot, FileName);
 
     private SQLiteAsyncConnection _connection;
 
@@ -30,8 +30,9 @@ public class StaticDatabase
             // Read the bytes of the static database stream and copy it to FilePath where it can be connected to as an SQL database.
             using Stream dataStream = await FileSystem.OpenAppPackageFileAsync(FileName);
             using FileStream fileStream = File.OpenWrite(FilePath);
-
             await dataStream.CopyToAsync(fileStream);
+
+            Debug.WriteLine($"Created static database file at {FilePath}");
         }
 
         // Connect to the SQL database located in FilePath.

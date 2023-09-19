@@ -12,7 +12,7 @@ public class UserDatabase
 
     public const string FileName = "user.db3";
 
-    public static string FilePath => Path.Combine(FileSystem.AppDataDirectory, FileName);
+    public static string FilePath => Path.Combine(App.AppDataRoot, FileName);
 
     private SQLiteAsyncConnection _connection;
 

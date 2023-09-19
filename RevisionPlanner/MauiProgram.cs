@@ -34,6 +34,7 @@ public static class MauiProgram
 	{
 		// Register database services.
 		builder.Services.AddSingleton<UserDatabase>();
+		builder.Services.AddSingleton<StaticDatabase>();
 
 		// Register view models.
 		builder.Services.AddSingleton<TimetableTodayViewModel>();

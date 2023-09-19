@@ -7,15 +7,18 @@ public partial class App : Application
 {
 	public static readonly string AppDataRoot = Path.Combine(FileSystem.AppDataDirectory, "RevisionPlanner");
 
-    private UserDatabase _userDatabase = new();
+    private UserDatabase _userDatabase;
 
-	public App(UserDatabase userDatabase)
+    private StaticDatabase _staticDatabase;
+
+	public App(UserDatabase userDatabase, StaticDatabase staticDatabase)
 	{
 		_userDatabase = userDatabase;
+		_staticDatabase = staticDatabase;
 
 		InitAppData();
 
-		MainPage = new SetupView(_userDatabase, OnSetupNext);
+		MainPage = new SetupView(_userDatabase, _staticDatabase, OnSetupNext);
 	}
 
 	private void InitAppData()
