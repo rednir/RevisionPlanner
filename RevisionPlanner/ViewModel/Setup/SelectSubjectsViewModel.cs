@@ -8,11 +8,38 @@ public class SelectSubjectsViewModel : ViewModelBase
 {
     public ICommand NextCommand { get; private set; }
 
-    public IEnumerable<PresetSubject> PresetSubjects { get; set; } = new List<PresetSubject>()
+    public IEnumerable<PresetSubjectGrouping> PresetSubjectGroupings { get; set; } = new List<PresetSubjectGrouping>()
     {
-        new PresetSubject(),
-        new PresetSubject(),
-        new PresetSubject(),
+        new PresetSubjectGrouping()
+        {
+            Name = "Grouping 1",
+            Subjects = new List<PresetSubject>()
+            {
+                new PresetSubject
+                {
+                    Name = "Subject 1",
+                },
+                new PresetSubject
+                {
+                    Name = "Subject 2",
+                },
+                new PresetSubject
+                {
+                    Name = "Subject 3",
+                },
+            },
+        },
+        new PresetSubjectGrouping()
+        {
+            Name = "Grouping 2",
+            Subjects = new List<PresetSubject>()
+            {
+                new PresetSubject
+                {
+                    Name = "Subject 1",
+                },
+            },
+        },
     };
 
     public SelectSubjectsViewModel(Action next)

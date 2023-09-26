@@ -6,10 +6,10 @@
              Title="Select subjects"
              NavigationPage.HasBackButton="False">
     <VerticalStackLayout>
-        <CollectionView ItemsSource="{Binding PresetSubjects}">
+        <CollectionView ItemsSource="{Binding PresetSubjectGroupings}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <setupcomponents:PresetSubjectView />
+                    <setupcomponents:PresetSubjectGroupingView />
 	            </DataTemplate>
 	        </CollectionView.ItemTemplate>
         </CollectionView>
