@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows.Input;
 using RevisionPlanner.Model;
 
@@ -6,11 +7,32 @@ namespace RevisionPlanner.ViewModel.Setup;
 
 public class PresetSubjectGroupingViewModel : ViewModelBase
 {
-    public IEnumerable<PresetSubject> PresetSubject { get; set; } = new List<PresetSubject>()
+    public string Name { get; set; }
+
+    public List<PresetSubject> Subjects { get; set; }
+
+    private bool _isExpanded = true;
+
+    public bool IsExpanded
     {
-        new PresetSubject(),
-        new PresetSubject(),
-        new PresetSubject(),
-    };
+        get => _isExpanded;
+        set
+        {
+            _isExpanded = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public ICommand ToggleExpandCommand { get; set; }
+
+	public PresetSubjectGroupingViewModel()
+    {
+        ToggleExpandCommand = new Command(ToggleExpand);
+    }
+
+    private void ToggleExpand()
+    {
+        IsExpanded = !IsExpanded;
+    }
 }
 

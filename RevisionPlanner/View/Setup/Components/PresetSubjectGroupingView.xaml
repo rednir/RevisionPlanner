@@ -2,6 +2,8 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:setupcomponents="clr-namespace:RevisionPlanner.View.Setup.Components"
+	         xmlns:setup="clr-namespace:RevisionPlanner.ViewModel.Setup"
+	         x:DataType="setup:PresetSubjectGroupingViewModel"
              x:Class="RevisionPlanner.View.Setup.Components.PresetSubjectGroupingView">
     <Grid Padding="16">
         <Grid.ColumnDefinitions>
@@ -13,8 +15,8 @@
             <RowDefinition Height="300" />
         </Grid.RowDefinitions>
         <Label Grid.Column="0" Grid.Row="0" FontSize="Subtitle" Text="{Binding Name}" />
-        <Button Text="Expand" Grid.Column="1" Grid.Row="0" />
-        <CollectionView Grid.Row="1" ItemsSource="{Binding Subjects}">
+        <Button Text="Expand" Grid.Column="1" Grid.Row="0" Command="{Binding ToggleExpandCommand}" />
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Subjects}" IsVisible="{Binding IsExpanded}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <setupcomponents:PresetSubjectView />
