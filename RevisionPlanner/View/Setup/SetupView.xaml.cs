@@ -34,7 +34,7 @@ public partial class SetupView : NavigationPage
 	private void InitialisePages()
 	{
 		_selectStudyDaysPage = new SelectStudyDaysPage(
-			new SelectStudyDaysViewModel(async () => await OnSelectStudyDaysNext()));
+			new SelectStudyDaysViewModel(_userDatabase, async () => await OnSelectStudyDaysNext()));
 
 		_selectSubjectsPage = new SelectSubjectsPage(
 			new SelectSubjectsViewModel(async () => await OnSelectSubjectsNext()));
