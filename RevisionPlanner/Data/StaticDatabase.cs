@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using RevisionPlanner.Model;
 using RevisionPlanner.Model.Enums;
 using SQLite;
 
@@ -39,5 +40,24 @@ public class StaticDatabase
         _connection = new SQLiteAsyncConnection(FilePath, Flags);
 
         Debug.WriteLine("Initialised static database.");
+    }
+
+    public async Task<IEnumerable<PresetSubject>> GetPresetSubjectsAsync()
+    {
+        return new List<PresetSubject>()
+        {
+            new PresetSubject
+            {
+                Name = "Subject 1",
+            },
+            new PresetSubject
+            {
+                Name = "Subject 2",
+            },
+            new PresetSubject
+            {
+                Name = "Subject 3",
+            },
+        };
     }
 }

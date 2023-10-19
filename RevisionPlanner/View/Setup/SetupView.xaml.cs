@@ -37,7 +37,7 @@ public partial class SetupView : NavigationPage
 			new SelectStudyDaysViewModel(_userDatabase, async () => await OnSelectStudyDaysNext()));
 
 		_selectSubjectsPage = new SelectSubjectsPage(
-			new SelectSubjectsViewModel(_userDatabase, async () => await OnSelectSubjectsNext()));
+			new SelectSubjectsViewModel(_userDatabase, _staticDatabase, async () => await OnSelectSubjectsNext()));
 
 		_selectQualificationPage = new SelectQualificationPage(
 			new SelectQualificationViewModel(_userDatabase, async () => await OnSelectQualificationNext()));
