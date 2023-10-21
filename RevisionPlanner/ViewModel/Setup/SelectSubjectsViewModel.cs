@@ -15,39 +15,7 @@ public class SelectSubjectsViewModel : ViewModelBase
 
     private readonly Action _next;
 
-    public IEnumerable<PresetSubjectGroupingViewModel> PresetSubjectGroupingViewModels { get; set; } = new List<PresetSubjectGroupingViewModel>()
-    {
-        new PresetSubjectGroupingViewModel()
-        {
-            Name = "Grouping 1",
-            Subjects = new List<PresetSubject>()
-            {
-                new PresetSubject
-                {
-                    Name = "Subject 1",
-                },
-                new PresetSubject
-                {
-                    Name = "Subject 2",
-                },
-                new PresetSubject
-                {
-                    Name = "Subject 3",
-                },
-            },
-        },
-        new PresetSubjectGroupingViewModel()
-        {
-            Name = "Grouping 2",
-            Subjects = new List<PresetSubject>()
-            {
-                new PresetSubject
-                {
-                    Name = "Subject 1",
-                },
-            },
-        },
-    };
+    public IEnumerable<PresetSubjectGroupingViewModel> PresetSubjectGroupingViewModels { get; set; }
 
     public SelectSubjectsViewModel(UserDatabase userDatabase, StaticDatabase staticDatabase, Action next)
     {
@@ -60,11 +28,45 @@ public class SelectSubjectsViewModel : ViewModelBase
         SetPresetSubjectGroupings().Wait();
     }
 
+    /// <summary>
+    /// Fetches the list of preset subjects and groups them by name to show to the user.
+    /// </summary>
     private async Task SetPresetSubjectGroupings()
     {
+        // Get the list of preset subjects from the static database
         IEnumerable<PresetSubject> presetSubjects = await _staticDatabase.GetPresetSubjectsAsync();
-        List<PresetSubjectGroupingViewModel> groupings = new();
 
+        List<PresetSubjectGroupingViewModel> groupings = new();
+        foreach (PresetSubject subject in presetSubjects)
+        {
+            bool existingGroupingFound = false;
+
+            // Check if we already have a group for this subject.
+            foreach (PresetSubjectGroupingViewModel grouping in groupings)
+            {
+                if (grouping.Name == subject.Name)
+                {
+                    // Add the subject to its corresponding group.
+                    grouping.Subjects.Add(subject);
+                    existingGroupingFound = true;
+                    break;
+                }
+	        }
+
+            if (existingGroupingFound)
+                continue;
+
+            // If we haven't found an existing group, create a new one.
+            PresetSubjectGroupingViewModel newGrouping = new()
+            {
+                Name = subject.Name,
+                Subjects = new List<PresetSubject> { subject },
+            };
+
+            groupings.Add(newGrouping);
+        }
+
+        PresetSubjectGroupingViewModels = groupings;
     }
 
     private async Task OnNext()
