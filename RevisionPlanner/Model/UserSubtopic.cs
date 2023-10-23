@@ -4,7 +4,7 @@ namespace RevisionPlanner.Model;
 
 public class UserSubtopic : CourseContent
 {
-    public uint ID { get; set; }
+    public uint Id { get; set; }
 
     public Confidence Confidence { get; set; }
 

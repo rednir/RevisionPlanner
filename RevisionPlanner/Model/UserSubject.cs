@@ -2,7 +2,7 @@
 
 public class UserSubject : CourseContent
 {
-    public uint ID { get; set; }
+    public uint Id { get; set; }
 
     public string ExamBoard { get; set; }
 

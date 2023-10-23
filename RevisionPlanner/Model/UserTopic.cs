@@ -2,7 +2,7 @@
 
 public class UserTopic : CourseContent
 {
-    public uint ID { get; set; }
+    public uint Id { get; set; }
 
     public UserSubtopic[] Subtopics { get; set; }
 

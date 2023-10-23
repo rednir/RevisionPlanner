@@ -2,7 +2,7 @@
 
 public class PresetSubject
 {
-    public uint ID { get; set; }
+    public uint Id { get; set; }
 
     public string Name { get; set; }
 
