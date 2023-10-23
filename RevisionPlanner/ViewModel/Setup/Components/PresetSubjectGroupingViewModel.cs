@@ -9,7 +9,7 @@ public class PresetSubjectGroupingViewModel : ViewModelBase
 {
     public string Name { get; set; }
 
-    public List<PresetSubject> Subjects { get; set; }
+    public List<PresetSubjectViewModel> SubjectViewModels { get; set; }
 
     private bool _isExpanded = true;
 

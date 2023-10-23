@@ -16,7 +16,7 @@
         </Grid.RowDefinitions>
         <Label Grid.Column="0" Grid.Row="0" FontSize="Subtitle" Text="{Binding Name}" />
         <Button Text="Expand" Grid.Column="1" Grid.Row="0" Command="{Binding ToggleExpandCommand}" />
-        <CollectionView Grid.Row="1" ItemsSource="{Binding Subjects}" IsVisible="{Binding IsExpanded}">
+        <CollectionView Grid.Row="1" ItemsSource="{Binding SubjectViewModels}" IsVisible="{Binding IsExpanded}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <setupcomponents:PresetSubjectView />

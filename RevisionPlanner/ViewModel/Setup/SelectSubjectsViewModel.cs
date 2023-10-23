@@ -36,18 +36,22 @@ public class SelectSubjectsViewModel : ViewModelBase
         // Get the list of preset subjects from the static database
         IEnumerable<PresetSubject> presetSubjects = await _staticDatabase.GetPresetSubjectsAsync();
 
+        // Convert the types of all PresetSubject objects into PresetSubjectViewModel objects.
+        var presetSubjectViewModels = presetSubjects.Select(s => new PresetSubjectViewModel() { Subject = s });
+
         List<PresetSubjectGroupingViewModel> groupings = new();
-        foreach (PresetSubject subject in presetSubjects)
+
+        foreach (var presetSubjectViewModel  in presetSubjectViewModels)
         {
             bool existingGroupingFound = false;
 
             // Check if we already have a group for this subject.
             foreach (PresetSubjectGroupingViewModel grouping in groupings)
             {
-                if (grouping.Name == subject.Name)
+                if (grouping.Name == presetSubjectViewModel.Subject.Name)
                 {
                     // Add the subject to its corresponding group.
-                    grouping.Subjects.Add(subject);
+                    grouping.SubjectViewModels.Add(presetSubjectViewModel);
                     existingGroupingFound = true;
                     break;
                 }
@@ -59,8 +63,8 @@ public class SelectSubjectsViewModel : ViewModelBase
             // If we haven't found an existing group, create a new one.
             PresetSubjectGroupingViewModel newGrouping = new()
             {
-                Name = subject.Name,
-                Subjects = new List<PresetSubject> { subject },
+                Name = presetSubjectViewModel.Subject.Name,
+                SubjectViewModels = new List<PresetSubjectViewModel> { presetSubjectViewModel },
             };
 
             groupings.Add(newGrouping);

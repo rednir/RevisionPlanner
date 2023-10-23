@@ -49,14 +49,31 @@ public class StaticDatabase
             new PresetSubject
             {
                 Name = "Subject 1",
+                ExamBoard = "AQA",
+                Qualification = "GCSE",
+            },
+            new PresetSubject
+            {
+                Name = "Subject 1",
+                ExamBoard = "AQA",
+                Qualification = "Edexcel",
+            },
+            new PresetSubject
+            {
+                Name = "Subject 1",
+                ExamBoard = "AQA",
+                Qualification = "OCR",
             },
             new PresetSubject
             {
                 Name = "Subject 2",
+                ExamBoard = "AQA",
+                Qualification = "GCSE",
             },
             new PresetSubject
             {
                 Name = "Subject 3",
+                Qualification = "GCSE",
             },
         };
     }
