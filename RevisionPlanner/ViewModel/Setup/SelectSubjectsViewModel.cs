@@ -15,7 +15,17 @@ public class SelectSubjectsViewModel : ViewModelBase
 
     private readonly Action _next;
 
-    public IEnumerable<PresetSubjectGroupingViewModel> PresetSubjectGroupingViewModels { get; set; }
+    private IEnumerable<PresetSubjectGroupingViewModel> _presetSubjectGroupingViewModels;
+
+    public IEnumerable<PresetSubjectGroupingViewModel> PresetSubjectGroupingViewModels
+    {
+	    get => _presetSubjectGroupingViewModels;
+	    private set
+        {
+            _presetSubjectGroupingViewModels = value;
+            OnPropertyChanged();
+	    }
+    }
 
     public SelectSubjectsViewModel(UserDatabase userDatabase, StaticDatabase staticDatabase, Action next)
     {
@@ -25,7 +35,7 @@ public class SelectSubjectsViewModel : ViewModelBase
 
         NextCommand = new Command(async () => await OnNext());
 
-        SetPresetSubjectGroupings().Wait();
+        Task.Run(SetPresetSubjectGroupings);
     }
 
     /// <summary>

@@ -44,37 +44,9 @@ public class StaticDatabase
 
     public async Task<IEnumerable<PresetSubject>> GetPresetSubjectsAsync()
     {
-        return new List<PresetSubject>()
-        {
-            new PresetSubject
-            {
-                Name = "Subject 1",
-                ExamBoard = "AQA",
-                Qualification = "GCSE",
-            },
-            new PresetSubject
-            {
-                Name = "Subject 1",
-                ExamBoard = "AQA",
-                Qualification = "Edexcel",
-            },
-            new PresetSubject
-            {
-                Name = "Subject 1",
-                ExamBoard = "AQA",
-                Qualification = "OCR",
-            },
-            new PresetSubject
-            {
-                Name = "Subject 2",
-                ExamBoard = "AQA",
-                Qualification = "GCSE",
-            },
-            new PresetSubject
-            {
-                Name = "Subject 3",
-                Qualification = "GCSE",
-            },
-        };
+        await Init();
+
+        var result = await _connection.QueryAsync<PresetSubject>(StaticDatabaseStatements.GetPresetSubjects).ConfigureAwait(false);
+        return result;
     }
 }
