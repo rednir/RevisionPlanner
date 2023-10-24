@@ -24,22 +24,19 @@ public class StaticDatabase
         if (_connection is not null)
             return;
 
-        // Avoid creating the static database more than once.
-        // TODO: error handling here? or idk maybe not needed.
-        if (!File.Exists(FilePath))
-        {
-            // Read the bytes of the static database stream and copy it to FilePath where it can be connected to as an SQL database.
-            using Stream dataStream = await FileSystem.OpenAppPackageFileAsync(FileName);
-            using FileStream fileStream = File.OpenWrite(FilePath);
-            await dataStream.CopyToAsync(fileStream);
-
-            Debug.WriteLine($"Created static database file at {FilePath}");
-        }
+        // Delete the static database if it already exists, so it is updated with new changes if there are any.
+        if (File.Exists(FilePath))
+            File.Delete(FilePath);
+	
+        // Read the bytes of the static database stream and copy it to FilePath where it can be connected to as an SQL database.
+        using Stream dataStream = await FileSystem.OpenAppPackageFileAsync(FileName);
+        using FileStream fileStream = File.OpenWrite(FilePath);
+        await dataStream.CopyToAsync(fileStream);
 
         // Connect to the SQL database located in FilePath.
         _connection = new SQLiteAsyncConnection(FilePath, Flags);
 
-        Debug.WriteLine("Initialised static database.");
+        Debug.WriteLine($"Initialised static database at {FilePath}");
     }
 
     public async Task<IEnumerable<PresetSubject>> GetPresetSubjectsAsync()
