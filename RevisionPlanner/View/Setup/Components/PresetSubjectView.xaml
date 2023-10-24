@@ -1,18 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	         xmlns:setup="clr-namespace:RevisionPlanner.ViewModel.Setup"
+	         x:DataType="setup:PresetSubjectViewModel"
              x:Class="RevisionPlanner.View.Setup.Components.PresetSubjectView">
     <Grid Padding="16">
         <Grid.RowDefinitions>
-	        <RowDefinition />
-	        <RowDefinition />
-	    </Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="210" />
             <ColumnDefinition Width="50" />
-	    </Grid.ColumnDefinitions>
+        </Grid.ColumnDefinitions>
         <Label Grid.Column="0" Grid.Row="0" FontSize="Subtitle" Text="{Binding Name}" />
         <Label Grid.Column="0" Grid.Row="1" FontSize="Small" Text="{Binding Details}" />
-        <CheckBox Grid.Column="1" HorizontalOptions="End" />
+        <CheckBox Grid.Column="1" HorizontalOptions="End" IsChecked="{Binding IsChecked}" IsEnabled="{Binding IsEnabled}">
+            <CheckBox.Triggers>
+                <DataTrigger TargetType="CheckBox" Binding="{Binding IsEnabled}" Value="False">
+                    <Setter Property="Color" Value="Gray"/>
+                </DataTrigger>
+                <DataTrigger TargetType="CheckBox" Binding="{Binding IsEnabled}" Value="True">
+                    <Setter Property="Color" Value="LightSkyBlue"/>
+                </DataTrigger>
+            </CheckBox.Triggers>
+        </CheckBox>
     </Grid>
 </ContentView>

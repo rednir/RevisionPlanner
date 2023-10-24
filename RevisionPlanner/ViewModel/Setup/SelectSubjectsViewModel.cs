@@ -51,7 +51,7 @@ public class SelectSubjectsViewModel : ViewModelBase
 
         List<PresetSubjectGroupingViewModel> groupings = new();
 
-        foreach (var presetSubjectViewModel  in presetSubjectViewModels)
+        foreach (var presetSubjectViewModel in presetSubjectViewModels)
         {
             bool existingGroupingFound = false;
 
@@ -65,17 +65,14 @@ public class SelectSubjectsViewModel : ViewModelBase
                     existingGroupingFound = true;
                     break;
                 }
-	        }
+            }
 
             if (existingGroupingFound)
                 continue;
 
             // If we haven't found an existing group, create a new one.
-            PresetSubjectGroupingViewModel newGrouping = new()
-            {
-                Name = presetSubjectViewModel.Subject.Name,
-                SubjectViewModels = new List<PresetSubjectViewModel> { presetSubjectViewModel },
-            };
+            PresetSubjectGroupingViewModel newGrouping = new() { Name = presetSubjectViewModel.Subject.Name };
+            newGrouping.SubjectViewModels.Add(presetSubjectViewModel);
 
             groupings.Add(newGrouping);
         }

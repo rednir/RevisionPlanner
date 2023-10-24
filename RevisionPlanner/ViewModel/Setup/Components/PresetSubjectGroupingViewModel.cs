@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Input;
 using RevisionPlanner.Model;
@@ -9,7 +11,7 @@ public class PresetSubjectGroupingViewModel : ViewModelBase
 {
     public string Name { get; set; }
 
-    public List<PresetSubjectViewModel> SubjectViewModels { get; set; }
+    public ObservableCollection<PresetSubjectViewModel> SubjectViewModels { get; set; } = new();
 
     private bool _isExpanded = true;
 
@@ -28,11 +30,35 @@ public class PresetSubjectGroupingViewModel : ViewModelBase
 	public PresetSubjectGroupingViewModel()
     {
         ToggleExpandCommand = new Command(ToggleExpand);
+        SubjectViewModels.CollectionChanged += OnPresetSubjectCollectionChanged;
     }
 
     private void ToggleExpand()
     {
         IsExpanded = !IsExpanded;
+    }
+
+    private void OnPresetSubjectCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        // Return if no new items were added.
+        if (e.NewItems == null)
+            return;
+
+        // Start listening for property changes for the new items.
+        foreach (PresetSubjectViewModel item in e.NewItems)
+            item.PropertyChanged += OnPresetSubjectCollectionChanged;
+    }
+
+    private void OnPresetSubjectCollectionChanged(object sender, PropertyChangedEventArgs e)
+    {
+        // We only care about state changes for the check box.
+        if (e.PropertyName != "IsChecked")
+            return;
+
+        // If one subject is checked, disable all other subjects in this grouping. Otherwise, enable all subjects.
+        bool anyChecked = SubjectViewModels.Any(s => s.IsChecked);
+        foreach (var subject in SubjectViewModels)
+            subject.IsEnabled = !anyChecked || subject.IsChecked;
     }
 }
 
