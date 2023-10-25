@@ -71,6 +71,7 @@ public class UserDatabase
         await Init();
 
         await _connection.ExecuteAsync(UserDatabaseStatements.RemoveAllUserSubjectsAsync);
+        Debug.WriteLine("Removed all user subjects.");
     }
 
     /// <summary>
