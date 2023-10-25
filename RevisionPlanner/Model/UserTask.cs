@@ -6,6 +6,7 @@ public class UserTask
 
     public DateOnly Date { get; set; }
 
+    /*
     public CourseContent CourseContent { get; set; } = new UserSubtopic
     {
         Name = "Subtopic name",
@@ -51,7 +52,13 @@ public class UserTask
 
             return "Subtitle";
         }
-    }
+    }*/
+
+    public CourseContent CourseContent { get; set; }
+
+    public string Title => "Title";
+
+    public string Subtitle => "Subtitle";
 
     //public string Notes { get; set; }
 }

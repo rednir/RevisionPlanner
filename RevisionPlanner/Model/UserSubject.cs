@@ -22,6 +22,16 @@ public class UserSubject : CourseContent
 
         // Use the same ID as the preset subject but negative, as negative IDs are reserved for user subjects taken from a preset subject.
         Id = -presetSubject.Id;
+
+        // Convert preset topics in this subject to user topics.
+        List<UserTopic> userTopics = new();
+        foreach (PresetTopic topic in presetSubject.Topics)
+        {
+            UserTopic userTopic = new(topic);
+            userTopics.Add(userTopic);
+	    }
+
+        Topics = userTopics.ToArray();
     }
 
     public UserSubject(string name, string examBoard, string qualification)
