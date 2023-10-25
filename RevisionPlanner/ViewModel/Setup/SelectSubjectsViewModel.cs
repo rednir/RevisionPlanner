@@ -99,7 +99,7 @@ public class SelectSubjectsViewModel : ViewModelBase
 
             // If there is no corresponding user subject, this preset subject was not selected by the user.
             if (userSubject is null)
-                return;
+                continue;
 
             // Otherwise display this preset subject as already selected.
             subjectViewModel.IsChecked = true;
