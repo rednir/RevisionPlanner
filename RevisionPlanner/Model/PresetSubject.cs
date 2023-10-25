@@ -9,4 +9,6 @@ public class PresetSubject
     public string ExamBoard { get; set; }
 
     public string Qualification { get; set; }
+
+    public PresetTopic[] Topics { get; set; }
 }

@@ -44,6 +44,38 @@ public class StaticDatabase
         await Init();
 
         var result = await _connection.QueryAsync<PresetSubject>(StaticDatabaseStatements.GetPresetSubjects).ConfigureAwait(false);
+
+        // Populate the topics for each subject object by making another database query.
+        foreach (PresetSubject subject in result)
+        {
+            var topics = await GetPresetTopicsAsync(subject.Id);
+            subject.Topics = topics.ToArray();
+	    }
+
+        return result;
+    }
+
+    public async Task<IEnumerable<PresetTopic>> GetPresetTopicsAsync(int presetSubjectId)
+    {
+        await Init();
+
+        var result = await _connection.QueryAsync<PresetTopic>(StaticDatabaseStatements.GetPresetTopics, presetSubjectId);
+
+        // Populate the subtopics for each topic object by making another database query.
+        foreach (PresetTopic topic in result)
+        {
+            var subtopics = await GetPresetSubtopicsAsync(topic.Id);
+            topic.Subtopics = subtopics.ToArray();
+	    }
+
+        return result;
+    }
+
+    public async Task<IEnumerable<PresetSubtopic>> GetPresetSubtopicsAsync(int presetTopicId)
+    {
+        await Init();
+
+        var result = await _connection.QueryAsync<PresetSubtopic>(StaticDatabaseStatements.GetPresetSubtopics, presetTopicId);
         return result;
     }
 }

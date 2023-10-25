@@ -129,6 +129,7 @@ public class SelectSubjectsViewModel : ViewModelBase
 
             // Initialise the new user subject from the preset subject's attributes
             UserSubject userSubject = new(presetSubject);
+
             await _userDatabase.AddUserSubjectAsync(userSubject);
 	    }
 

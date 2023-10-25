@@ -14,4 +14,24 @@ public static class StaticDatabaseStatements
         SELECT *
         FROM PresetSubject
     ";
+
+    /// <summary>
+    /// Represents the SQL statement which gets all preset topics for a given preset subject.
+    /// </summary>
+    public const string GetPresetTopics =
+    @"
+        SELECT *
+        FROM PresetTopic
+        WHERE PresetSubjectId = ?
+    ";
+
+    /// <summary>
+    /// Represents the SQL statement which gets all preset subtopics for a given preset topic.
+    /// </summary>
+    public const string GetPresetSubtopics =
+    @"
+        SELECT *
+        FROM PresetSubtopic
+        WHERE PresetTopicId = ?
+    ";
 }
