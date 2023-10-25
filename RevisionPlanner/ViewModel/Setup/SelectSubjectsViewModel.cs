@@ -82,6 +82,16 @@ public class SelectSubjectsViewModel : ViewModelBase
 
     private async Task OnNext()
     {
+        // Get the subjects that the user has selected, not including null subjects which are unselected.
+        IEnumerable<PresetSubjectViewModel> selectedSubjects = PresetSubjectGroupingViewModels.Select(g => g.SelectedSubject).Where(s => s is not null);
+     
+        // Validate the user input by showing an error message if no subjects were selected.
+        if (!selectedSubjects.Any())
+        {
+            await App.DisplayAlert("Error", "Select at least one subject", "OK");
+            return;
+	    }
+
         _next();
     }
 }
