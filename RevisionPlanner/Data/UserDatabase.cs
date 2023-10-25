@@ -66,6 +66,13 @@ public class UserDatabase
         return result.FirstOrDefault();
     }
 
+    public async Task RemoveAllUserSubjectsAsync()
+    {
+        await Init();
+
+        await _connection.ExecuteAsync(UserDatabaseStatements.RemoveAllUserSubjectsAsync);
+    }
+
     /// <summary>
     /// Initialises the SQL connection and creates the database tables if necessary.
     /// </summary>

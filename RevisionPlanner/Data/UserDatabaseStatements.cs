@@ -135,4 +135,9 @@ public static class UserDatabaseStatements
         FROM UserSubject
         WHERE Id = ?
     ";
+
+    public const string RemoveAllUserSubjectsAsync =
+    @"
+        DELETE FROM UserSubject
+    ";
 }

@@ -121,6 +121,8 @@ public class SelectSubjectsViewModel : ViewModelBase
             return;
 	    }
 
+        await _userDatabase.RemoveAllUserSubjectsAsync();
+
         foreach (var selectedSubjectViewModel in selectedSubjects)
         {
             PresetSubject presetSubject = selectedSubjectViewModel.Subject;
