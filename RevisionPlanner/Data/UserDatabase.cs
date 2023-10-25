@@ -45,7 +45,7 @@ public class UserDatabase
         throw new NotImplementedException();
     }
 
-    public async Task AddUserSubject(UserSubject userSubject)
+    public async Task AddUserSubjectAsync(UserSubject userSubject)
     {
         await Init();
 

@@ -2,7 +2,7 @@
 
 public class UserTask
 {
-    public uint Id { get; set; }
+    public int Id { get; set; }
 
     public DateOnly Date { get; set; }
 

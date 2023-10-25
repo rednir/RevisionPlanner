@@ -92,6 +92,15 @@ public class SelectSubjectsViewModel : ViewModelBase
             return;
 	    }
 
+        foreach (var selectedSubjectViewModel in selectedSubjects)
+        {
+            PresetSubject presetSubject = selectedSubjectViewModel.Subject;
+
+            // Initialise the new user subject from the preset subject's attributes
+            UserSubject userSubject = new(presetSubject);
+            await _userDatabase.AddUserSubjectAsync(userSubject);
+	    }
+
         _next();
     }
 }
