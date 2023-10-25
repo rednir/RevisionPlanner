@@ -119,4 +119,13 @@ public static class UserDatabaseStatements
         FROM User
         WHERE Id = ?
     ";
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public const string AddUserSubject =
+    @"
+        INSERT INTO UserSubject (Id, Name, ExamBoard, Qualification)
+        VALUES (?, ?, ?, ?)
+    ";
 }

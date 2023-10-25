@@ -8,7 +8,8 @@ public class UserSubject : CourseContent
 
     public string Qualification { get; set; }
 
-    //public Color Color { get; set; }
-
     public UserTopic[] Topics { get; set; }
+
+    public override string ToString()
+        => $"{Qualification} {ExamBoard} {Name}";
 }

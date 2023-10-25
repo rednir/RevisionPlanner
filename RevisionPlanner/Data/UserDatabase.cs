@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using RevisionPlanner.Model;
 using RevisionPlanner.Model.Enums;
 using SQLite;
 
@@ -19,8 +20,8 @@ public class UserDatabase
     public async Task SetUserQualificationAsync(UserQualification userQualification)
     {
         await Init();
-        await _connection.ExecuteAsync(UserDatabaseStatements.SetUserQualification, (int)userQualification, userId);
 
+        await _connection.ExecuteAsync(UserDatabaseStatements.SetUserQualification, (int)userQualification, userId);
         Debug.WriteLine("Set user qualification");
     }
 
@@ -33,8 +34,8 @@ public class UserDatabase
     public async Task SetStudyDayAsync(StudyDay studyDay)
     {
         await Init();
-        await _connection.ExecuteAsync(UserDatabaseStatements.SetStudyDay, (int)studyDay, userId);
 
+        await _connection.ExecuteAsync(UserDatabaseStatements.SetStudyDay, (int)studyDay, userId);
         Debug.WriteLine("Set study day");
     }
 
@@ -42,6 +43,19 @@ public class UserDatabase
     {
         await Init();
         throw new NotImplementedException();
+    }
+
+    public async Task AddUserSubject(UserSubject userSubject)
+    {
+        await Init();
+
+        await _connection.ExecuteAsync(UserDatabaseStatements.AddUserSubject,
+            userSubject.Id,
+            userSubject.Name,
+            userSubject.ExamBoard,
+            userSubject.Qualification);
+
+        Debug.WriteLine($"Added user subject: {userSubject}");
     }
 
     /// <summary>
