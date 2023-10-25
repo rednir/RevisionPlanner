@@ -11,7 +11,9 @@ public class PresetSubjectGroupingViewModel : ViewModelBase
 {
     public string Name { get; set; }
 
-    public ObservableCollection<PresetSubjectViewModel> SubjectViewModels { get; set; } = new();
+    public ObservableCollection<PresetSubjectViewModel> SubjectViewModels { get; private set; } = new();
+
+    public PresetSubjectViewModel SelectedSubject { get; private set; }
 
     private bool _isExpanded = true;
 
@@ -27,7 +29,7 @@ public class PresetSubjectGroupingViewModel : ViewModelBase
 
     public ICommand ToggleExpandCommand { get; set; }
 
-	public PresetSubjectGroupingViewModel()
+    public PresetSubjectGroupingViewModel()
     {
         ToggleExpandCommand = new Command(ToggleExpand);
         SubjectViewModels.CollectionChanged += OnPresetSubjectCollectionChanged;
@@ -55,10 +57,22 @@ public class PresetSubjectGroupingViewModel : ViewModelBase
         if (e.PropertyName != "IsChecked")
             return;
 
+        // Initially assume that no subject is selected.
+        SelectedSubject = null;
+
         // If one subject is checked, disable all other subjects in this grouping. Otherwise, enable all subjects.
-        bool anyChecked = SubjectViewModels.Any(s => s.IsChecked);
+        bool noSubjectChecked = !SubjectViewModels.Any(s => s.IsChecked);
         foreach (var subject in SubjectViewModels)
-            subject.IsEnabled = !anyChecked || subject.IsChecked;
+        {
+            if (subject.IsChecked)
+            {
+                subject.IsEnabled = true;
+                SelectedSubject = subject;
+                continue;
+            }
+
+            subject.IsEnabled = noSubjectChecked;
+        }
     }
 }
 
