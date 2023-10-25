@@ -123,12 +123,20 @@ public class SelectStudyDaysViewModel : ViewModelBase
         Friday = (studyDay & StudyDay.Friday) == StudyDay.Friday;
         Saturday = (studyDay & StudyDay.Saturday) == StudyDay.Saturday;
         Sunday = (studyDay & StudyDay.Sunday) == StudyDay.Sunday;
-
     }
 
     private async Task OnNext()
     {
-        await _userDatabase.SetStudyDayAsync(CreateStudyDay());
+        StudyDay studyDay = CreateStudyDay();
+
+        // Validate user input by refusing to continue with zero study days selected.
+        if (studyDay == StudyDay.Default)
+        {
+            await App.DisplayAlert("Error", "Select at least one study day.", "OK");
+            return;
+	    }
+
+        await _userDatabase.SetStudyDayAsync(studyDay);
         _next();
     }
 
