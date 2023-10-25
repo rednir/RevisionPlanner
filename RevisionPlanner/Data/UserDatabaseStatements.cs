@@ -7,66 +7,66 @@ namespace RevisionPlanner.Data;
 public static class UserDatabaseStatements
 {
     /// <summary>
-    /// Represents a list of SQL statements which will initalise the required tables for the user database.
+    /// Represents a list of SQL statements which will initialise the required tables for the user database.
     /// </summary>
     public static string[] CreateTables => new[]
     {
         @"
-            CREATE TABLE IF NOT EXISTS user (
-                id INT PRIMARY KEY,
-                user_qualification INT,
-                study_day INT
+            CREATE TABLE IF NOT EXISTS User (
+                Id INT PRIMARY KEY,
+                UserQualification INT,
+                StudyDay INT
             );
         ",
         @"
-            CREATE TABLE IF NOT EXISTS user_subject (
-                id INT PRIMARY KEY,
-                name VARCHAR(50) NOT NULL,
-                exam_board VARCHAR(50),
-                qualification VARCHAR(50)
+            CREATE TABLE IF NOT EXISTS UserSubject (
+                Id INT PRIMARY KEY,
+                Name VARCHAR(50) NOT NULL,
+                ExamBoard VARCHAR(50),
+                Qualification VARCHAR(50)
             );
         ",
         @"
-            CREATE TABLE IF NOT EXISTS user_topic (
-                id INT PRIMARY KEY,
-                user_subject_id NOT NULL,
-                name VARCHAR(50) NOT NULL,
-                FOREIGN KEY (user_subject_id) REFERENCES user_subject(id)
+            CREATE TABLE IF NOT EXISTS UserTopic (
+                Id INT PRIMARY KEY,
+                UserSubjectId NOT NULL,
+                Name VARCHAR(50) NOT NULL,
+                FOREIGN KEY (UserSubjectId) REFERENCES UserSubject(Id)
             );
         ",
         @"
-            CREATE TABLE IF NOT EXISTS user_subtopic (
-                id INT PRIMARY KEY,
-                user_topic_id NOT NULL,
-                name VARCHAR(50) NOT NULL,
-                FOREIGN KEY (user_topic_id) REFERENCES user_topic(id)
+            CREATE TABLE IF NOT EXISTS UserSubtopic (
+                Id INT PRIMARY KEY,
+                UserTopicId NOT NULL,
+                Name VARCHAR(50) NOT NULL,
+                FOREIGN KEY (UserTopicId) REFERENCES UserTopic(Id)
             );
         ",
         @"
-            CREATE TABLE IF NOT EXISTS exam (
-                id INT PRIMARY KEY,
-                user_subject_id INT NOT NULL,
-                deadline_date REAL NOT NULL,
-                name VARCHAR(50),
-                FOREIGN KEY (user_subject_id) REFERENCES user_subject(id)
+            CREATE TABLE IF NOT EXISTS Exam (
+                Id INT PRIMARY KEY,
+                UserSubjectId INT NOT NULL,
+                DeadlineDate REAL NOT NULL,
+                Name VARCHAR(50),
+                FOREIGN KEY (UserSubjectId) REFERENCES UserSubject(Id)
             );
         ",
         @"
-            CREATE TABLE IF NOT EXISTS exam_topic (
-                exam_id INT,
-                user_topic_id INT,
-                PRIMARY KEY (exam_id, user_topic_id),
-                FOREIGN KEY (exam_id) REFERENCES exam(id),
-                FOREIGN KEY (user_topic_id) REFERENCES user_topic(id)
+            CREATE TABLE IF NOT EXISTS ExamTopic (
+                ExamId INT,
+                UserTopicId INT,
+                PRIMARY KEY (ExamId, UserTopicId),
+                FOREIGN KEY (ExamId) REFERENCES Exam(Id),
+                FOREIGN KEY (UserTopicId) REFERENCES UserTopic(Id)
             );
         ",
         @"
-            CREATE TABLE IF NOT EXISTS exam_subtopic (
-                exam_id INT,
-                user_subtopic_id INT,
-                PRIMARY KEY (exam_id, user_subtopic_id),
-                FOREIGN KEY (exam_id) REFERENCES exam(id),
-                FOREIGN KEY (user_subtopic_id) REFERENCES user_subtopic(id)
+            CREATE TABLE IF NOT EXISTS ExamSubtopic (
+                ExamId INT,
+                UserSubtopicId INT,
+                PRIMARY KEY (ExamId, UserSubtopicId),
+                FOREIGN KEY (ExamId) REFERENCES Exam(Id),
+                FOREIGN KEY (UserSubtopicId) REFERENCES UserSubtopic(Id)
             );
         ",
     };
@@ -76,7 +76,7 @@ public static class UserDatabaseStatements
     /// </summary>
     public const string InsertDefaultUser =
     @"
-        INSERT OR IGNORE INTO user (id, user_qualification, study_day)
+        INSERT OR IGNORE INTO User (Id, UserQualification, StudyDay)
         VALUES (1, 0, 0);
     ";
 
@@ -85,9 +85,9 @@ public static class UserDatabaseStatements
     /// </summary>
     public const string SetUserQualification =
     $@"
-        UPDATE user
-        SET user_qualification = ?
-        WHERE id = ?
+        UPDATE User
+        SET UserQualification = ?
+        WHERE Id = ?
     ";
 
     /// <summary>
@@ -95,9 +95,9 @@ public static class UserDatabaseStatements
     /// </summary>
     public const string GetUserQualification =
     @"
-        SELECT user_qualification
-        FROM user
-        WHERE id = ?
+        SELECT UserQualification
+        FROM User
+        WHERE Id = ?
     ";
 
     /// <summary>
@@ -105,9 +105,9 @@ public static class UserDatabaseStatements
     /// </summary>
     public const string SetStudyDay =
     @"
-        UPDATE user
-        SET study_day = ?
-        WHERE id = ?
+        UPDATE User
+        SET StudyDay = ?
+        WHERE Id = ?
     ";
 
     /// <summary>
@@ -115,8 +115,8 @@ public static class UserDatabaseStatements
     /// </summary>
     public const string GetStudyDay =
     @"
-        SELECT study_day
-        FROM user
-        WHERE id = ?
+        SELECT StudyDay
+        FROM User
+        WHERE Id = ?
     ";
 }
