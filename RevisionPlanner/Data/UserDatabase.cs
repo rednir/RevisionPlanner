@@ -7,7 +7,7 @@ namespace RevisionPlanner.Data;
 
 public class UserDatabase
 {
-    public const int userId = 0;
+    public const int UserId = 0;
 
     public const SQLiteOpenFlags Flags = SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create;
 
@@ -21,7 +21,7 @@ public class UserDatabase
     {
         await Init();
 
-        await _connection.ExecuteAsync(UserDatabaseStatements.SetUserQualification, (int)userQualification, userId);
+        await _connection.ExecuteAsync(UserDatabaseStatements.SetUserQualification, (int)userQualification, UserId);
         Debug.WriteLine("Set user qualification");
     }
 
@@ -35,14 +35,16 @@ public class UserDatabase
     {
         await Init();
 
-        await _connection.ExecuteAsync(UserDatabaseStatements.SetStudyDay, (int)studyDay, userId);
+        await _connection.ExecuteAsync(UserDatabaseStatements.SetStudyDay, (int)studyDay, UserId);
         Debug.WriteLine("Set study day");
     }
 
-    public async Task<StudyDay> GetStudyDayAsync()
+    public async Task<User> GetUserAsync()
     {
         await Init();
-        throw new NotImplementedException();
+
+        var result = await _connection.QueryAsync<User>(UserDatabaseStatements.GetUser, UserId);
+        return result.FirstOrDefault();
     }
 
     public async Task AddUserSubjectAsync(UserSubject userSubject)
@@ -89,6 +91,9 @@ public class UserDatabase
         // Create the database tables.
         foreach (string statement in UserDatabaseStatements.CreateTables)
             await _connection.ExecuteAsync(statement);
+
+        // Create the default user.
+        await _connection.ExecuteAsync(UserDatabaseStatements.InsertUser, UserId);
 
         Debug.WriteLine("Initialised user database.");
     }

@@ -72,12 +72,12 @@ public static class UserDatabaseStatements
     };
 
     /// <summary>
-    /// Represents the SQL statement which will insert the default user into the database.
+    /// Represents the SQL statement which will insert a user into the database.
     /// </summary>
-    public const string InsertDefaultUser =
+    public const string InsertUser =
     @"
         INSERT OR IGNORE INTO User (Id, UserQualification, StudyDay)
-        VALUES (1, 0, 0);
+        VALUES (?, 0, 0);
     ";
 
     /// <summary>
@@ -87,16 +87,6 @@ public static class UserDatabaseStatements
     $@"
         UPDATE User
         SET UserQualification = ?
-        WHERE Id = ?
-    ";
-
-    /// <summary>
-    /// Represents the SQL statement that gets the user's qualification.
-    /// </summary>
-    public const string GetUserQualification =
-    @"
-        SELECT UserQualification
-        FROM User
         WHERE Id = ?
     ";
 
@@ -111,11 +101,11 @@ public static class UserDatabaseStatements
     ";
 
     /// <summary>
-    /// Represents the SQL statement that gets the days of the week the user would like tasks to be allocated to.
+    /// Represents the SQL statement that gets a user record.
     /// </summary>
-    public const string GetStudyDay =
+    public const string GetUser =
     @"
-        SELECT StudyDay
+        SELECT *
         FROM User
         WHERE Id = ?
     ";
