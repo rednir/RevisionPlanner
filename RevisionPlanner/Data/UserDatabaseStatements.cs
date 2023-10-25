@@ -121,11 +121,18 @@ public static class UserDatabaseStatements
     ";
 
     /// <summary>
-    /// 
+    /// Represents the SQL statement that adds a new user subject.
     /// </summary>
     public const string AddUserSubject =
     @"
         INSERT INTO UserSubject (Id, Name, ExamBoard, Qualification)
         VALUES (?, ?, ?, ?)
+    ";
+
+    public const string GetUserSubject =
+    @"
+        SELECT *
+        FROM UserSubject
+        WHERE Id = ?
     ";
 }

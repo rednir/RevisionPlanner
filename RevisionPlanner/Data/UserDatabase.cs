@@ -58,6 +58,14 @@ public class UserDatabase
         Debug.WriteLine($"Added user subject: {userSubject}");
     }
 
+    public async Task<UserSubject> GetUserSubjectAsync(int id)
+    {
+        await Init();
+
+        var result = await _connection.QueryAsync<UserSubject>(UserDatabaseStatements.GetUserSubject, id);
+        return result.FirstOrDefault();
+    }
+
     /// <summary>
     /// Initialises the SQL connection and creates the database tables if necessary.
     /// </summary>
