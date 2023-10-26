@@ -62,6 +62,14 @@ public class UserDatabase
         return result.FirstOrDefault();
     }
 
+    public async Task<List<UserSubject>> GetAllUserSubjectsAsync()
+    {
+        await Init();
+
+        var result = await _connection.QueryAsync<UserSubject>(UserDatabaseStatements.GetAllUserSubjects);
+        return result;
+    }
+
     public async Task RemoveAllUserSubjectsAsync()
     {
         await Init();
