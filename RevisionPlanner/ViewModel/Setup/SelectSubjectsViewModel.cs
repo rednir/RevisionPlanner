@@ -20,15 +20,15 @@ public class SelectSubjectsViewModel : ViewModelBase
 
     public IEnumerable<PresetSubjectGroupingViewModel> PresetSubjectGroupingViewModels
     {
-	    get => _presetSubjectGroupingViewModels;
-	    private set
+        get => _presetSubjectGroupingViewModels;
+        private set
         {
             _presetSubjectGroupingViewModels = value;
             OnPropertyChanged();
-	    }
+        }
     }
 
-    public SelectSubjectsViewModel(UserDatabase userDatabase, StaticDatabase staticDatabase, Action next)
+    public SelectSubjectsViewModel(UserDatabase userDatabase, StaticDatabase staticDatabase, Action next = null)
     {
         _userDatabase = userDatabase;
         _staticDatabase = staticDatabase;
@@ -135,8 +135,8 @@ public class SelectSubjectsViewModel : ViewModelBase
 
             await _userDatabase.AddUserSubjectAsync(userSubject);
 	    }
-
-        _next();
+        
+        _next?.Invoke();
     }
 }
 

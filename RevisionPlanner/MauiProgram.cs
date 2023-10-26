@@ -39,12 +39,14 @@ public static class MauiProgram
 
 		// Register view models.
 		builder.Services.AddSingleton<TimetableTodayViewModel>();
+		builder.Services.AddSingleton<SubjectsPageViewModel>();
 		builder.Services.AddTransient<SelectQualificationViewModel>();
 		builder.Services.AddTransient<SelectStudyDaysViewModel>();
 		builder.Services.AddTransient<SelectSubjectsViewModel>();
 
 		// Register views.
 		builder.Services.AddSingleton<TimetableTodayPage>();
+		builder.Services.AddSingleton<SubjectsPage>();
 		builder.Services.AddTransient<SelectQualificationPage>();
 		builder.Services.AddTransient<SelectStudyDaysPage>();
 		builder.Services.AddTransient<SelectSubjectsPage>();
