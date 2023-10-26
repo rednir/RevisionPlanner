@@ -7,17 +7,11 @@ namespace RevisionPlanner.View;
 
 public partial class SetupView : NavigationPage
 {
-	private SelectSubjectsPage _selectSubjectsPage;
+	private readonly UserDatabase _userDatabase;
 
-	private SelectQualificationPage _selectQualificationPage;
+	private readonly StaticDatabase _staticDatabase;
 
-	private SelectStudyDaysPage _selectStudyDaysPage;
-
-	private UserDatabase _userDatabase;
-
-	private StaticDatabase _staticDatabase;
-
-	private Action _nextAction;
+	private readonly Action _nextAction;
 
 	public SetupView(UserDatabase userDatabase, StaticDatabase staticDatabase, Action next)
 	{
@@ -25,32 +19,30 @@ public partial class SetupView : NavigationPage
 		_staticDatabase = staticDatabase;
 		_nextAction = next;
 
-		InitialisePages();
 		InitializeComponent();
 
-		PushAsync(_selectQualificationPage);
-    }
+        // Intialise the first page of the setup, including the method that will be called next.
+        SelectQualificationPage page = new(
+            new SelectQualificationViewModel(_userDatabase, async () => await OnSelectQualificationNext()));
 
-	private void InitialisePages()
-	{
-		_selectStudyDaysPage = new SelectStudyDaysPage(
-			new SelectStudyDaysViewModel(_userDatabase, async () => await OnSelectStudyDaysNext()));
-
-		_selectSubjectsPage = new SelectSubjectsPage(
-			new SelectSubjectsViewModel(_userDatabase, _staticDatabase, async () => await OnSelectSubjectsNext()));
-
-		_selectQualificationPage = new SelectQualificationPage(
-			new SelectQualificationViewModel(_userDatabase, async () => await OnSelectQualificationNext()));
+        // Push the first page of the setup to the stack, showing it to the user.
+        PushAsync(page);
     }
 
     private async Task OnSelectQualificationNext()
 	{
-        await PushAsync(_selectSubjectsPage);
+        SelectSubjectsPage page = new(
+            new SelectSubjectsViewModel(_userDatabase, _staticDatabase, async () => await OnSelectSubjectsNext()));
+
+        await PushAsync(page);
     }
 
 	private async Task OnSelectSubjectsNext()
 	{
-		await PushAsync(_selectStudyDaysPage);
+        SelectStudyDaysPage page = new(
+            new SelectStudyDaysViewModel(_userDatabase, async () => await OnSelectStudyDaysNext()));
+
+        await PushAsync(page);
     }
 
     private async Task OnSelectStudyDaysNext()

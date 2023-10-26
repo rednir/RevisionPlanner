@@ -25,12 +25,6 @@ public class UserDatabase
         Debug.WriteLine("Set user qualification");
     }
 
-    public async Task<UserQualification> GetUserQualificationAsync()
-    {
-        await Init();
-        throw new NotImplementedException();
-    }
-
     public async Task SetStudyDayAsync(StudyDay studyDay)
     {
         await Init();

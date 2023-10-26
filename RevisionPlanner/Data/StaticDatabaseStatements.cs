@@ -13,6 +13,7 @@ public static class StaticDatabaseStatements
     @"
         SELECT *
         FROM PresetSubject
+        WHERE Qualification = ?
     ";
 
     /// <summary>

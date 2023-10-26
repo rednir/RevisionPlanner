@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using RevisionPlanner.Data;
 using RevisionPlanner.Model;
+using RevisionPlanner.Model.Enums;
 
 namespace RevisionPlanner.ViewModel.Setup;
 
@@ -35,19 +36,21 @@ public class SelectSubjectsViewModel : ViewModelBase
 
         NextCommand = new Command(async () => await OnNext());
 
-        Task.Run(SetPresetSubjectGroupings);
+        Task.Run(InitPresetSubjectsAsync);
     }
 
     /// <summary>
     /// Fetches the list of preset subjects and groups them by name to show to the user.
     /// </summary>
-    private async Task SetPresetSubjectGroupings()
+    public async Task InitPresetSubjectsAsync()
     {
-        // Get the list of preset subjects from the static database.
-        IEnumerable<PresetSubject> presetSubjects = await _staticDatabase.GetPresetSubjectsAsync();
+        User user = await _userDatabase.GetUserAsync();
+
+        // Get the list of preset subjects from the static database that match with the user's qualification only.
+        IEnumerable<PresetSubject> presetSubjects = await _staticDatabase.GetPresetSubjectsAsync(user.UserQualification);
 
         // Convert the types of all PresetSubject objects into PresetSubjectViewModel objects which we can display.
-        var presetSubjectViewModels = presetSubjects.Select(s => new PresetSubjectViewModel() { Subject = s });
+        IEnumerable<PresetSubjectViewModel> presetSubjectViewModels = presetSubjects.Select(s => new PresetSubjectViewModel() { Subject = s });
 
         List<PresetSubjectGroupingViewModel> groupings = new();
 

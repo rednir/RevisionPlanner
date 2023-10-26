@@ -39,11 +39,19 @@ public class StaticDatabase
         Debug.WriteLine($"Initialised static database at {FilePath}");
     }
 
-    public async Task<IEnumerable<PresetSubject>> GetPresetSubjectsAsync()
+    public async Task<IEnumerable<PresetSubject>> GetPresetSubjectsAsync(UserQualification userQualification)
     {
         await Init();
 
-        var result = await _connection.QueryAsync<PresetSubject>(StaticDatabaseStatements.GetPresetSubjects).ConfigureAwait(false);
+        // Convert the UserQualification enum to the string used for the "Qualification" attribute in the database.
+        string userQualificationString = userQualification switch
+        {
+            UserQualification.Gcse => "GCSE",
+            UserQualification.ALevel => "A-Level",
+            _ => "null",
+        };
+
+        var result = await _connection.QueryAsync<PresetSubject>(StaticDatabaseStatements.GetPresetSubjects, userQualificationString).ConfigureAwait(false);
 
         // Populate the topics for each subject object by making another database query.
         foreach (PresetSubject subject in result)
