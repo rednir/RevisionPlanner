@@ -120,7 +120,7 @@ public class SelectSubjectsViewModel : ViewModelBase
         // Validate the user input by showing an error message if no subjects were selected.
         if (!selectedSubjects.Any())
         {
-            await App.DisplayAlert("Error", "Select at least one subject", "OK");
+            await Application.Current.MainPage.DisplayAlert("Error", "Select at least one subject", "OK");
             return;
 	    }
 

@@ -7,9 +7,6 @@ public partial class App : Application
 {
 	public static readonly string AppDataRoot = Path.Combine(FileSystem.AppDataDirectory, "RevisionPlanner");
 
-	public static async Task DisplayAlert(string title, string message, string cancel)
-		=> await Current.MainPage.DisplayAlert(title, message, cancel);
-
     private UserDatabase _userDatabase;
 
     private StaticDatabase _staticDatabase;

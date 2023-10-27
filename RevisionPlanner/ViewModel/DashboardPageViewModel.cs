@@ -24,9 +24,26 @@ public class DashboardPageViewModel : ViewModelBase
 
     private async Task OnAddExamButtonPressed()
     {
+        UserSubject examSubject = await PromptExamSubject();
+
         AddExamPage page = new(
-	        new AddExamPageViewModel(_userDatabase));
+	        new AddExamPageViewModel(_userDatabase, examSubject));
 
         await Shell.Current.Navigation.PushModalAsync(page);
+    }
+
+    private async Task<UserSubject> PromptExamSubject()
+    {
+        var userSubjects = await _userDatabase.GetAllUserSubjectsAsync();
+
+        // Put the names o each subject in an array to be displayed in a modal dialog.
+        string[] subjectNames = userSubjects.Select(s => s.Name).ToArray();
+
+        // Display the dialog and get the action that the user chooses.
+        string chosenSubjectName = await Application.Current.MainPage.DisplayActionSheet(
+	        "Choose exam subject", "Cancel", null, subjectNames);
+
+        // Return the UserSubject object that represents the chosen subject or null if cancel is selected.
+        return userSubjects.FirstOrDefault(s => s.Name == chosenSubjectName);
     }
 }

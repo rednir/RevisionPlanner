@@ -15,8 +15,12 @@ public class AddExamPageViewModel : ViewModelBase
 
     private readonly UserDatabase _userDatabase;
 
-    public AddExamPageViewModel(UserDatabase userDatabase)
+    private readonly UserSubject _examSubject;
+
+    public AddExamPageViewModel(UserDatabase userDatabase, UserSubject examSubject)
     {
         _userDatabase = userDatabase;
+
+        _examSubject = examSubject;
     }
 }

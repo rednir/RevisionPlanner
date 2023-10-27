@@ -132,7 +132,7 @@ public class SelectStudyDaysViewModel : ViewModelBase
         // Validate user input by refusing to continue with zero study days selected.
         if (studyDay == StudyDay.Default)
         {
-            await App.DisplayAlert("Error", "Select at least one study day.", "OK");
+            await Application.Current.MainPage.DisplayAlert("Error", "Select at least one study day.", "OK");
             return;
 	    }
 
