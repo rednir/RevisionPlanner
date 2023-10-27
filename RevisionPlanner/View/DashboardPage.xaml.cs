@@ -1,9 +1,13 @@
-﻿namespace RevisionPlanner.View;
+﻿using RevisionPlanner.ViewModel;
+
+namespace RevisionPlanner.View;
 
 public partial class DashboardPage : ContentPage
 {
-	public DashboardPage()
+	public DashboardPage(DashboardPageViewModel viewModel)
 	{
 		InitializeComponent();
+
+		BindingContext = viewModel;
 	}
 }
