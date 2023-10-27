@@ -12,6 +12,8 @@ namespace RevisionPlanner.ViewModel;
 
 public class AddExamPageViewModel : ViewModelBase
 {
+    public const string SELECT_ALL_TEXT = "Select all";
+
     public string HeaderText => $"Edit {_examSubject.Name} exam";
 
     public string CustomName { get; set; }
@@ -66,13 +68,11 @@ public class AddExamPageViewModel : ViewModelBase
 
     private async Task OnAddTopicsButtonPressed()
     {
-        const string SELECT_ALL_TEXT = "Select all";
-
         string[] topicNames = _examSubject.Topics.Select(t => t.Name).ToArray();
 
         // Display the names of all topics in a list and get the user choice.
         string chosenTopicName = await Application.Current.MainPage.DisplayActionSheet(
-            "Choose exam subject", SELECT_ALL_TEXT, "Cancel", topicNames);
+            "Select topic", SELECT_ALL_TEXT, "Cancel", topicNames);
 
         if (chosenTopicName == SELECT_ALL_TEXT)
         {
@@ -82,6 +82,17 @@ public class AddExamPageViewModel : ViewModelBase
     }
 
     private async Task OnAddSubtopicsButtonPressed()
-    { 
+    {
+        string[] subtopicNames = _examSubject.Topics.SelectMany(t => t.Subtopics.Select(s => s.Name)).ToArray();
+
+        // Display the names of all subtopics in a list and get the user choice.
+        string chosenSubtopicName = await Application.Current.MainPage.DisplayActionSheet(
+            "Select subtopic", SELECT_ALL_TEXT, "Cancel", subtopicNames);
+
+        if (chosenSubtopicName == SELECT_ALL_TEXT)
+        {
+            foreach (UserSubtopic subtopic in _examSubject.Topics.SelectMany(t => t.Subtopics))
+                ExamSubtopics.Add(subtopic);
+        }
     }
 }
