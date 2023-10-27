@@ -45,13 +45,45 @@ public class UserDatabase
     {
         await Init();
 
+        // Insert the subject into the database.
         await _connection.ExecuteAsync(UserDatabaseStatements.AddUserSubject,
             userSubject.Id,
             userSubject.Name,
             userSubject.ExamBoard,
             userSubject.Qualification);
 
+        // Insert the subject's topics into the database
+        if (userSubject.Topics is not null)
+            await AddUserTopicsAsync(userSubject.Id, userSubject.Topics);
+
         Debug.WriteLine($"Added user subject: {userSubject}");
+    }
+
+    public async Task AddUserTopicsAsync(int userSubjectId, IEnumerable<UserTopic> userTopics)
+    {
+        await Init();
+
+        foreach (UserTopic topic in userTopics)
+        {
+            await _connection.ExecuteAsync(UserDatabaseStatements.AddUserTopic, topic.Id, userSubjectId, topic.Name);
+
+            // Insert the topic's subtopics into the database
+            if (topic.Subtopics is not null)
+                await AddUserSubtopicsAsync(topic.Id, topic.Subtopics);
+
+            Debug.WriteLine($"Added user topic {topic.Name} to subject {userSubjectId}");
+        }
+    }
+
+    public async Task AddUserSubtopicsAsync(int userTopicId, IEnumerable<UserSubtopic> userSubtopics)
+    {
+        await Init();
+
+        foreach (UserSubtopic subtopic in userSubtopics)
+        {
+            await _connection.ExecuteAsync(UserDatabaseStatements.AddUserSubtopic, subtopic.Id, userTopicId, subtopic.Name);
+            Debug.WriteLine($"Added user subtopic {subtopic} to topic {userTopicId}");
+        }
     }
 
     public async Task<UserSubject> GetUserSubjectAsync(int id)
@@ -59,16 +91,58 @@ public class UserDatabase
         await Init();
 
         var result = await _connection.QueryAsync<UserSubject>(UserDatabaseStatements.GetUserSubject, id);
-        return result.FirstOrDefault();
+        var subject = result.FirstOrDefault();
+
+        if (subject != null)
+        {
+            // Populate the topics for this subject object by making another database query.
+            var topics = await GetUserTopicsAsync(subject.Id);
+            subject.Topics = topics.ToArray();
+        }
+
+        return subject;
     }
 
-    public async Task<List<UserSubject>> GetAllUserSubjectsAsync()
+    public async Task<IEnumerable<UserSubject>> GetAllUserSubjectsAsync()
     {
         await Init();
 
         var result = await _connection.QueryAsync<UserSubject>(UserDatabaseStatements.GetAllUserSubjects);
+
+        // Populate each subject object with its topics with extra database queries.
+        foreach (UserSubject subject in result)
+        {
+            var topics = await GetUserTopicsAsync(subject.Id);
+            subject.Topics = topics.ToArray();
+        }
+
         return result;
     }
+
+    public async Task<IEnumerable<UserTopic>> GetUserTopicsAsync(int userSubjectId)
+    {
+        await Init();
+
+        var result = await _connection.QueryAsync<UserTopic>(UserDatabaseStatements.GetUserTopics, userSubjectId);
+
+        // Populate the subtopics for each topic object by making another database query.
+        foreach (UserTopic topic in result)
+        {
+            var subtopics = await GetUserSubtopicsAsync(topic.Id);
+            topic.Subtopics = subtopics.ToArray();
+        }
+
+        return result;
+    }
+
+    public async Task<IEnumerable<UserSubtopic>> GetUserSubtopicsAsync(int userTopicId)
+    {
+        await Init();
+
+        var result = await _connection.QueryAsync<UserSubtopic>(UserDatabaseStatements.GetUserSubtopics, userTopicId);
+        return result;
+    }
+
 
     public async Task RemoveAllUserSubjectsAsync()
     {

@@ -1,12 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	         xmlns:viewmodel="clr-namespace:RevisionPlanner.ViewModel"
+	         x:DataType="viewmodel:AddExamPageViewModel"
              x:Class="RevisionPlanner.View.AddExamPage"
              Title="AddExamPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+    <VerticalStackLayout Padding="24">
+        <Label Text="{Binding HeaderText}" FontSize="Title" />
+        <Entry Placeholder="Custom name (optional)" Text="{Binding CustomName}" />
+        <DatePicker MinimumDate="{Binding MinDate}"
+                    Date="{Binding SelectedDate}" />
+        <HorizontalStackLayout HorizontalOptions="Center" Padding="8">
+            <Button Text="Add topics" Margin="4" Command="{Binding AddTopicsCommand}" />
+            <Button Text="Add subtopics" Margin="4" Command="{Binding AddSubtopicsCommand}" />
+	    </HorizontalStackLayout>
+        <Button Text="Save exam" Margin="0,0,16,0" />
+        <ScrollView>
+            <Label Text="stuff goes here" />
+	    </ScrollView>
     </VerticalStackLayout>
 </ContentPage>

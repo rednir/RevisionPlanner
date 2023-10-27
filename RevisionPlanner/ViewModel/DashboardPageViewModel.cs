@@ -26,6 +26,10 @@ public class DashboardPageViewModel : ViewModelBase
     {
         UserSubject examSubject = await PromptExamSubject();
 
+        // Do not continue if the user chose to cancel the exam creation.
+        if (examSubject is null)
+            return;
+
         AddExamPage page = new(
 	        new AddExamPageViewModel(_userDatabase, examSubject));
 
@@ -36,7 +40,7 @@ public class DashboardPageViewModel : ViewModelBase
     {
         var userSubjects = await _userDatabase.GetAllUserSubjectsAsync();
 
-        // Put the names o each subject in an array to be displayed in a modal dialog.
+        // Put the names of each subject in an array to be displayed in a modal dialog.
         string[] subjectNames = userSubjects.Select(s => s.Name).ToArray();
 
         // Display the dialog and get the action that the user chooses.

@@ -119,6 +119,27 @@ public static class UserDatabaseStatements
         VALUES (?, ?, ?, ?)
     ";
 
+    /// <summary>
+    /// Represents the SQL statement that adds a new user topic.
+    /// </summary>
+    public const string AddUserTopic =
+    @"
+        INSERT INTO UserTopic (Id, UserSubjectId, Name)
+        VALUES (?, ?, ?)
+    ";
+
+    /// <summary>
+    /// Represents the SQL statement that adds a new user subtopic.
+    /// </summary>
+    public const string AddUserSubtopic =
+    @"
+        INSERT INTO UserSubtopic (Id, UserTopicId, Name)
+        VALUES (?, ?, ?)
+    ";
+
+    /// <summary>
+    /// Represents the SQL statement that retrieves a single user subject by its ID.
+    /// </summary>
     public const string GetUserSubject =
     @"
         SELECT *
@@ -126,12 +147,38 @@ public static class UserDatabaseStatements
         WHERE Id = ?
     ";
 
+    /// <summary>
+    /// Represents the SQL statement that retrieves all user subjects.
+    /// </summary>
     public const string GetAllUserSubjects =
     @"
         SELECT *
         FROM UserSubject
     ";
 
+    /// <summary>
+    /// Represents the SQL statement that gets all user topics for a specific user subject.
+    /// </summary>
+    public const string GetUserTopics =
+    @"
+        SELECT *
+        FROM UserTopic
+        WHERE UserSubjectId = ?
+    ";
+
+    /// <summary>
+    /// Represents the SQL statement that gets all user subtopics for a specific user topic.
+    /// </summary>
+    public const string GetUserSubtopics =
+    @"
+        SELECT *
+        FROM UserSubtopic
+        WHERE UserTopicId = ?
+    ";
+
+    /// <summary>
+    /// Represents the SQL statement that removes all user subjects from the database.
+    /// </summary>
     public const string RemoveAllUserSubjectsAsync =
     @"
         DELETE FROM UserSubject

@@ -3,6 +3,7 @@ using RevisionPlanner.Model;
 using RevisionPlanner.View;
 using RevisionPlanner.View.Setup;
 using RevisionPlanner.ViewModel.Setup;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -11,7 +12,44 @@ namespace RevisionPlanner.ViewModel;
 
 public class AddExamPageViewModel : ViewModelBase
 {
-    public ICommand AddExamCommand { get; set; }
+    public string HeaderText => $"Edit {_examSubject.Name} exam";
+
+    public string CustomName { get; set; }
+
+    /// <summary>
+    /// Represents the minimum date that the user can choose. This validates that the user inputted date is tomorrow or later.
+    /// </summary>
+    public DateTime MinDate { get; set; } = DateTime.Today + TimeSpan.FromDays(1);
+
+    public DateTime SelectedDate { get; set; }
+
+    public ICommand AddTopicsCommand { get; set; }
+
+    public ICommand AddSubtopicsCommand { get; set; }
+
+    public ObservableCollection<UserTopic> ExamTopics { get; set; } = new();
+
+    //public List<UserTopic> ExamTopics
+    //{
+    //    get => _examTopics;
+    //    set
+    //    {
+    //        _examTopics = value;
+    //        OnPropertyChanged();
+	   // }
+    //}
+
+    public ObservableCollection<UserSubtopic> ExamSubtopics { get; set; } = new();
+
+    //public List<UserTopic> ExamSubtopics
+    //{
+    //    get => _examSubtopics;
+    //    set
+    //    {
+    //        _examSubtopics = value;
+    //        OnPropertyChanged();
+	   // }
+    //}
 
     private readonly UserDatabase _userDatabase;
 
@@ -20,7 +58,30 @@ public class AddExamPageViewModel : ViewModelBase
     public AddExamPageViewModel(UserDatabase userDatabase, UserSubject examSubject)
     {
         _userDatabase = userDatabase;
-
         _examSubject = examSubject;
+
+        AddTopicsCommand = new Command(async () => await OnAddTopicsButtonPressed());
+        AddSubtopicsCommand = new Command(async () => await OnAddSubtopicsButtonPressed());
+    }
+
+    private async Task OnAddTopicsButtonPressed()
+    {
+        const string SELECT_ALL_TEXT = "Select all";
+
+        string[] topicNames = _examSubject.Topics.Select(t => t.Name).ToArray();
+
+        // Display the names of all topics in a list and get the user choice.
+        string chosenTopicName = await Application.Current.MainPage.DisplayActionSheet(
+            "Choose exam subject", SELECT_ALL_TEXT, "Cancel", topicNames);
+
+        if (chosenTopicName == SELECT_ALL_TEXT)
+        {
+            foreach (UserTopic topic in _examSubject.Topics)
+                ExamTopics.Add(topic);
+	    }
+    }
+
+    private async Task OnAddSubtopicsButtonPressed()
+    { 
     }
 }

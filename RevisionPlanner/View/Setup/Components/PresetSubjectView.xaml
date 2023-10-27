@@ -18,10 +18,10 @@
         <CheckBox Grid.Column="1" HorizontalOptions="End" IsChecked="{Binding IsChecked}" IsEnabled="{Binding IsEnabled}">
             <CheckBox.Triggers>
                 <DataTrigger TargetType="CheckBox" Binding="{Binding IsEnabled}" Value="False">
-                    <Setter Property="Color" Value="Gray"/>
+                    <Setter Property="Color" Value="LightGray"/>
                 </DataTrigger>
                 <DataTrigger TargetType="CheckBox" Binding="{Binding IsEnabled}" Value="True">
-                    <Setter Property="Color" Value="LightSkyBlue"/>
+                    <Setter Property="Color" Value="BlueViolet"/>
                 </DataTrigger>
             </CheckBox.Triggers>
         </CheckBox>
