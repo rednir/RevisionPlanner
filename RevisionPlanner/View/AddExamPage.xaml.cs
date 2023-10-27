@@ -1,9 +1,13 @@
-﻿namespace RevisionPlanner.View;
+﻿using RevisionPlanner.ViewModel;
+
+namespace RevisionPlanner.View;
 
 public partial class AddExamPage : ContentPage
 {
-	public AddExamPage()
+	public AddExamPage(AddExamPageViewModel viewModel)
 	{
 		InitializeComponent();
+
+		BindingContext = viewModel;
 	}
 }

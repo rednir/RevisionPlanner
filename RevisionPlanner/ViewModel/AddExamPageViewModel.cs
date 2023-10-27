@@ -9,24 +9,14 @@ using System.Windows.Input;
 
 namespace RevisionPlanner.ViewModel;
 
-public class DashboardPageViewModel : ViewModelBase
+public class AddExamPageViewModel : ViewModelBase
 {
     public ICommand AddExamCommand { get; set; }
 
     private readonly UserDatabase _userDatabase;
 
-    public DashboardPageViewModel(UserDatabase userDatabase)
+    public AddExamPageViewModel(UserDatabase userDatabase)
     {
         _userDatabase = userDatabase;
-
-        AddExamCommand = new Command(async () => await OnAddExamButtonPressed());
-    }
-
-    private async Task OnAddExamButtonPressed()
-    {
-        AddExamPage page = new(
-	        new AddExamPageViewModel(_userDatabase));
-
-        await Shell.Current.Navigation.PushModalAsync(page);
     }
 }
