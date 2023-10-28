@@ -4,14 +4,12 @@
 	         xmlns:viewmodel="clr-namespace:RevisionPlanner.ViewModel"
 	         x:DataType="viewmodel:ExamContentViewModel"
              x:Class="RevisionPlanner.View.Components.ExamContentView">
-    <Grid>
+    <Grid Padding="0,4,0,4">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition Width="56" />
 	    </Grid.ColumnDefinitions>
-        <VerticalStackLayout Grid.Column="0">
-            <Label FontSize="Default" Text="{Binding Name}" />
-	    </VerticalStackLayout>
+        <Label Grid.Column="0" FontSize="Default" Text="{Binding Name}" />
         <Button Grid.Column="1" BackgroundColor="PaleVioletRed" Text="X" Command="{Binding RemoveCommand}" />
     </Grid>
 </ContentView>
