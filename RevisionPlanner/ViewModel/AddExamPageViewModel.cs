@@ -57,7 +57,7 @@ public class AddExamPageViewModel : ViewModelBase
             // Enumerate though all remaining topics of this subject and add them to the list.
             foreach (UserTopic topic in _examSubject.Topics)
             {
-                ExamContentViewModel thisContentViewModel = new(topic);
+                ExamContentViewModel thisContentViewModel = new(topic, OnContentRemoveButtonPressed);
                 Content.Add(thisContentViewModel);
             }
 
@@ -66,7 +66,7 @@ public class AddExamPageViewModel : ViewModelBase
 
         // Select the chosen topic from its name and create the view model to show to the user in a list.
         UserTopic chosenTopic = _examSubject.Topics.First(t => t.Name == chosenTopicName);
-        ExamContentViewModel contentViewModel = new(chosenTopic);
+        ExamContentViewModel contentViewModel = new(chosenTopic, OnContentRemoveButtonPressed);
 
         Content.Add(contentViewModel);
     }
@@ -84,7 +84,7 @@ public class AddExamPageViewModel : ViewModelBase
         {
             foreach (UserSubtopic subtopic in subtopics)
             {
-                ExamContentViewModel thisContentViewModel = new(subtopic);
+                ExamContentViewModel thisContentViewModel = new(subtopic, OnContentRemoveButtonPressed);
                 Content.Add(thisContentViewModel);
             }
 
@@ -92,8 +92,13 @@ public class AddExamPageViewModel : ViewModelBase
         }
 
         UserSubtopic chosenSubtopic = subtopics.First(s => s.Name == chosenSubtopicName);
-        ExamContentViewModel contentViewModel = new(chosenSubtopic);
+        ExamContentViewModel contentViewModel = new(chosenSubtopic, OnContentRemoveButtonPressed);
 
         Content.Add(contentViewModel);
+    }
+
+    private void OnContentRemoveButtonPressed(ExamContentViewModel contentViewModel)
+    {
+        Content.Remove(contentViewModel);
     }
 }

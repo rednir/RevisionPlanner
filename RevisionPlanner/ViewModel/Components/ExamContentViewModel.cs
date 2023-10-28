@@ -18,8 +18,9 @@ public class ExamContentViewModel : ViewModelBase
 
     public ICommand RemoveCommand { get; set; }
 
-    public ExamContentViewModel(CourseContent content)
+    public ExamContentViewModel(CourseContent content, Action<ExamContentViewModel> removeAction)
     {
         Content = content;
+        RemoveCommand = new Command(() => removeAction(this));
     }
 }
