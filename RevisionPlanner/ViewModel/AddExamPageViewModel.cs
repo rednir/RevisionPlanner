@@ -46,7 +46,15 @@ public class AddExamPageViewModel : ViewModelBase
 
     private async Task OnAddTopicsButtonPressed()
     {
-        string[] topicNames = _examSubject.Topics.Select(t => t.Name).ToArray();
+        // Select topics which have not yet been selected by the user.
+        IEnumerable<UserTopic> topics = _examSubject.Topics
+            .Where(t => !Content.Select(c => c.Content.Name).Contains(t.Name));
+
+        // Return if there are no topics to select.
+        if (!topics.Any())
+            return;
+
+        string[] topicNames = topics.Select(t => t.Name).ToArray();
 
         // Display the names of all topics in a list and get the user choice.
         string chosenTopicName = await Application.Current.MainPage.DisplayActionSheet(
@@ -55,7 +63,7 @@ public class AddExamPageViewModel : ViewModelBase
         if (chosenTopicName == SELECT_ALL_TEXT)
         {
             // Enumerate though all remaining topics of this subject and add them to the list.
-            foreach (UserTopic topic in _examSubject.Topics)
+            foreach (UserTopic topic in topics)
             {
                 ExamContentViewModel thisContentViewModel = new(topic, OnContentRemoveButtonPressed);
                 Content.Add(thisContentViewModel);
@@ -65,7 +73,7 @@ public class AddExamPageViewModel : ViewModelBase
 	    }
 
         // Select the chosen topic from its name and create the view model to show to the user in a list.
-        UserTopic chosenTopic = _examSubject.Topics.First(t => t.Name == chosenTopicName);
+        UserTopic chosenTopic = topics.First(t => t.Name == chosenTopicName);
         ExamContentViewModel contentViewModel = new(chosenTopic, OnContentRemoveButtonPressed);
 
         Content.Add(contentViewModel);
@@ -73,7 +81,14 @@ public class AddExamPageViewModel : ViewModelBase
 
     private async Task OnAddSubtopicsButtonPressed()
     {
-        IEnumerable<UserSubtopic> subtopics = _examSubject.Topics.SelectMany(t => t.Subtopics);
+        // Select subtopics which have not yet been selected by the user.
+        IEnumerable<UserSubtopic> subtopics = _examSubject.Topics.SelectMany(t => t.Subtopics)
+            .Where(s => !Content.Select(c => c.Content.Name).Contains(s.Name));
+
+        // Return if there are no subtopics to select.
+        if (!subtopics.Any())
+            return;
+
         string[] subtopicNames = subtopics.Select(s => s.Name).ToArray();
 
         // Display the names of all subtopics in a list and get the user choice.
@@ -98,7 +113,5 @@ public class AddExamPageViewModel : ViewModelBase
     }
 
     private void OnContentRemoveButtonPressed(ExamContentViewModel contentViewModel)
-    {
-        Content.Remove(contentViewModel);
-    }
+        => Content.Remove(contentViewModel);
 }
