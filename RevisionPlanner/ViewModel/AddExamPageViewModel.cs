@@ -14,6 +14,8 @@ public class AddExamPageViewModel : ViewModelBase
 {
     public const string SELECT_ALL_TEXT = "Select all";
 
+    public const string CANCEL_TEXT = "Cancel";
+
     public string HeaderText => $"Edit {_examSubject.Name} exam";
 
     public string CustomName { get; set; }
@@ -29,6 +31,8 @@ public class AddExamPageViewModel : ViewModelBase
 
     public ICommand AddSubtopicsCommand { get; set; }
 
+    public ICommand SaveExamCommand { get; set; }
+
     public ObservableCollection<ExamContentViewModel> Content { get; set; } = new();
 
     private readonly UserDatabase _userDatabase;
@@ -42,6 +46,7 @@ public class AddExamPageViewModel : ViewModelBase
 
         AddTopicsCommand = new Command(async () => await OnAddTopicsButtonPressed());
         AddSubtopicsCommand = new Command(async () => await OnAddSubtopicsButtonPressed());
+        SaveExamCommand = new Command(async () => await OnSaveExamButtonPressed());
     }
 
     private async Task OnAddTopicsButtonPressed()
@@ -58,7 +63,7 @@ public class AddExamPageViewModel : ViewModelBase
 
         // Display the names of all topics in a list and get the user choice.
         string chosenTopicName = await Application.Current.MainPage.DisplayActionSheet(
-            "Select topic", SELECT_ALL_TEXT, "Cancel", topicNames);
+            "Select topic", SELECT_ALL_TEXT, CANCEL_TEXT, topicNames);
 
         if (chosenTopicName == SELECT_ALL_TEXT)
         {
@@ -74,6 +79,11 @@ public class AddExamPageViewModel : ViewModelBase
 
         // Select the chosen topic from its name and create the view model to show to the user in a list.
         UserTopic chosenTopic = topics.First(t => t.Name == chosenTopicName);
+
+        // Assume the user cancelled if null so do not continue.
+        if (chosenTopic is null)
+            return;
+
         ExamContentViewModel contentViewModel = new(chosenTopic, OnContentRemoveButtonPressed);
 
         Content.Add(contentViewModel);
@@ -93,7 +103,7 @@ public class AddExamPageViewModel : ViewModelBase
 
         // Display the names of all subtopics in a list and get the user choice.
         string chosenSubtopicName = await Application.Current.MainPage.DisplayActionSheet(
-            "Select subtopic", SELECT_ALL_TEXT, "Cancel", subtopicNames);
+            "Select subtopic", SELECT_ALL_TEXT, CANCEL_TEXT, subtopicNames);
 
         if (chosenSubtopicName == SELECT_ALL_TEXT)
         {
@@ -106,7 +116,12 @@ public class AddExamPageViewModel : ViewModelBase
             return;
         }
 
-        UserSubtopic chosenSubtopic = subtopics.First(s => s.Name == chosenSubtopicName);
+        UserSubtopic chosenSubtopic = subtopics.FirstOrDefault(s => s.Name == chosenSubtopicName);
+
+        // Assume the user cancelled if null so do not continue.
+        if (chosenSubtopic is null)
+            return;
+
         ExamContentViewModel contentViewModel = new(chosenSubtopic, OnContentRemoveButtonPressed);
 
         Content.Add(contentViewModel);
@@ -114,4 +129,9 @@ public class AddExamPageViewModel : ViewModelBase
 
     private void OnContentRemoveButtonPressed(ExamContentViewModel contentViewModel)
         => Content.Remove(contentViewModel);
+
+    private async Task OnSaveExamButtonPressed()
+    {
+        await Application.Current.MainPage.Navigation.PopModalAsync();
+    }
 }
