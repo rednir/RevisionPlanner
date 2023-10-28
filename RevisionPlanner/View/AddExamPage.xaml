@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-	         xmlns:viewmodel="clr-namespace:RevisionPlanner.ViewModel"
+	         xmlns:viewmodel="clr-namespace:RevisionPlanner.ViewModel" xmlns:components="clr-namespace:RevisionPlanner.View.Components"
 	         x:DataType="viewmodel:AddExamPageViewModel"
              x:Class="RevisionPlanner.View.AddExamPage"
              Title="AddExamPage">
@@ -14,9 +14,22 @@
             <Button Text="Add topics" Margin="4" Command="{Binding AddTopicsCommand}" />
             <Button Text="Add subtopics" Margin="4" Command="{Binding AddSubtopicsCommand}" />
 	    </HorizontalStackLayout>
-        <Button Text="Save exam" Margin="0,0,16,0" />
-        <ScrollView>
-            <Label Text="stuff goes here" />
-	    </ScrollView>
+        <Button Text="Save exam" Margin="0,0,0,16" />
+        <Label Text="Topics" FontSize="Subtitle" />
+        <CollectionView ItemsSource="{Binding ExamTopics}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <components:ExamContentView />
+	            </DataTemplate>
+	        </CollectionView.ItemTemplate>
+        </CollectionView>
+        <Label Text="Subtopics" FontSize="Subtitle" />
+        <CollectionView ItemsSource="{Binding ExamSubtopics}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <components:ExamContentView />
+	            </DataTemplate>
+	        </CollectionView.ItemTemplate>
+        </CollectionView>
     </VerticalStackLayout>
 </ContentPage>

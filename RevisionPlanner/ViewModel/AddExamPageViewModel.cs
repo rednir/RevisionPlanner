@@ -78,12 +78,17 @@ public class AddExamPageViewModel : ViewModelBase
         {
             foreach (UserTopic topic in _examSubject.Topics)
                 ExamTopics.Add(topic);
+
+            return;
 	    }
+
+        ExamTopics.Add(_examSubject.Topics.First(t => t.Name == chosenTopicName));
     }
 
     private async Task OnAddSubtopicsButtonPressed()
     {
-        string[] subtopicNames = _examSubject.Topics.SelectMany(t => t.Subtopics.Select(s => s.Name)).ToArray();
+        IEnumerable<UserSubtopic> subtopics = _examSubject.Topics.SelectMany(t => t.Subtopics);
+        string[] subtopicNames = subtopics.Select(s => s.Name).ToArray();
 
         // Display the names of all subtopics in a list and get the user choice.
         string chosenSubtopicName = await Application.Current.MainPage.DisplayActionSheet(
@@ -91,8 +96,12 @@ public class AddExamPageViewModel : ViewModelBase
 
         if (chosenSubtopicName == SELECT_ALL_TEXT)
         {
-            foreach (UserSubtopic subtopic in _examSubject.Topics.SelectMany(t => t.Subtopics))
+            foreach (UserSubtopic subtopic in subtopics)
                 ExamSubtopics.Add(subtopic);
+
+            return;
         }
+
+        ExamSubtopics.Add(subtopics.First(s => s.Name == chosenSubtopicName));
     }
 }

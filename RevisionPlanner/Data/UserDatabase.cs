@@ -148,7 +148,11 @@ public class UserDatabase
     {
         await Init();
 
-        await _connection.ExecuteAsync(UserDatabaseStatements.RemoveAllUserSubjectsAsync);
+        // Remove all subtopics and topics the subject contains first due to the composition relationship.
+        await _connection.ExecuteAsync(UserDatabaseStatements.RemoveAllUserSubtopics);
+        await _connection.ExecuteAsync(UserDatabaseStatements.RemoveAllUserTopics);
+        await _connection.ExecuteAsync(UserDatabaseStatements.RemoveAllUserSubjects);
+
         Debug.WriteLine("Removed all user subjects.");
     }
 

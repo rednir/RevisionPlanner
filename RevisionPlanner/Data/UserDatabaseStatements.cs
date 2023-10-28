@@ -176,11 +176,18 @@ public static class UserDatabaseStatements
         WHERE UserTopicId = ?
     ";
 
-    /// <summary>
-    /// Represents the SQL statement that removes all user subjects from the database.
-    /// </summary>
-    public const string RemoveAllUserSubjectsAsync =
+    public const string RemoveAllUserSubjects =
     @"
-        DELETE FROM UserSubject
+        DELETE FROM UserSubject;
+    ";
+
+    public const string RemoveAllUserTopics =
+    @"
+        DELETE FROM UserTopic;
+    ";
+
+    public const string RemoveAllUserSubtopics =
+    @"
+        DELETE FROM UserSubtopic;
     ";
 }
