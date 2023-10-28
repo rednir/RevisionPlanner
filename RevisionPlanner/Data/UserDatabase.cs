@@ -183,6 +183,14 @@ public class UserDatabase
         Debug.WriteLine($"Added exam: {exam.Name}");
     }
 
+    public async Task<IEnumerable<Exam>> GetExamsAsync()
+    {
+        await Init();
+
+        var result = await _connection.QueryAsync<Exam>(UserDatabaseStatements.GetExams);
+        return result;
+    }
+
     public async Task<Exam> GetExamAsync(int id)
     {
         await Init();

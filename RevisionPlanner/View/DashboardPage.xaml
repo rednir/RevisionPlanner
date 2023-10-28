@@ -6,6 +6,13 @@
              x:Class="RevisionPlanner.View.DashboardPage"
              Title="Dashboard">
     <VerticalStackLayout>
+        <CollectionView ItemsSource="{Binding UpcomingExams}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Label Text="exam" />
+	            </DataTemplate>
+	        </CollectionView.ItemTemplate>
+        </CollectionView>
         <Button Text="Add exam" Command="{Binding AddExamCommand}" />
     </VerticalStackLayout>
 </ContentPage>

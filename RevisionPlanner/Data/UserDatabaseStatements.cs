@@ -209,6 +209,12 @@ public static class UserDatabaseStatements
         VALUES (?, ?)
     ";
 
+    public const string GetExams =
+    @"
+        SELECT *
+        FROM Exam
+    ";
+
     public const string GetExam =
     @"
         SELECT *

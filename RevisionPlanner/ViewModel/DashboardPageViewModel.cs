@@ -3,6 +3,7 @@ using RevisionPlanner.Model;
 using RevisionPlanner.View;
 using RevisionPlanner.View.Setup;
 using RevisionPlanner.ViewModel.Setup;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -13,6 +14,8 @@ public class DashboardPageViewModel : ViewModelBase
 {
     public ICommand AddExamCommand { get; set; }
 
+    public ObservableCollection<Exam> UpcomingExams { get; set; } = new();
+
     private readonly UserDatabase _userDatabase;
 
     public DashboardPageViewModel(UserDatabase userDatabase)
@@ -20,6 +23,13 @@ public class DashboardPageViewModel : ViewModelBase
         _userDatabase = userDatabase;
 
         AddExamCommand = new Command(async () => await OnAddExamButtonPressed());
+        Task.Run(InitUpcomingExams);
+    }
+
+    private async Task InitUpcomingExams()
+    {
+        IEnumerable<Exam> exams = await _userDatabase.GetExamsAsync();
+        // TODO right now
     }
 
     private async Task OnAddExamButtonPressed()
