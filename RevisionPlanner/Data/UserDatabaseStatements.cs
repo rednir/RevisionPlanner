@@ -46,8 +46,8 @@ public static class UserDatabaseStatements
             CREATE TABLE IF NOT EXISTS Exam (
                 Id INT PRIMARY KEY,
                 UserSubjectId INT NOT NULL,
-                DeadlineDate REAL NOT NULL,
-                Name VARCHAR(50),
+                Deadline TEXT NOT NULL,
+                CustomName VARCHAR(50),
                 FOREIGN KEY (UserSubjectId) REFERENCES UserSubject(Id)
             );
         ",
@@ -189,5 +189,23 @@ public static class UserDatabaseStatements
     public const string RemoveAllUserSubtopics =
     @"
         DELETE FROM UserSubtopic;
+    ";
+
+    public const string AddExam =
+    @"
+        INSERT INTO Exam (Id, UserSubjectId, Deadline, CustomName)
+        VALUES (?, ?, ?, ?)
+    ";
+
+    public const string AddExamTopic =
+    @"
+        INSERT INTO ExamTopic (ExamId, UserTopicId)
+        VALUES (?, ?)
+    ";
+
+    public const string AddExamSubtopic =
+    @"
+        INSERT INTO ExamSubtopic (ExamId, UserSubtopicId)
+        VALUES (?, ?)
     ";
 }

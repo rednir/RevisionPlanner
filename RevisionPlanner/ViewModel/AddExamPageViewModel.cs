@@ -33,7 +33,7 @@ public class AddExamPageViewModel : ViewModelBase
 
     public ICommand SaveExamCommand { get; set; }
 
-    public ObservableCollection<ExamContentViewModel> Content { get; set; } = new();
+    public ObservableCollection<ExamContentViewModel> ContentViewModels { get; set; } = new();
 
     private readonly UserDatabase _userDatabase;
 
@@ -53,7 +53,7 @@ public class AddExamPageViewModel : ViewModelBase
     {
         // Select topics which have not yet been selected by the user.
         IEnumerable<UserTopic> topics = _examSubject.Topics
-            .Where(t => !Content.Select(c => c.Content.Name).Contains(t.Name));
+            .Where(t => !ContentViewModels.Select(c => c.Content.Name).Contains(t.Name));
 
         // Return if there are no topics to select.
         if (!topics.Any())
@@ -63,7 +63,7 @@ public class AddExamPageViewModel : ViewModelBase
 
         // Display the names of all topics in a list and get the user choice.
         string chosenTopicName = await Application.Current.MainPage.DisplayActionSheet(
-            "Select topic", SELECT_ALL_TEXT, CANCEL_TEXT, topicNames);
+            "Select topic", CANCEL_TEXT, SELECT_ALL_TEXT, topicNames);
 
         AddCourseContent(chosenTopicName, topics);
     }
@@ -72,7 +72,7 @@ public class AddExamPageViewModel : ViewModelBase
     {
         // Select subtopics which have not yet been selected by the user.
         IEnumerable<UserSubtopic> subtopics = _examSubject.Topics.SelectMany(t => t.Subtopics)
-            .Where(s => !Content.Select(c => c.Content.Name).Contains(s.Name));
+            .Where(s => !ContentViewModels.Select(c => c.Content.Name).Contains(s.Name));
 
         // Return if there are no subtopics to select.
         if (!subtopics.Any())
@@ -82,11 +82,14 @@ public class AddExamPageViewModel : ViewModelBase
 
         // Display the names of all subtopics in a list and get the user choice.
         string chosenSubtopicName = await Application.Current.MainPage.DisplayActionSheet(
-            "Select subtopic", SELECT_ALL_TEXT, CANCEL_TEXT, subtopicNames);
+            "Select subtopic", CANCEL_TEXT, SELECT_ALL_TEXT, subtopicNames);
 
         AddCourseContent(chosenSubtopicName, subtopics);
     }
 
+    /// <summary>
+    /// Adds course content to the list of content for this exam. Content could be either a topic or a subtopic. so this method uses polymorpism to process all course content with the same code regardless of type.
+    /// </summary>
     private void AddCourseContent(string chosenContentName, IEnumerable<CourseContent> contentToAdd)
     {
         if (chosenContentName == SELECT_ALL_TEXT)
@@ -95,7 +98,7 @@ public class AddExamPageViewModel : ViewModelBase
             foreach (CourseContent content in contentToAdd)
             {
                 ExamContentViewModel thisContentViewModel = new(content, OnContentRemoveButtonPressed);
-                Content.Add(thisContentViewModel);
+                ContentViewModels.Add(thisContentViewModel);
             }
 
             return;
@@ -110,14 +113,36 @@ public class AddExamPageViewModel : ViewModelBase
 
         ExamContentViewModel contentViewModel = new(chosenContent, OnContentRemoveButtonPressed);
 
-        Content.Add(contentViewModel);
+        ContentViewModels.Add(contentViewModel);
     }
 
     private void OnContentRemoveButtonPressed(ExamContentViewModel contentViewModel)
-        => Content.Remove(contentViewModel);
+        => ContentViewModels.Remove(contentViewModel);
 
     private async Task OnSaveExamButtonPressed()
     {
+        // Add the exam to the user database.
+        Exam exam = BuildExamObject();
+        await _userDatabase.AddExamAsync(exam);
+	    
+	    // Pop this page from the navigation stack.
         await Application.Current.MainPage.Navigation.PopModalAsync();
+    }
+
+    private Exam BuildExamObject()
+    {
+        // Initialise the exam object using the state of this view model from the user input.
+        Exam exam = new()
+        {
+            CustomName = string.IsNullOrWhiteSpace(CustomName) ? null : CustomName,
+            Subject = _examSubject,
+            Deadline = SelectedDate,
+            Content = ContentViewModels.Select(c => c.Content).ToArray(),
+        };
+
+        // Set the exam ID to the unique hash code generated from its attributes.
+        exam.Id = exam.GetHashCode();
+
+        return exam;
     }
 }

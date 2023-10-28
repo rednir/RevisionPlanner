@@ -16,7 +16,7 @@
 	    </HorizontalStackLayout>
         <Button Text="Save exam" Margin="0,0,0,16" Command="{Binding SaveExamCommand}" />
         <Label Text="Content:" FontSize="Subtitle" />
-        <CollectionView ItemsSource="{Binding Content}">
+        <CollectionView ItemsSource="{Binding ContentViewModels}" VerticalOptions="FillAndExpand">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <components:ExamContentView />

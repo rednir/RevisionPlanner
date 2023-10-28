@@ -156,6 +156,33 @@ public class UserDatabase
         Debug.WriteLine("Removed all user subjects.");
     }
 
+    public async Task AddExamAsync(Exam exam)
+    {
+        await Init();
+
+        await _connection.ExecuteAsync(UserDatabaseStatements.AddExam,
+	        exam.Id,
+	        exam.Subject.Id,
+	        exam.Deadline.ToString("yyyy-MM-dd HH:mm:ss"),
+	        exam.CustomName);
+
+        // Iterate through the exam content and add each content to the database.
+        foreach (CourseContent content in exam.Content)
+        {
+            // Polymorphism is used to treat exam topics and subtopics the same under the CourseContent object, however they should be stored seperately at a database level.
+            if (content is UserTopic userTopic)
+            {
+                await _connection.ExecuteAsync(UserDatabaseStatements.AddExamTopic, exam.Id, userTopic.Id);
+	        }
+            else if (content is UserSubtopic userSubtopic)
+            {
+                await _connection.ExecuteAsync(UserDatabaseStatements.AddExamSubtopic, exam.Id, userSubtopic.Id);
+	        }
+	    }
+
+        Debug.WriteLine($"Added exam: {exam.Name}");
+    }
+
     /// <summary>
     /// Initialises the SQL connection and creates the database tables if necessary.
     /// </summary>
