@@ -78,7 +78,7 @@ public class AddExamPageViewModel : ViewModelBase
 	    }
 
         // Select the chosen topic from its name and create the view model to show to the user in a list.
-        UserTopic chosenTopic = topics.First(t => t.Name == chosenTopicName);
+        UserTopic chosenTopic = topics.FirstOrDefault(t => t.Name == chosenTopicName);
 
         // Assume the user cancelled if null so do not continue.
         if (chosenTopic is null)
