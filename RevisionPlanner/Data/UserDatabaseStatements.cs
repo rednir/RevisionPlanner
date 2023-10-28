@@ -208,4 +208,29 @@ public static class UserDatabaseStatements
         INSERT INTO ExamSubtopic (ExamId, UserSubtopicId)
         VALUES (?, ?)
     ";
+
+    public const string GetExam =
+    @"
+        SELECT *
+        FROM Exam
+        WHERE Id = ?
+    ";
+
+    public const string RemoveExam =
+    @"
+        DELETE FROM Exam
+        WHERE Id = ?
+    ";
+
+    public const string RemoveExamTopic =
+    @"
+        DELETE FROM ExamTopic
+        WHERE ExamId = ?
+    ";
+
+    public const string RemoveExamSubtopic =
+    @"
+        DELETE FROM ExamTopic
+        WHERE ExamId = ?
+    ";
 }

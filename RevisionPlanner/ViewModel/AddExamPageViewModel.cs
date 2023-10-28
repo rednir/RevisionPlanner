@@ -35,6 +35,11 @@ public class AddExamPageViewModel : ViewModelBase
 
     public ObservableCollection<ExamContentViewModel> ContentViewModels { get; set; } = new();
 
+    /// <summary>
+    /// When the user presses the save exam button, remove the exam with this ID, effectively replacing it.
+    /// </summary>
+    public int? ExamIdToReplace { get; set; } = null;
+
     private readonly UserDatabase _userDatabase;
 
     private readonly UserSubject _examSubject;
@@ -121,6 +126,12 @@ public class AddExamPageViewModel : ViewModelBase
 
     private async Task OnSaveExamButtonPressed()
     {
+        if (ExamIdToReplace is not null)
+        {
+            // Replace the existing exam the user wants to edit.
+            await _userDatabase.RemoveExamAsync(ExamIdToReplace.Value);
+        }
+
         // Add the exam to the user database.
         Exam exam = BuildExamObject();
         await _userDatabase.AddExamAsync(exam);

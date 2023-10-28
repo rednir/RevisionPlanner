@@ -183,6 +183,25 @@ public class UserDatabase
         Debug.WriteLine($"Added exam: {exam.Name}");
     }
 
+    public async Task<Exam> GetExamAsync(int id)
+    {
+        await Init();
+
+        var result = await _connection.QueryAsync<Exam>(UserDatabaseStatements.GetExam, id);
+        return result.FirstOrDefault();
+    }
+
+    public async Task RemoveExamAsync(int id)
+    {
+        await Init();
+
+        await _connection.ExecuteAsync(UserDatabaseStatements.RemoveExamSubtopic, id);
+        await _connection.ExecuteAsync(UserDatabaseStatements.RemoveExamTopic, id);
+        await _connection.ExecuteAsync(UserDatabaseStatements.RemoveExam, id);
+
+        return;
+    }
+
     /// <summary>
     /// Initialises the SQL connection and creates the database tables if necessary.
     /// </summary>
