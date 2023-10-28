@@ -65,28 +65,7 @@ public class AddExamPageViewModel : ViewModelBase
         string chosenTopicName = await Application.Current.MainPage.DisplayActionSheet(
             "Select topic", SELECT_ALL_TEXT, CANCEL_TEXT, topicNames);
 
-        if (chosenTopicName == SELECT_ALL_TEXT)
-        {
-            // Enumerate though all remaining topics of this subject and add them to the list.
-            foreach (UserTopic topic in topics)
-            {
-                ExamContentViewModel thisContentViewModel = new(topic, OnContentRemoveButtonPressed);
-                Content.Add(thisContentViewModel);
-            }
-
-            return;
-	    }
-
-        // Select the chosen topic from its name and create the view model to show to the user in a list.
-        UserTopic chosenTopic = topics.FirstOrDefault(t => t.Name == chosenTopicName);
-
-        // Assume the user cancelled if null so do not continue.
-        if (chosenTopic is null)
-            return;
-
-        ExamContentViewModel contentViewModel = new(chosenTopic, OnContentRemoveButtonPressed);
-
-        Content.Add(contentViewModel);
+        AddCourseContent(chosenTopicName, topics);
     }
 
     private async Task OnAddSubtopicsButtonPressed()
@@ -105,24 +84,31 @@ public class AddExamPageViewModel : ViewModelBase
         string chosenSubtopicName = await Application.Current.MainPage.DisplayActionSheet(
             "Select subtopic", SELECT_ALL_TEXT, CANCEL_TEXT, subtopicNames);
 
-        if (chosenSubtopicName == SELECT_ALL_TEXT)
+        AddCourseContent(chosenSubtopicName, subtopics);
+    }
+
+    private void AddCourseContent(string chosenContentName, IEnumerable<CourseContent> contentToAdd)
+    {
+        if (chosenContentName == SELECT_ALL_TEXT)
         {
-            foreach (UserSubtopic subtopic in subtopics)
+            // Enumerate though all remaining content and add them to the list.
+            foreach (CourseContent content in contentToAdd)
             {
-                ExamContentViewModel thisContentViewModel = new(subtopic, OnContentRemoveButtonPressed);
+                ExamContentViewModel thisContentViewModel = new(content, OnContentRemoveButtonPressed);
                 Content.Add(thisContentViewModel);
             }
 
             return;
         }
 
-        UserSubtopic chosenSubtopic = subtopics.FirstOrDefault(s => s.Name == chosenSubtopicName);
+        // Select the chosen content from its name and create the view model to show to the user in a list.
+        CourseContent chosenContent = contentToAdd.FirstOrDefault(s => s.Name == chosenContentName);
 
         // Assume the user cancelled if null so do not continue.
-        if (chosenSubtopic is null)
+        if (chosenContent is null)
             return;
 
-        ExamContentViewModel contentViewModel = new(chosenSubtopic, OnContentRemoveButtonPressed);
+        ExamContentViewModel contentViewModel = new(chosenContent, OnContentRemoveButtonPressed);
 
         Content.Add(contentViewModel);
     }
