@@ -29,29 +29,7 @@ public class AddExamPageViewModel : ViewModelBase
 
     public ICommand AddSubtopicsCommand { get; set; }
 
-    public ObservableCollection<UserTopic> ExamTopics { get; set; } = new();
-
-    //public List<UserTopic> ExamTopics
-    //{
-    //    get => _examTopics;
-    //    set
-    //    {
-    //        _examTopics = value;
-    //        OnPropertyChanged();
-	   // }
-    //}
-
-    public ObservableCollection<UserSubtopic> ExamSubtopics { get; set; } = new();
-
-    //public List<UserTopic> ExamSubtopics
-    //{
-    //    get => _examSubtopics;
-    //    set
-    //    {
-    //        _examSubtopics = value;
-    //        OnPropertyChanged();
-	   // }
-    //}
+    public ObservableCollection<ExamContentViewModel> Content { get; set; } = new();
 
     private readonly UserDatabase _userDatabase;
 
@@ -76,13 +54,21 @@ public class AddExamPageViewModel : ViewModelBase
 
         if (chosenTopicName == SELECT_ALL_TEXT)
         {
+            // Enumerate though all remaining topics of this subject and add them to the list.
             foreach (UserTopic topic in _examSubject.Topics)
-                ExamTopics.Add(topic);
+            {
+                ExamContentViewModel thisContentViewModel = new(topic);
+                Content.Add(thisContentViewModel);
+            }
 
             return;
 	    }
 
-        ExamTopics.Add(_examSubject.Topics.First(t => t.Name == chosenTopicName));
+        // Select the chosen topic from its name and create the view model to show to the user in a list.
+        UserTopic chosenTopic = _examSubject.Topics.First(t => t.Name == chosenTopicName);
+        ExamContentViewModel contentViewModel = new(chosenTopic);
+
+        Content.Add(contentViewModel);
     }
 
     private async Task OnAddSubtopicsButtonPressed()
@@ -97,11 +83,17 @@ public class AddExamPageViewModel : ViewModelBase
         if (chosenSubtopicName == SELECT_ALL_TEXT)
         {
             foreach (UserSubtopic subtopic in subtopics)
-                ExamSubtopics.Add(subtopic);
+            {
+                ExamContentViewModel thisContentViewModel = new(subtopic);
+                Content.Add(thisContentViewModel);
+            }
 
             return;
         }
 
-        ExamSubtopics.Add(subtopics.First(s => s.Name == chosenSubtopicName));
+        UserSubtopic chosenSubtopic = subtopics.First(s => s.Name == chosenSubtopicName);
+        ExamContentViewModel contentViewModel = new(chosenSubtopic);
+
+        Content.Add(contentViewModel);
     }
 }

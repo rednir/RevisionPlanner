@@ -1,16 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	         xmlns:viewmodel="clr-namespace:RevisionPlanner.ViewModel"
+	         x:DataType="viewmodel:ExamContentViewModel"
              x:Class="RevisionPlanner.View.Components.ExamContentView">
-    <Grid Padding="16">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition Width="56" />
 	    </Grid.ColumnDefinitions>
         <VerticalStackLayout Grid.Column="0">
-            <Label FontSize="Default" Text="Some text" />
+            <Label FontSize="Default" Text="{Binding Name}" />
 	    </VerticalStackLayout>
-        <CheckBox Grid.Column="1" />
+        <Button Grid.Column="1" BackgroundColor="PaleVioletRed" Text="X" Command="{Binding RemoveCommand}" />
     </Grid>
 </ContentView>
 

@@ -64,6 +64,7 @@
 	  <None Remove="Data\" />
 	  <None Remove="Model\Enums\" />
 	  <None Remove="Resources\Images\view_dashboard_outline.svg" />
+	  <None Remove="ViewModel\Components\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="View\" />
@@ -75,6 +76,7 @@
 	  <Folder Include="ViewModel\Setup\" />
 	  <Folder Include="Data\" />
 	  <Folder Include="Model\Enums\" />
+	  <Folder Include="ViewModel\Components\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <MauiImage Include="Resources\Images\dashboard.svg" />
