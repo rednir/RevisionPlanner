@@ -230,7 +230,7 @@ public static class UserDatabaseStatements
 
     public const string RemoveExamSubtopic =
     @"
-        DELETE FROM ExamTopic
+        DELETE FROM ExamSubtopic
         WHERE ExamId = ?
     ";
 }
