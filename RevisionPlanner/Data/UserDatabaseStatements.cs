@@ -51,6 +51,7 @@ public static class UserDatabaseStatements
                 FOREIGN KEY (UserSubjectId) REFERENCES UserSubject(Id)
             );
         ",
+        // Composite primary key.
         @"
             CREATE TABLE IF NOT EXISTS ExamTopic (
                 ExamId INT,
@@ -60,6 +61,7 @@ public static class UserDatabaseStatements
                 FOREIGN KEY (UserTopicId) REFERENCES UserTopic(Id)
             );
         ",
+        // Composite primary key.
         @"
             CREATE TABLE IF NOT EXISTS ExamSubtopic (
                 ExamId INT,
@@ -209,17 +211,35 @@ public static class UserDatabaseStatements
         VALUES (?, ?)
     ";
 
+    // Cross-table statement
     public const string GetExams =
     @"
-        SELECT *
+        SELECT Exam.Id, Exam.UserSubjectId, Exam.Deadline, Exam.CustomName, UserSubject.Id as SubjectId, UserSubject.Name as SubjectName
         FROM Exam
+        INNER JOIN UserSubject ON Exam.UserSubjectId = UserSubject.Id
     ";
 
+    // Cross-table statement
     public const string GetExam =
     @"
-        SELECT *
+        SELECT Exam.Id, Exam.UserSubjectId, Exam.Deadline, Exam.CustomName, UserSubject.Id as SubjectId, UserSubject.Name as SubjectName
         FROM Exam
-        WHERE Id = ?
+        INNER JOIN UserSubject ON Exam.UserSubjectId = UserSubject.Id
+        WHERE ExamId = ?
+    ";
+
+    public const string GetExamTopic =
+    @"
+        SELECT *
+        FROM ExamTopic
+        WHERE ExamId = ?
+    ";
+
+    public const string GetExamSubtopic =
+    @"
+        SELECT *
+        FROM ExamSubtopic
+        WHERE ExamId = ?
     ";
 
     public const string RemoveExam =

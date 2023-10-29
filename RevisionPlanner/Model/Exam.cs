@@ -4,11 +4,13 @@ public class Exam
 {
     public int Id { get; set; }
 
-    public string Name => CustomName ?? $"{Subject.Name} exam";
+    public string Name => CustomName ?? $"{SubjectName} exam";
 
     public string CustomName { get; set; }
 
-    public UserSubject Subject { get; set; }
+    public int SubjectId { get; set; }
+
+    public string SubjectName { get; set; }
 
     public DateTime Deadline { get; set; }
 
@@ -21,7 +23,7 @@ public class Exam
         int hashCode = 0;
 
         // Take into account subject.
-        foreach (char c in Subject.Name)
+        foreach (char c in SubjectName)
             hashCode += c;
 
         long deadlineBinary = Deadline.ToBinary();

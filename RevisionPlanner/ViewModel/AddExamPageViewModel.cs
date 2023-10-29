@@ -146,7 +146,8 @@ public class AddExamPageViewModel : ViewModelBase
         Exam exam = new()
         {
             CustomName = string.IsNullOrWhiteSpace(CustomName) ? null : CustomName,
-            Subject = _examSubject,
+            SubjectId = _examSubject.Id,
+            SubjectName = _examSubject.Name,
             Deadline = SelectedDate,
             Content = ContentViewModels.Select(c => c.Content).ToArray(),
         };

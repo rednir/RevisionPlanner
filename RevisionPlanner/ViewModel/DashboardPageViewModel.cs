@@ -29,7 +29,11 @@ public class DashboardPageViewModel : ViewModelBase
     private async Task InitUpcomingExams()
     {
         IEnumerable<Exam> exams = await _userDatabase.GetExamsAsync();
-        // TODO right now
+
+        foreach (Exam exam in exams)
+        {
+            UpcomingExams.Add(exam);
+	    }
     }
 
     private async Task OnAddExamButtonPressed()

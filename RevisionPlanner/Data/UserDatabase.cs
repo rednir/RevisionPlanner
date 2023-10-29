@@ -162,7 +162,7 @@ public class UserDatabase
 
         await _connection.ExecuteAsync(UserDatabaseStatements.AddExam,
 	        exam.Id,
-	        exam.Subject.Id,
+	        exam.SubjectId,
 	        exam.Deadline.ToString("yyyy-MM-dd HH:mm:ss"),
 	        exam.CustomName);
 
