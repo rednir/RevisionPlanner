@@ -1,5 +1,4 @@
 ﻿using RevisionPlanner.Model;
-using System.Windows.Input;
 
 namespace RevisionPlanner.ViewModel;
 

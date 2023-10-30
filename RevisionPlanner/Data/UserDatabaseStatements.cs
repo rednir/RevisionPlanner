@@ -1,8 +1,4 @@
-﻿using System.Diagnostics;
-using RevisionPlanner.Model.Enums;
-using SQLite;
-
-namespace RevisionPlanner.Data;
+﻿namespace RevisionPlanner.Data;
 
 public static class UserDatabaseStatements
 {

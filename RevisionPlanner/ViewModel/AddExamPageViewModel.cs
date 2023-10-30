@@ -1,11 +1,6 @@
 ﻿using RevisionPlanner.Data;
 using RevisionPlanner.Model;
-using RevisionPlanner.View;
-using RevisionPlanner.View.Setup;
-using RevisionPlanner.ViewModel.Setup;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
 namespace RevisionPlanner.ViewModel;
@@ -25,7 +20,7 @@ public class AddExamPageViewModel : ViewModelBase
     /// </summary>
     public DateTime MinDate { get; set; } = DateTime.Today + TimeSpan.FromDays(1);
 
-    public DateTime SelectedDate { get; set; }
+    public DateTime SelectedDate { get; set; } = DateTime.Today + TimeSpan.FromDays(1);
 
     public ICommand AddTopicsCommand { get; set; }
 
