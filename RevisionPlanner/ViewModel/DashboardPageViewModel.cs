@@ -1,11 +1,7 @@
 ﻿using RevisionPlanner.Data;
 using RevisionPlanner.Model;
 using RevisionPlanner.View;
-using RevisionPlanner.View.Setup;
-using RevisionPlanner.ViewModel.Setup;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
 namespace RevisionPlanner.ViewModel;
@@ -14,7 +10,7 @@ public class DashboardPageViewModel : ViewModelBase
 {
     public ICommand AddExamCommand { get; set; }
 
-    public ObservableCollection<Exam> UpcomingExams { get; set; } = new();
+    public ObservableCollection<UpcomingExamViewModel> UpcomingExamViewModels { get; set; } = new();
 
     private readonly UserDatabase _userDatabase;
 
@@ -32,7 +28,8 @@ public class DashboardPageViewModel : ViewModelBase
 
         foreach (Exam exam in exams)
         {
-            UpcomingExams.Add(exam);
+            UpcomingExamViewModel viewModel = new(exam);
+            UpcomingExamViewModels.Add(viewModel);
 	    }
     }
 
