@@ -1,12 +1,4 @@
-﻿using RevisionPlanner.Data;
-using RevisionPlanner.Model;
-using RevisionPlanner.View;
-using RevisionPlanner.View.Setup;
-using RevisionPlanner.ViewModel.Setup;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows.Input;
+﻿using RevisionPlanner.Model;
 
 namespace RevisionPlanner.ViewModel;
 
@@ -16,7 +8,9 @@ public class UpcomingExamViewModel : ViewModelBase
 
     public string Name => Exam.Name;
 
-    public string RemainingTimeText => $"In {(Exam.Deadline - DateTime.Now).TotalDays} days";
+    public string RemainingTimeText => $"In {(int)(Exam.Deadline - DateTime.Now).TotalDays} days";
+
+    public float Progress { get; set; } = 0;
 
     public UpcomingExamViewModel(Exam exam)
     {

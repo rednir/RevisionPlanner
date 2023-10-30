@@ -5,7 +5,11 @@
 	         x:DataType="viewmodel:UpcomingExamViewModel"
              x:Class="RevisionPlanner.View.Components.UpcomingExamView">
     <Frame Margin="16">
-        <Label FontSize="Default" Text="{Binding Name}" />
+        <VerticalStackLayout>
+            <Label FontSize="Header" Text="{Binding Name}" />
+            <Label FontSize="Caption" Text="{Binding RemainingTimeText}" />
+            <ProgressBar Margin="0,4,0,0" Progress="{Binding Progress}" />
+	    </VerticalStackLayout>
     </Frame>
 </ContentView>
 

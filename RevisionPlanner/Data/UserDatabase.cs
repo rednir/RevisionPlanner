@@ -162,7 +162,7 @@ public class UserDatabase
         await _connection.ExecuteAsync(UserDatabaseStatements.AddExam,
 	        exam.Id,
 	        exam.SubjectId,
-	        exam.Deadline.ToString("yyyy-MM-dd HH:mm:ss"),
+	        exam.Deadline,
 	        exam.CustomName);
 
         // Iterate through the exam content and add each content to the database.

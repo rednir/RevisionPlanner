@@ -1,5 +1,4 @@
 ﻿using RevisionPlanner.Data;
-using RevisionPlanner.Model;
 using RevisionPlanner.View.Setup;
 using RevisionPlanner.ViewModel.Setup;
 
