@@ -9,7 +9,7 @@ namespace RevisionPlanner.ViewModel;
 
 public class SubjectsPageViewModel : ViewModelBase
 {
-    public ObservableCollection<UserSubject> Subjects { get; set; } = new();
+    public ObservableCollection<UserSubjectViewModel> SubjectViewModels { get; set; } = new();
 
     public ICommand AddSubjectCommand { get; set; }
 
@@ -30,11 +30,14 @@ public class SubjectsPageViewModel : ViewModelBase
     public async Task InitSubjects()
     {
         // Clear any existing subjects to avoid duplicating if this is not the first time this method has been called.
-        Subjects.Clear();
+        SubjectViewModels.Clear();
 
         IEnumerable<UserSubject> subjects = await _userDatabase.GetAllUserSubjectsAsync();
         foreach (var subject in subjects)
-            Subjects.Add(subject);
+        {
+            UserSubjectViewModel viewModel = new(subject);
+            SubjectViewModels.Add(viewModel);
+        }
     }
 
     private async Task OnAddSubjectButtonPressed()
