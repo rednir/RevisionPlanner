@@ -7,21 +7,28 @@ public partial class App : Application
 {
 	public static readonly string AppDataRoot = Path.Combine(FileSystem.AppDataDirectory, "RevisionPlanner");
 
-    private UserDatabase _userDatabase;
+    private readonly UserDatabase _userDatabase;
 
-    private StaticDatabase _staticDatabase;
+    private readonly StaticDatabase _staticDatabase;
 
 	public App(UserDatabase userDatabase, StaticDatabase staticDatabase)
 	{
 		_userDatabase = userDatabase;
 		_staticDatabase = staticDatabase;
 
-		InitAppData();
+		if (!InitAppData())
+		{
+			// If there was an error in intialising the application, handle the exception by displaying an error message to the user.
+			MainPage = new ContentPage();
+			MainPage.Loaded += async(o, e) => await MainPage.DisplayAlert("Error", "Could not create the application data directory", "OK");
+			return;
+		}
 
+		// Otherwise contine launching the application as normal.
 		MainPage = new SetupView(_userDatabase, _staticDatabase, OnSetupNext);
 	}
 
-	private void InitAppData()
+	private bool InitAppData()
 	{ 
 		try
 		{
@@ -29,9 +36,10 @@ public partial class App : Application
 		}
 		catch
 		{
-			// TODO
-			throw new NotImplementedException();
+			return false;
 		}
+
+		return true;
     }
 
 	private void OnSetupNext()
