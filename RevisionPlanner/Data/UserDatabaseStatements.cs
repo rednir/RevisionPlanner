@@ -228,18 +228,22 @@ public static class UserDatabaseStatements
         WHERE ExamId = ?
     ";
 
-    public const string GetExamTopic =
+    // Cross-table statement
+    public const string GetUserTopicsFromExam =
     @"
-        SELECT *
-        FROM ExamTopic
-        WHERE ExamId = ?
+        SELECT UserTopic.*
+        FROM UserTopic
+        INNER JOIN ExamTopic ON UserTopic.Id = ExamTopic.UserTopicId
+        WHERE ExamTopic.ExamId = ?
     ";
 
-    public const string GetExamSubtopic =
+    // Cross-table statement
+    public const string GetUserSubtopicsFromExam =
     @"
-        SELECT *
-        FROM ExamSubtopic
-        WHERE ExamId = ?
+        SELECT UserSubtopic.*
+        FROM UserSubtopic
+        INNER JOIN ExamSubtopic ON UserSubtopic.Id = ExamSubtopic.UserSubtopicId
+        WHERE ExamSubtopic.ExamId = ?
     ";
 
     public const string RemoveExam =

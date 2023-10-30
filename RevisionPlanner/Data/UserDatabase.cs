@@ -143,7 +143,6 @@ public class UserDatabase
         return result;
     }
 
-
     public async Task RemoveAllUserSubjectsAsync()
     {
         await Init();
@@ -188,6 +187,9 @@ public class UserDatabase
         await Init();
 
         var result = await _connection.QueryAsync<Exam>(UserDatabaseStatements.GetExams);
+        foreach (Exam exam in result)
+            await PopulateExamContent(exam);
+
         return result;
     }
 
@@ -196,7 +198,45 @@ public class UserDatabase
         await Init();
 
         var result = await _connection.QueryAsync<Exam>(UserDatabaseStatements.GetExam, id);
-        return result.FirstOrDefault();
+
+        Exam exam = result.FirstOrDefault();
+        if (exam is not null)
+            await PopulateExamContent(exam);
+
+        return exam;
+    }
+
+    private async Task PopulateExamContent(Exam exam)
+    {
+        // Populate the course content of this exam. Use polymorphism to cast both topics and subtopics to the same type, so they can be stored in the same collection.
+        IEnumerable<CourseContent> topics = await GetUserTopicsFromExamAsync(exam.Id);
+        IEnumerable<CourseContent> subtopics = await GetUserSubtopicsFromExamAsync(exam.Id);
+
+        exam.Content = topics.Concat(subtopics).ToArray();
+    }
+
+    public async Task<IEnumerable<UserTopic>> GetUserTopicsFromExamAsync(int examId)
+    {
+        await Init();
+
+        var result = await _connection.QueryAsync<UserTopic>(UserDatabaseStatements.GetUserTopicsFromExam, examId);
+
+        // Populate the subtopics for each topic object by making another database query.
+        foreach (UserTopic topic in result)
+        {
+            var subtopics = await GetUserSubtopicsAsync(topic.Id);
+            topic.Subtopics = subtopics.ToArray();
+        }
+
+        return result;
+    }
+
+    public async Task<IEnumerable<UserSubtopic>> GetUserSubtopicsFromExamAsync(int examId)
+    {
+        await Init();
+
+        var result = await _connection.QueryAsync<UserSubtopic>(UserDatabaseStatements.GetUserSubtopicsFromExam, examId);
+        return result;
     }
 
     public async Task RemoveExamAsync(int id)
