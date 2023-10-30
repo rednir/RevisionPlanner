@@ -2,25 +2,14 @@
 using RevisionPlanner.Model;
 using RevisionPlanner.View.Setup;
 using RevisionPlanner.ViewModel.Setup;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace RevisionPlanner.ViewModel;
 
 public class SubjectsPageViewModel : ViewModelBase
 {
-    private IEnumerable<UserSubject> _subjects;
-
-    public IEnumerable<UserSubject> Subjects
-    {
-        get => _subjects;
-        private set
-        {
-            _subjects = value;
-            OnPropertyChanged();
-        }
-    }
+    public ObservableCollection<UserSubject> Subjects { get; set; } = new();
 
     public ICommand AddSubjectCommand { get; set; }
 
@@ -34,10 +23,23 @@ public class SubjectsPageViewModel : ViewModelBase
         _staticDatabase = staticDatabase;
 
         AddSubjectCommand = new Command(async () => await OnAddSubjectButtonPressed());
+
+        Task.Run(InitSubjects);
+    }
+
+    public async Task InitSubjects()
+    {
+        // Clear any existing subjects to avoid duplicating if this is not the first time this method has been called.
+        Subjects.Clear();
+
+        IEnumerable<UserSubject> subjects = await _userDatabase.GetAllUserSubjectsAsync();
+        foreach (var subject in subjects)
+            Subjects.Add(subject);
     }
 
     private async Task OnAddSubjectButtonPressed()
     {
+        // Initialise the select subjects page by passing in the database services and the next action.
         SelectSubjectsPage page = new(
             new SelectSubjectsViewModel(_userDatabase, _staticDatabase, async () => await OnSelectSubjectPageNext()));
 
@@ -46,6 +48,9 @@ public class SubjectsPageViewModel : ViewModelBase
 
     private async Task OnSelectSubjectPageNext()
     {
+        // Since the list of subjects has changed, reinitialise the list of subjects displayed on this page.
+        await InitSubjects();
+
         await Shell.Current.Navigation.PopModalAsync();
     }
 }

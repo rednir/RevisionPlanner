@@ -7,5 +7,12 @@
              Title="Subjects">
     <VerticalStackLayout>
         <Button Text="Add subject" Command="{Binding AddSubjectCommand}" />
+        <CollectionView ItemsSource="{Binding Subjects}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Label Text="subject" />
+	            </DataTemplate>
+	        </CollectionView.ItemTemplate>
+        </CollectionView>
     </VerticalStackLayout>
 </ContentPage>
