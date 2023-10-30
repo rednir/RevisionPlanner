@@ -24,7 +24,7 @@ public partial class App : Application
 			return;
 		}
 
-		// Otherwise contine launching the application as normal.
+		// Otherwise continue launching the application as normal.
 		MainPage = new SetupView(_userDatabase, _staticDatabase, OnSetupNext);
 	}
 
