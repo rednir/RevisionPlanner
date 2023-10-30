@@ -24,8 +24,10 @@ public class DashboardPageViewModel : ViewModelBase
 
     private async Task InitUpcomingExams()
     {
-        IEnumerable<Exam> exams = await _userDatabase.GetExamsAsync();
+        // Avoid duplicates if this is not the first time this method has been run.
+        UpcomingExamViewModels.Clear();
 
+        IEnumerable<Exam> exams = await _userDatabase.GetExamsAsync();
         foreach (Exam exam in exams)
         {
             UpcomingExamViewModel viewModel = new(exam);
@@ -45,6 +47,9 @@ public class DashboardPageViewModel : ViewModelBase
 	        new AddExamPageViewModel(_userDatabase, examSubject));
 
         await Shell.Current.Navigation.PushModalAsync(page);
+
+        // Update the list of upcoming exams shown to the user once the user has created a new exam.
+        page.Unloaded += async (s, e) => await InitUpcomingExams();
     }
 
     private async Task<UserSubject> PromptExamSubject()
