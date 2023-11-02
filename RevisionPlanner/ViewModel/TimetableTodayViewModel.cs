@@ -1,33 +1,18 @@
 ﻿using RevisionPlanner.Data;
-using RevisionPlanner.Model;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace RevisionPlanner.ViewModel;
 
 public class TimetableTodayViewModel : ViewModelBase
 {
-    public IEnumerable<UserTask> Tasks
+    public ObservableCollection<UserTaskViewModel> UserTaskViewModels { get; set; } = new()
     {
-        get => _tasks;
-        private set
-        {
-            _tasks = value;
-            OnPropertyChanged();
-        }
-    }
+        new(new()),
+        new(new()),
+    };
 
     public ICommand AddCustomTaskCommand { get; set; }
-
-    private IEnumerable<UserTask> _tasks = new List<UserTask>()
-    {
-        new UserTask(),
-        new UserTask(),
-        new UserTask(),
-        new UserTask(),
-        new UserTask(),
-    };
 
     private readonly UserDatabase _userDatabase;
 

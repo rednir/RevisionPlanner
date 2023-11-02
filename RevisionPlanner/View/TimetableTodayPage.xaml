@@ -7,10 +7,10 @@
 	         x:DataType="viewmodel:TimetableTodayViewModel"
              Title="Timetable">
     <Grid Padding="0, 32, 0, 0">
-        <CollectionView ItemsSource="{Binding Tasks}">
+        <CollectionView ItemsSource="{Binding UserTaskViewModels}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <components:TaskView />
+                    <components:UserTaskView />
 	            </DataTemplate>
 	        </CollectionView.ItemTemplate>
         </CollectionView>

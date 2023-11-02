@@ -1,8 +1,8 @@
 ﻿namespace RevisionPlanner.View.Components;
 
-public partial class TaskView : ContentView
+public partial class UserTaskView : ContentView
 {
-	public TaskView()
+	public UserTaskView()
 	{
 		InitializeComponent();
 	}

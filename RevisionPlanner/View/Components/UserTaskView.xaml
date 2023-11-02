@@ -2,8 +2,9 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	         xmlns:model="clr-namespace:RevisionPlanner.Model"
-             x:Class="RevisionPlanner.View.Components.TaskView"
-	         x:DataType="model:UserTask">
+	         xmlns:viewmodel="clr-namespace:RevisionPlanner.ViewModel"
+	         x:DataType="viewmodel:UserTaskViewModel"
+             x:Class="RevisionPlanner.View.Components.UserTaskView">
     <Grid Padding="16">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
