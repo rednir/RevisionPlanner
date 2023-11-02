@@ -67,6 +67,16 @@ public static class UserDatabaseStatements
                 FOREIGN KEY (UserSubtopicId) REFERENCES UserSubtopic(Id)
             );
         ",
+        @"
+            CREATE TABLE IF NOT EXISTS UserTask (
+                Id INT PRIMARY KEY,
+                ExamTopicId INT,
+                ExamSubtopicId INT,
+                Deadline TEXT NOT NULL
+                FOREIGN KEY ExamTopicId REFERENCES ExamTopic(Id),
+                FOREIGN KEY ExamSubtopicId REFERENCES ExamSubtopic(Id)
+            )
+        "
     };
 
     /// <summary>
