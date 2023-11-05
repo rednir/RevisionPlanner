@@ -67,6 +67,7 @@ public static class UserDatabaseStatements
                 FOREIGN KEY (UserSubtopicId) REFERENCES UserSubtopic(Id)
             );
         ",
+        // Uses CHECK constraint to ensure both subtopic and topic are not defined.
         @"
             CREATE TABLE IF NOT EXISTS UserTask (
                 Id INT PRIMARY KEY,
@@ -74,23 +75,21 @@ public static class UserDatabaseStatements
                 ExamSubtopicId INT,
                 Deadline TEXT NOT NULL,
                 FOREIGN KEY (ExamTopicId) REFERENCES ExamTopic(Id),
-                FOREIGN KEY (ExamSubtopicId) REFERENCES ExamSubtopic(Id)
+                FOREIGN KEY (ExamSubtopicId) REFERENCES ExamSubtopic(Id),
+                CHECK (
+                    (ExamTopicId IS NOT NULL AND ExamSubtopicId IS NULL) OR
+                    (ExamTopicId IS NULL AND ExamSubtopicId IS NOT NULL)
+                )
             );
         "
     };
 
-    /// <summary>
-    /// Represents the SQL statement which will insert a user into the database.
-    /// </summary>
     public const string InsertUser =
     @"
         INSERT OR IGNORE INTO User (Id, UserQualification, StudyDay)
         VALUES (?, 0, 0);
     ";
 
-    /// <summary>
-    /// Represents the SQL statement that sets the user's qualification.
-    /// </summary>
     public const string SetUserQualification =
     $@"
         UPDATE User
@@ -98,9 +97,6 @@ public static class UserDatabaseStatements
         WHERE Id = ?
     ";
 
-    /// <summary>
-    /// Represents the SQL statement that sets the days of the week the user would like tasks to be allocated to.
-    /// </summary>
     public const string SetStudyDay =
     @"
         UPDATE User
@@ -108,9 +104,6 @@ public static class UserDatabaseStatements
         WHERE Id = ?
     ";
 
-    /// <summary>
-    /// Represents the SQL statement that gets a user record.
-    /// </summary>
     public const string GetUser =
     @"
         SELECT *
@@ -118,36 +111,24 @@ public static class UserDatabaseStatements
         WHERE Id = ?
     ";
 
-    /// <summary>
-    /// Represents the SQL statement that adds a new user subject.
-    /// </summary>
     public const string AddUserSubject =
     @"
         INSERT INTO UserSubject (Id, Name, ExamBoard, Qualification)
         VALUES (?, ?, ?, ?)
     ";
 
-    /// <summary>
-    /// Represents the SQL statement that adds a new user topic.
-    /// </summary>
     public const string AddUserTopic =
     @"
         INSERT INTO UserTopic (Id, UserSubjectId, Name)
         VALUES (?, ?, ?)
     ";
 
-    /// <summary>
-    /// Represents the SQL statement that adds a new user subtopic.
-    /// </summary>
     public const string AddUserSubtopic =
     @"
         INSERT INTO UserSubtopic (Id, UserTopicId, Name)
         VALUES (?, ?, ?)
     ";
 
-    /// <summary>
-    /// Represents the SQL statement that retrieves a single user subject by its ID.
-    /// </summary>
     public const string GetUserSubject =
     @"
         SELECT *
@@ -155,18 +136,12 @@ public static class UserDatabaseStatements
         WHERE Id = ?
     ";
 
-    /// <summary>
-    /// Represents the SQL statement that retrieves all user subjects.
-    /// </summary>
     public const string GetAllUserSubjects =
     @"
         SELECT *
         FROM UserSubject
     ";
 
-    /// <summary>
-    /// Represents the SQL statement that gets all user topics for a specific user subject.
-    /// </summary>
     public const string GetUserTopics =
     @"
         SELECT *
@@ -174,9 +149,6 @@ public static class UserDatabaseStatements
         WHERE UserSubjectId = ?
     ";
 
-    /// <summary>
-    /// Represents the SQL statement that gets all user subtopics for a specific user topic.
-    /// </summary>
     public const string GetUserSubtopics =
     @"
         SELECT *
