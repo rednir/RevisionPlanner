@@ -268,25 +268,36 @@ public class UserDatabase
         Debug.WriteLine($"Added user task: {userTask}");
     }
 
+    public async Task<IEnumerable<UserTask>> GetUserTasksForDateAsync(DateTime dateTime)
+    {
+        await Init();
+
+        var result = await _connection.QueryAsync<UserTask>(UserDatabaseStatements.GetUserTasksForDeadline, dateTime);
+        return result;
+    }
+
     private async Task PopulateUserTasksFromExams()
     {
         IEnumerable<Exam> exams = await GetExamsAsync();
         IEnumerable<CourseContent> allExamContent = exams.SelectMany(e => e.Content);
 
-        DateTime dateTime = DateTime.Now;
+        DateTime dateTime = DateTime.Today;
 
         foreach (CourseContent content in allExamContent)
         {
             // Create a task representing this exam content.
             UserTask task = new()
             {
-                Deadline = dateTime,
+                Deadline = dateTime.Date,
                 CourseContent = content,
             };
 
+            // Set the task's ID using a hashing algorithm.
             task.Id = task.GetHashCode();
-
+            
+            // Add this user task to the database.
             await AddUserTaskAsync(task);
+
             dateTime += TimeSpan.FromHours(5);
         }
 

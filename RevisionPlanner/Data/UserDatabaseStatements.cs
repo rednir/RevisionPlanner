@@ -247,4 +247,11 @@ public static class UserDatabaseStatements
         INSERT INTO UserTask (Id, ExamTopicId, ExamSubtopicId, Deadline)
         VALUES (?, ?, ?, ?)
     ";
+
+    public const string GetUserTasksForDeadline =
+    @"
+        SELECT *
+        FROM UserTask
+        WHERE Deadline == ?
+    ";
 }
