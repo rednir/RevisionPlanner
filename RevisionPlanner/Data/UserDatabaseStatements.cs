@@ -72,10 +72,10 @@ public static class UserDatabaseStatements
                 Id INT PRIMARY KEY,
                 ExamTopicId INT,
                 ExamSubtopicId INT,
-                Deadline TEXT NOT NULL
-                FOREIGN KEY ExamTopicId REFERENCES ExamTopic(Id),
-                FOREIGN KEY ExamSubtopicId REFERENCES ExamSubtopic(Id)
-            )
+                Deadline TEXT NOT NULL,
+                FOREIGN KEY (ExamTopicId) REFERENCES ExamTopic(Id),
+                FOREIGN KEY (ExamSubtopicId) REFERENCES ExamSubtopic(Id)
+            );
         "
     };
 
