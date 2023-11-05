@@ -179,6 +179,9 @@ public class UserDatabase
 	        }
 	    }
 
+        // Update the user's timetable.
+        await PopulateUserTasksFromExams();
+
         Debug.WriteLine($"Added exam: {exam.Name}");
     }
 
@@ -243,11 +246,51 @@ public class UserDatabase
     {
         await Init();
 
+        // Remove subtopics, then topics, then the exam itself in that order to avoid foreign key dependency issues.
         await _connection.ExecuteAsync(UserDatabaseStatements.RemoveExamSubtopic, id);
         await _connection.ExecuteAsync(UserDatabaseStatements.RemoveExamTopic, id);
         await _connection.ExecuteAsync(UserDatabaseStatements.RemoveExam, id);
 
         return;
+    }
+
+    public async Task AddUserTaskAsync(UserTask userTask)
+    {
+        await Init();
+
+        // Add the user task, setting UserTopicId or UserSubtopicId to the course content ID depending on the type of content.
+        await _connection.ExecuteAsync(UserDatabaseStatements.AddUserTask,
+            userTask.Id,
+            userTask.CourseContent is UserTopic ? userTask.CourseContent.Id : null,
+            userTask.CourseContent is UserSubtopic ? userTask.CourseContent.Id : null,
+            userTask.Deadline);
+
+        Debug.WriteLine($"Added user task: {userTask}");
+    }
+
+    private async Task PopulateUserTasksFromExams()
+    {
+        IEnumerable<Exam> exams = await GetExamsAsync();
+        IEnumerable<CourseContent> allExamContent = exams.SelectMany(e => e.Content);
+
+        DateTime dateTime = DateTime.Now;
+
+        foreach (CourseContent content in allExamContent)
+        {
+            // Create a task representing this exam content.
+            UserTask task = new()
+            {
+                Deadline = dateTime,
+                CourseContent = content,
+            };
+
+            task.Id = task.GetHashCode();
+
+            await AddUserTaskAsync(task);
+            dateTime += TimeSpan.FromHours(5);
+        }
+
+        Debug.WriteLine("Populated user tasks.");
     }
 
     /// <summary>

@@ -47,7 +47,7 @@ public static class UserDatabaseStatements
                 FOREIGN KEY (UserSubjectId) REFERENCES UserSubject(Id)
             );
         ",
-        // Composite primary key.
+        // Uses Composite primary key.
         @"
             CREATE TABLE IF NOT EXISTS ExamTopic (
                 ExamId INT,
@@ -57,7 +57,7 @@ public static class UserDatabaseStatements
                 FOREIGN KEY (UserTopicId) REFERENCES UserTopic(Id)
             );
         ",
-        // Composite primary key.
+        // Uses Composite primary key.
         @"
             CREATE TABLE IF NOT EXISTS ExamSubtopic (
                 ExamId INT,
@@ -240,5 +240,11 @@ public static class UserDatabaseStatements
     @"
         DELETE FROM ExamSubtopic
         WHERE ExamId = ?
+    ";
+
+    public const string AddUserTask =
+    @"
+        INSERT INTO UserTask (Id, ExamTopicId, ExamSubtopicId, Deadline)
+        VALUES (?, ?, ?, ?)
     ";
 }

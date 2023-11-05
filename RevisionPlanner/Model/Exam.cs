@@ -32,7 +32,7 @@ public class Exam
         foreach (char c in deadlineBinary.ToString())
             hashCode += c;
 
-        // Take into account exam content.
+        // Take into account exam content, and multiply by a prime number to reduce risk of collisions for ID.
         return (hashCode + Content.Length) * 11;
     }
 }
