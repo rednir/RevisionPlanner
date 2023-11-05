@@ -273,6 +273,22 @@ public class UserDatabase
         await Init();
 
         var result = await _connection.QueryAsync<UserTask>(UserDatabaseStatements.GetUserTasksForDeadline, dateTime);
+
+        foreach (UserTask userTask in result)
+        {
+            // Populate the course content of this user task using another database query.
+            if (userTask.ExamTopicId is not null)
+            {
+                var topicResult = await _connection.QueryAsync<UserTopic>(UserDatabaseStatements.GetUserTopicFromId, userTask.ExamTopicId);
+                userTask.CourseContent = topicResult.FirstOrDefault();
+            }
+            else if (userTask.ExamSubtopicId is not null)
+            {
+                var subtopicResult = await _connection.QueryAsync<UserSubtopic>(UserDatabaseStatements.GetUserSubtopicFromId, userTask.ExamSubtopicId);
+                userTask.CourseContent = subtopicResult.FirstOrDefault();
+            }
+        }
+
         return result;
     }
 

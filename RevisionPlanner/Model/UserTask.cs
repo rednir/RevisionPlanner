@@ -8,9 +8,13 @@ public class UserTask
 
     public CourseContent CourseContent { get; set; }
 
-    public string Title => "Title";
+    public string Title => CourseContent.Name;
 
-    public string Subtitle => "Subtitle";
+    public string Subtitle => CourseContent is UserTopic ? "Topic" : "Subtopic";
+
+    public int? ExamTopicId { get; set; }
+
+    public int? ExamSubtopicId { get; set; }
 
     public override int GetHashCode()
     {
@@ -30,55 +34,6 @@ public class UserTask
         // Multiply by a prime number to reduce risk of collisions for the ID attribute.
         return hashCode * (CourseContent is UserSubtopic ? -7 : 7);
     }
-
-    /*
-    public CourseContent CourseContent { get; set; } = new UserSubtopic
-    {
-        Name = "Subtopic name",
-        Topic = new UserTopic
-        {
-            Name = "Topic name",
-            Subject = new UserSubject
-            {
-                Name = "Subject name",
-            },
-        },
-    };
-
-    public string Title
-    {
-	    get
-        {
-            if (CourseContent is UserSubject subject)
-                return subject.Name;
-
-            if (CourseContent is UserTopic topic)
-                return topic.Subject.Name;
-
-            if (CourseContent is UserSubtopic subtopic)
-                return subtopic.Topic.Subject.Name;
-
-            return "Title";
-	    } 
-    }
-
-    public string Subtitle
-    {
-        get
-        {
-            if (CourseContent is UserSubject)
-                return string.Empty;
-
-            if (CourseContent is UserTopic topic)
-                return topic.Name;
-
-            if (CourseContent is UserSubtopic subtopic)
-                return $"{subtopic.Topic.Name} / {subtopic.Name}";
-
-            return "Subtitle";
-        }
-    }*/
-
 
     //public string Notes { get; set; }
 }

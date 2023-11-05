@@ -142,11 +142,25 @@ public static class UserDatabaseStatements
         FROM UserSubject
     ";
 
+    public const string GetUserTopicFromId =
+    @"
+        SELECT *
+        FROM UserTopic
+        WHERE Id = ?
+    ";
+
     public const string GetUserTopics =
     @"
         SELECT *
         FROM UserTopic
         WHERE UserSubjectId = ?
+    ";
+
+    public const string GetUserSubtopicFromId =
+    @"
+        SELECT *
+        FROM UserSubtopic
+        WHERE Id = ?
     ";
 
     public const string GetUserSubtopics =
