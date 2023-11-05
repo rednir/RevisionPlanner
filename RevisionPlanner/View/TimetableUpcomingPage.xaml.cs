@@ -1,9 +1,13 @@
-﻿namespace RevisionPlanner.View;
+﻿using RevisionPlanner.ViewModel;
+
+namespace RevisionPlanner.View;
 
 public partial class TimetableUpcomingPage : ContentPage
 {
-	public TimetableUpcomingPage()
+	public TimetableUpcomingPage(TimetableUpcomingViewModel viewModel)
 	{
 		InitializeComponent();
+
+		BindingContext = viewModel;
 	}
 }

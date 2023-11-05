@@ -1,12 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	         xmlns:viewmodel="clr-namespace:RevisionPlanner.ViewModel"
+	         xmlns:components="clr-namespace:RevisionPlanner.View.Components"
+	         x:DataType="viewmodel:TimetableUpcomingViewModel"
              x:Class="RevisionPlanner.View.TimetableUpcomingPage"
              Title="Timetable">
-    <VerticalStackLayout>
-        <Label 
-            Text="Timetable"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <Grid Padding="0, 32, 0, 0">
+        <CollectionView ItemsSource="{Binding UserTaskViewModels}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <components:UserTaskView />
+	            </DataTemplate>
+	        </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
 </ContentPage>

@@ -40,6 +40,7 @@ public static class MauiProgram
 		// Register view models.
 		builder.Services.AddSingleton<DashboardPageViewModel>();
 		builder.Services.AddSingleton<TimetableTodayViewModel>();
+		builder.Services.AddSingleton<TimetableUpcomingViewModel>();
 		builder.Services.AddSingleton<SubjectsPageViewModel>();
 		builder.Services.AddTransient<SelectQualificationViewModel>();
 		builder.Services.AddTransient<SelectStudyDaysViewModel>();
@@ -48,6 +49,7 @@ public static class MauiProgram
 		// Register views.
 		builder.Services.AddSingleton<DashboardPage>();
 		builder.Services.AddSingleton<TimetableTodayPage>();
+		builder.Services.AddSingleton<TimetableUpcomingPage>();
 		builder.Services.AddSingleton<SubjectsPage>();
 		builder.Services.AddTransient<SelectQualificationPage>();
 		builder.Services.AddTransient<SelectStudyDaysPage>();
