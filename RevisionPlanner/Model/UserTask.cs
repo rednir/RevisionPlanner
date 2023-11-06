@@ -20,10 +20,10 @@ public class UserTask
     {
         int hashCode = 0;
 
-        long deadlineBinary = Deadline.ToBinary();
+        string deadline = Deadline.ToShortDateString();
 
         // Take into account deadline.
-        foreach (char c in deadlineBinary.ToString())
+        foreach (char c in deadline)
             hashCode += c;
 
         // Take into account the course content's name.

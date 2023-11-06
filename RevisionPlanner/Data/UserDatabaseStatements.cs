@@ -268,4 +268,9 @@ public static class UserDatabaseStatements
         FROM UserTask
         WHERE Deadline == ?
     ";
+
+    public const string RemoveAllUserTasks =
+    @"
+        DELETE FROM UserTask;
+    ";
 }
