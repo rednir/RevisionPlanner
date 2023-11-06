@@ -13,6 +13,8 @@ public class UserDatabase
 
     public const string FileName = "user.db3";
 
+    public const int TasksPerDay = 3;
+
     public static string FilePath => Path.Combine(App.AppDataRoot, FileName);
 
     private SQLiteAsyncConnection _connection;
@@ -294,27 +296,49 @@ public class UserDatabase
 
     private async Task PopulateUserTasksFromExams()
     {
-        IEnumerable<Exam> exams = await GetExamsAsync();
-        IEnumerable<CourseContent> allExamContent = exams.SelectMany(e => e.Content);
+        List<Exam> exams = (await GetExamsAsync()).ToList();
 
-        DateTime dateTime = DateTime.Today;
+        DateTime currentDate = DateTime.Today;
+        int tasksForCurrentDate = 0;
+        int currentExamIndex = 0;
+        int[] currentContentIndexForEachExam = new int[exams.Count];
 
-        foreach (CourseContent content in allExamContent)
+        while (exams.Count > 0)
         {
-            // Create a task representing this exam content.
-            UserTask task = new()
+            // Get the current exam to add a task for.
+            Exam exam = exams[currentExamIndex];
+
+            // Initialise the user task object with the next content from the exam.
+            int currentContentIndex = currentContentIndexForEachExam[currentExamIndex];
+            UserTask userTask = new()
             {
-                Deadline = dateTime.Date,
-                CourseContent = content,
+                CourseContent = exam.Content[currentContentIndex],
+                Deadline = currentDate,
             };
-
-            // Set the task's ID using a hashing algorithm.
-            task.Id = task.GetHashCode();
             
-            // Add this user task to the database.
-            await AddUserTaskAsync(task);
+            // Use the user task hashing algorithm to set its primary key ID.
+            userTask.Id = userTask.GetHashCode();
 
-            dateTime += TimeSpan.FromHours(5);
+            // Add this user task to the database and increment the count of tasks for this day by 1.
+            await AddUserTaskAsync(userTask);
+            tasksForCurrentDate += 1;
+
+            // Increment the exam index, and the content index. If we reach the end of the list, loop back to the start.
+            currentExamIndex = (currentExamIndex + 1) % exams.Count;
+            currentContentIndexForEachExam[currentExamIndex] = (currentContentIndexForEachExam[currentExamIndex] + 1) % exam.Content.Length;
+
+            if (tasksForCurrentDate >= TasksPerDay)
+            {
+                // If we have added enough tasks for this day, move onto the next day.
+                currentDate = currentDate.AddDays(1);
+                tasksForCurrentDate = 0;
+            }
+
+            if (currentDate >= exam.Deadline)
+            {
+                // Avoid adding tasks that are after the deadline of their respective exam.
+                exams.Remove(exam);
+            }
         }
 
         Debug.WriteLine("Populated user tasks.");
