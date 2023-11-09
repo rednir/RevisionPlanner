@@ -15,8 +15,9 @@ public class UserTaskGroupingViewModel : ViewModelBase
     
     public ObservableCollection<UserTaskViewModel> UserTaskViewModels { get; set; } = new();
 
-    public UserTaskGroupingViewModel(IEnumerable<UserTaskViewModel> viewModels)
+    public UserTaskGroupingViewModel(IEnumerable<UserTaskViewModel> viewModels, DateTime date)
     {
+        Date = date;
         foreach (var viewModel in viewModels)
             UserTaskViewModels.Add(viewModel);
     }
