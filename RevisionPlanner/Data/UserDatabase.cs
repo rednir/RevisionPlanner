@@ -27,6 +27,16 @@ public class UserDatabase
         Debug.WriteLine("Set user qualification");
     }
 
+    public async Task<StudyDay> GetStudyDayAsync()
+    {
+        await Init();
+
+        int result = await _connection.ExecuteScalarAsync<int>(UserDatabaseStatements.GetStudyDay, UserId);
+
+        // Cast the integer we fetched from the database to a StudyDay enum.
+        return (StudyDay)result;
+    }
+
     public async Task SetStudyDayAsync(StudyDay studyDay)
     {
         await Init();
@@ -296,26 +306,39 @@ public class UserDatabase
 
     private async Task PopulateUserTasksFromExams()
     {
+        // Get the days the user wants to assign tasks to.
+        StudyDay userStudyDay = await GetStudyDayAsync();
+
+        // Get the list of exams that have been defined by the user.
+        Exam[] exams = (await GetExamsAsync()).ToArray();
+
         // Remove all tasks first, before repopulating the user's timetable with updated tasks.
         await _connection.ExecuteAsync(UserDatabaseStatements.RemoveAllUserTasks);
 
-        List<Exam> exams = (await GetExamsAsync()).ToList();
+        // This array holds the exam indexes that we will not use to add tasks due to them being past the deadline.
+        bool[] disabledExams = new bool[exams.Length];
+
+        // This array holds the current course content for each exam we are looking at, and about to add a task for.
+        int[] currentContentIndexForEachExam = new int[exams.Length];
 
         DateTime currentDate = DateTime.Today;
         int tasksForCurrentDate = 0;
         int currentExamIndex = 0;
-        int[] currentContentIndexForEachExam = new int[exams.Count];
         List<string> contentAddedForCurrentDate = new();
 
-        while (exams.Count > 0)
+        while (disabledExams.Any(b => !b))
         {
             // Get the current exam to add a task for.
             Exam exam = exams[currentExamIndex];
 
+            // Ignore disabled exams.
+            if (disabledExams[currentExamIndex])
+                continue;
+
             if (currentDate >= exam.Deadline)
             {
-                // Avoid adding tasks that are after the deadline of their respective exam.
-                exams.Remove(exam);
+                // Avoid adding tasks that are after the deadline of their respective exam by marking them as disabled.
+                disabledExams[currentExamIndex] = true;
                 continue;
             }
 
@@ -350,17 +373,42 @@ public class UserDatabase
 
             // Increment the exam index, and the content index. If we reach the end of the list, loop back to the start.
             currentContentIndexForEachExam[currentExamIndex] = (currentContentIndexForEachExam[currentExamIndex] + 1) % exam.Content.Length;
-            currentExamIndex = (currentExamIndex + 1) % exams.Count;
+            currentExamIndex = (currentExamIndex + 1) % exams.Length;
         }
 
         Debug.WriteLine("Populated user tasks.");
 
+        // Recursive local function.
         void moveToNextDay()
         {
-            contentAddedForCurrentDate.Clear();
             currentDate = currentDate.AddDays(1);
+
+            StudyDay currentStudyDay = ConvertDayOfWeekToStudyDay(currentDate.DayOfWeek);
+            if ((currentStudyDay & userStudyDay) == 0)
+            {
+                // If the current day is not a study day, move onto the next day.
+                moveToNextDay();
+                return;
+            }
+
+            contentAddedForCurrentDate.Clear();
             tasksForCurrentDate = 0;
         }
+    }
+
+    public static StudyDay ConvertDayOfWeekToStudyDay(DayOfWeek dayOfWeek)
+    {
+        return dayOfWeek switch
+        {
+            DayOfWeek.Monday => StudyDay.Monday,
+            DayOfWeek.Tuesday => StudyDay.Tuesday,
+            DayOfWeek.Wednesday => StudyDay.Wednesday,
+            DayOfWeek.Thursday => StudyDay.Thursday,
+            DayOfWeek.Friday => StudyDay.Friday,
+            DayOfWeek.Saturday => StudyDay.Saturday,
+            DayOfWeek.Sunday => StudyDay.Sunday,
+            _ => throw new ArgumentException("Not a day of the week."),
+        };
     }
 
     /// <summary>

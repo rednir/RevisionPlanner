@@ -9,7 +9,7 @@ public class UserTaskGroupingViewModel : ViewModelBase
     /// <summary>
     /// Shows the dates of the user tasks in this collection in a string format.
     /// </summary>
-    public string DateText => $"{Date.ToShortDateString()}";
+    public string DateText => $"{Date.ToLongDateString()}";
 
     public DateTime Date { get; set; }
     

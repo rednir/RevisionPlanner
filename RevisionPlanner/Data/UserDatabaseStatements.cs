@@ -97,6 +97,13 @@ public static class UserDatabaseStatements
         WHERE Id = ?
     ";
 
+    public const string GetStudyDay =
+    @"
+        SELECT StudyDay
+        FROM User
+        WHERE Id = ?
+    ";
+
     public const string SetStudyDay =
     @"
         UPDATE User
@@ -258,7 +265,7 @@ public static class UserDatabaseStatements
 
     public const string AddUserTask =
     @"
-        INSERT INTO UserTask (Id, ExamTopicId, ExamSubtopicId, Deadline)
+        INSERT OR IGNORE INTO UserTask (Id, ExamTopicId, ExamSubtopicId, Deadline)
         VALUES (?, ?, ?, ?)
     ";
 
