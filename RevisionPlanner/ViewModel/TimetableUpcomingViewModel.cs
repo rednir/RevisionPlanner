@@ -48,7 +48,9 @@ public class TimetableUpcomingViewModel : ViewModelBase
             }
 
             // Map each UserTask to a new object of UserTaskViewModel.
-            UserTaskGroupingViewModel grouping = new(userTasks.Select(t => new UserTaskViewModel(t)), currentDate);
+            UserTaskGroupingViewModel grouping = new(
+                userTasks.Select(t => new UserTaskViewModel(t, _userDatabase)), currentDate);
+
             UserTaskGroupingViewModels.Add(grouping);
 
             // Defensive design: if the user has too many tasks, no need to render them all.

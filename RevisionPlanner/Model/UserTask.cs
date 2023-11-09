@@ -8,6 +8,8 @@ public class UserTask
 
     public CourseContent CourseContent { get; set; }
 
+    public bool Completed { get; set; }
+
     public string Title => CourseContent.Name;
 
     public string Subtitle => CourseContent is UserTopic ? "Topic" : "Subtopic";
@@ -33,6 +35,11 @@ public class UserTask
         // Use a negative value if the task's represents a subtopic, otherwise for topics use a positive value.
         // Multiply by a prime number to reduce risk of collisions for the ID attribute.
         return hashCode * (CourseContent is UserSubtopic ? -7 : 7);
+    }
+
+    internal void Run(Task task)
+    {
+        throw new NotImplementedException();
     }
 
     //public string Notes { get; set; }

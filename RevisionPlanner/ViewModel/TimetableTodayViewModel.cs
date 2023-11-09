@@ -27,7 +27,7 @@ public class TimetableTodayViewModel : ViewModelBase
 
         foreach (UserTask task in userTasksToday)
         {
-            UserTaskViewModel viewModel = new(task);
+            UserTaskViewModel viewModel = new(task, _userDatabase);
             UserTaskViewModels.Add(viewModel);
 	    }
     }

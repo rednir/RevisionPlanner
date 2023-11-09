@@ -280,6 +280,14 @@ public class UserDatabase
         Debug.WriteLine($"Added user task: {userTask}");
     }
 
+    public async Task SetUserTaskCompleted(int userTaskId, bool completedValue)
+    {
+        await Init();
+
+        await _connection.ExecuteAsync(UserDatabaseStatements.SetUserTaskCompleted, completedValue, userTaskId);
+        Debug.WriteLine($"Set user task completed to {completedValue}: {userTaskId}");
+    }
+
     public async Task<IEnumerable<UserTask>> GetUserTasksForDateAsync(DateTime dateTime)
     {
         await Init();

@@ -74,6 +74,7 @@ public static class UserDatabaseStatements
                 ExamTopicId INT,
                 ExamSubtopicId INT,
                 Deadline TEXT NOT NULL,
+                Completed BOOLEAN DEFAULT 0,
                 FOREIGN KEY (ExamTopicId) REFERENCES ExamTopic(Id),
                 FOREIGN KEY (ExamSubtopicId) REFERENCES ExamSubtopic(Id),
                 CHECK (
@@ -267,6 +268,13 @@ public static class UserDatabaseStatements
     @"
         INSERT OR IGNORE INTO UserTask (Id, ExamTopicId, ExamSubtopicId, Deadline)
         VALUES (?, ?, ?, ?)
+    ";
+
+    public const string SetUserTaskCompleted =
+    @"
+        UPDATE UserTask
+        SET Completed = ?
+        WHERE Id = ?
     ";
 
     public const string GetUserTasksForDeadline =

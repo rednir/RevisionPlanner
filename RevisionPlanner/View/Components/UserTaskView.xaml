@@ -14,7 +14,7 @@
             <Label FontSize="Subtitle" Text="{Binding Title}" />
             <Label FontSize="Small" Text="{Binding Subtitle}" />
 	    </VerticalStackLayout>
-        <CheckBox Grid.Column="1" />
+        <CheckBox Grid.Column="1" IsChecked="{Binding Completed}" />
     </Grid>
 </ContentView>
 
