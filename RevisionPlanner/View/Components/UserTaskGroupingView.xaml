@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RevisionPlanner.View.Components.UserTaskGroupingView"
+	         xmlns:components="clr-namespace:RevisionPlanner.View.Components"
+	         xmlns:viewmodel="clr-namespace:RevisionPlanner.ViewModel"
+	         x:DataType="viewmodel:UserTaskGroupingViewModel">
+    <StackLayout MaximumHeightRequest="300" Margin="0,32,0,0">
+        <Label Text="{Binding DateText}" />
+        <CollectionView ItemsSource="{Binding UserTaskViewModels}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <components:UserTaskView />
+	            </DataTemplate>
+	        </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
+</ContentView>
+

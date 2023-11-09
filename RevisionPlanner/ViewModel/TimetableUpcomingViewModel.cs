@@ -7,7 +7,7 @@ namespace RevisionPlanner.ViewModel;
 
 public class TimetableUpcomingViewModel : ViewModelBase
 {
-    public ObservableCollection<UserTaskViewModel> UserTaskViewModels { get; set; } = new();
+    public ObservableCollection<UserTaskGroupingViewModel> UserTaskGroupingViewModels { get; set; } = new();
 
     private readonly UserDatabase _userDatabase;
 
@@ -24,8 +24,8 @@ public class TimetableUpcomingViewModel : ViewModelBase
 
         foreach (UserTask task in userTasksTomorrow)
         {
-            UserTaskViewModel viewModel = new(task);
-            UserTaskViewModels.Add(viewModel);
+            UserTaskGroupingViewModels.Add(
+		        new UserTaskGroupingViewModel(new List<UserTaskViewModel>() { new(task) }));
 	    }
     }
 }

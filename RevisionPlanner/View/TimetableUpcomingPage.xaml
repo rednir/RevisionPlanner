@@ -6,13 +6,13 @@
 	         x:DataType="viewmodel:TimetableUpcomingViewModel"
              x:Class="RevisionPlanner.View.TimetableUpcomingPage"
              Title="Timetable">
-    <Grid Padding="0, 32, 0, 0">
-        <CollectionView ItemsSource="{Binding UserTaskViewModels}">
+    <VerticalStackLayout>
+        <CollectionView ItemsSource="{Binding UserTaskGroupingViewModels}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <components:UserTaskView />
+                    <components:UserTaskGroupingView />
 	            </DataTemplate>
 	        </CollectionView.ItemTemplate>
         </CollectionView>
-    </Grid>
+    </VerticalStackLayout>
 </ContentPage>
