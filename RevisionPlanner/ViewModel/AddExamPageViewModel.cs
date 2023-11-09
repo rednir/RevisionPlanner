@@ -121,6 +121,13 @@ public class AddExamPageViewModel : ViewModelBase
 
     private async Task OnSaveExamButtonPressed()
     {
+        if (ContentViewModels.Count <= 0)
+        {
+            // Validate user input, do not continue if no content is added to the exam.
+            await Application.Current.MainPage.DisplayAlert("Error", "You must add at least one piece of content to the exam.", "OK");
+            return;
+        }
+
         if (ExamIdToReplace is not null)
         {
             // Replace the existing exam the user wants to edit.
