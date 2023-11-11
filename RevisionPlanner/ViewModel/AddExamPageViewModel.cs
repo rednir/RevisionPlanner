@@ -27,6 +27,8 @@ public class AddExamPageViewModel : ViewModelBase
 
     public DateTime SelectedDate { get; set; } = DateTime.Today + TimeSpan.FromDays(1);
 
+    public bool IsLoading { get; set; }
+
     public ICommand AddTopicsCommand { get; set; }
 
     public ICommand AddSubtopicsCommand { get; set; }
@@ -133,15 +135,30 @@ public class AddExamPageViewModel : ViewModelBase
             return;
         }
 
+        // Show the loading indicator to the user.
+        IsLoading = true;
+
         if (ExamIdToReplace is not null)
         {
             // Replace the existing exam the user wants to edit.
             await _userDatabase.RemoveExamAsync(ExamIdToReplace.Value);
         }
 
-        // Add the exam to the user database.
-        Exam exam = BuildExamObject();
-        await _userDatabase.AddExamAsync(exam);
+        try
+        {
+            // Add the exam to the user database.
+            Exam exam = BuildExamObject();
+            await _userDatabase.AddExamAsync(exam);
+        }
+        catch
+        {
+            // Exception handling: show an error message if the exam could not be added.
+            await Application.Current.MainPage.DisplayAlert("Error", "The exam could not be added.", "OK"); 
+        }
+        finally
+        {
+            IsLoading = false;
+	    }
 	    
 	    // Pop this page from the navigation stack.
         await Application.Current.MainPage.Navigation.PopModalAsync();
