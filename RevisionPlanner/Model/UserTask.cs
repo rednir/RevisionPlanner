@@ -22,11 +22,8 @@ public class UserTask
     {
         int hashCode = 0;
 
-        string deadline = Deadline.ToShortDateString();
-
         // Take into account deadline.
-        foreach (char c in deadline)
-            hashCode += c;
+        hashCode += (int)Deadline.ToFileTime();
 
         // Take into account the course content's name.
         foreach (char c in CourseContent.Name)

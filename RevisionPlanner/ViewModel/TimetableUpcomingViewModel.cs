@@ -6,7 +6,7 @@ namespace RevisionPlanner.ViewModel;
 
 public class TimetableUpcomingViewModel : ViewModelBase
 {
-    private const int MAX_DAYS = 100;
+    private const int MAX_DAYS = 200;
 
     public ObservableCollection<UserTaskGroupingViewModel> UserTaskGroupingViewModels { get; set; } = new();
 
@@ -16,11 +16,17 @@ public class TimetableUpcomingViewModel : ViewModelBase
     {
         _userDatabase = userDatabase;
 
+        // Listen for when a new exam is added, and run this function when the event is recieved.
+        _userDatabase.ExamAdded += async () => await InitUserTasksAsync();
+
         Task.Run(InitUserTasksAsync);
     }
 
     public async Task InitUserTasksAsync()
     {
+        // Avoid duplicate tasks if this is not the first time this method has been called.
+        UserTaskGroupingViewModels.Clear();
+
         StudyDay userStudyDay = await _userDatabase.GetStudyDayAsync();
 
         bool endOfTimetable = false;
@@ -56,6 +62,9 @@ public class TimetableUpcomingViewModel : ViewModelBase
             // Defensive design: if the user has too many tasks, no need to render them all.
             if (currentDate > DateTime.Today.AddDays(MAX_DAYS))
                 break;
+
+            // Stagger loading to avoid crashes from adding too many objects at once.
+            await Task.Delay(500);
 	    }
     }
 }

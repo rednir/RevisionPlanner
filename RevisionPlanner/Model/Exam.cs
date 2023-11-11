@@ -26,13 +26,13 @@ public class Exam
         foreach (char c in SubjectName)
             hashCode += c;
 
-        long deadlineBinary = Deadline.ToBinary();
+        string deadlineString = Deadline.ToShortDateString();
 
         // Take into account deadline.
-        foreach (char c in deadlineBinary.ToString())
+        foreach (char c in deadlineString)
             hashCode += c;
 
         // Take into account exam content, and multiply by a prime number to reduce risk of collisions for ID.
-        return (hashCode + Content.Length) * 11;
+        return (hashCode + Content.Sum(c => c.Id)) * 7;
     }
 }

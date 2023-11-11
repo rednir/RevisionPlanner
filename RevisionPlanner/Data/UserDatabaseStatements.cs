@@ -266,7 +266,7 @@ public static class UserDatabaseStatements
 
     public const string AddUserTask =
     @"
-        INSERT OR IGNORE INTO UserTask (Id, ExamTopicId, ExamSubtopicId, Deadline)
+        INSERT INTO UserTask (Id, ExamTopicId, ExamSubtopicId, Deadline)
         VALUES (?, ?, ?, ?)
     ";
 

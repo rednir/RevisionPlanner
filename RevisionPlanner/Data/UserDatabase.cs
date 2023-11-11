@@ -19,6 +19,8 @@ public class UserDatabase
 
     private SQLiteAsyncConnection _connection;
 
+    public event Action ExamAdded;
+
     public async Task SetUserQualificationAsync(UserQualification userQualification)
     {
         await Init();
@@ -194,6 +196,9 @@ public class UserDatabase
         // Update the user's timetable.
         await PopulateUserTasksFromExams();
 
+        // Let the rest of the program know that a new exam has been added.
+        ExamAdded?.Invoke();
+
         Debug.WriteLine($"Added exam: {exam.Name}");
     }
 
@@ -277,7 +282,7 @@ public class UserDatabase
             userTask.CourseContent is UserSubtopic ? userTask.CourseContent.Id : null,
             userTask.Deadline);
 
-        Debug.WriteLine($"Added user task: {userTask}");
+        Debug.WriteLine($"Added user task for {userTask.Deadline.ToShortDateString()}: {userTask.Id} {userTask.CourseContent.Name}");
     }
 
     public async Task SetUserTaskCompleted(int userTaskId, bool completedValue)
@@ -332,16 +337,19 @@ public class UserDatabase
         DateTime currentDate = DateTime.Today;
         int tasksForCurrentDate = 0;
         int currentExamIndex = 0;
-        List<string> contentAddedForCurrentDate = new();
+        List<int> contentAddedForCurrentDate = new();
 
         while (disabledExams.Any(b => !b))
         {
-            // Get the current exam to add a task for.
-            Exam exam = exams[currentExamIndex];
-
             // Ignore disabled exams.
             if (disabledExams[currentExamIndex])
+            {
+                currentExamIndex = (currentExamIndex + 1) % exams.Length;
                 continue;
+            }
+
+            // Get the current exam to add a task for.
+            Exam exam = exams[currentExamIndex];
 
             if (currentDate >= exam.Deadline)
             {
@@ -357,20 +365,13 @@ public class UserDatabase
                 CourseContent = exam.Content[currentContentIndex],
                 Deadline = currentDate,
             };
-
-            if (contentAddedForCurrentDate.Contains(userTask.CourseContent.Name))
-            {
-                // Move onto the next day to avoid duplicate task content in the same day.
-                moveToNextDay();
-                continue;
-            }
             
             // Use the user task hashing algorithm to set its primary key ID.
-            userTask.Id = userTask.GetHashCode();
+            userTask.Id = userTask.GetHashCode() + tasksForCurrentDate;
 
             // Add this user task to the database and increment the count of tasks for this day by 1.
             await AddUserTaskAsync(userTask);
-            contentAddedForCurrentDate.Add(userTask.CourseContent.Name);
+            contentAddedForCurrentDate.Add(userTask.CourseContent.Id);
             tasksForCurrentDate += 1;
 
             if (tasksForCurrentDate >= TasksPerDay)
