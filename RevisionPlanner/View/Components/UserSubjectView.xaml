@@ -7,7 +7,7 @@
     <Frame Margin="16">
         <VerticalStackLayout>
             <Label FontSize="Header" Text="{Binding Name}" />
-            <Label FontSize="Caption" Text="Subject" />
+            <Label FontSize="Caption" Text="{Binding Subtext}" />
 	    </VerticalStackLayout>
     </Frame>
 </ContentView>

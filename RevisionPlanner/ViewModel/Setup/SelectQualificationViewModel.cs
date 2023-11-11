@@ -1,7 +1,5 @@
-﻿using System.ComponentModel;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using RevisionPlanner.Data;
-using RevisionPlanner.Model;
 using RevisionPlanner.Model.Enums;
 
 namespace RevisionPlanner.ViewModel.Setup;
