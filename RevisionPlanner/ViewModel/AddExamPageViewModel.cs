@@ -155,6 +155,7 @@ public class AddExamPageViewModel : ViewModelBase
             // Exception handling: show an error message if the exam could not be added.
             await Application.Current.MainPage.DisplayAlert("Error", "The exam could not be added.", "OK");
             IsLoading = false;
+            return;
         }
 	    
 	    // Pop this page from the navigation stack.
