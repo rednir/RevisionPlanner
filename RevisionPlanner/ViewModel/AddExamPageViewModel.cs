@@ -20,6 +20,11 @@ public class AddExamPageViewModel : ViewModelBase
     /// </summary>
     public DateTime MinDate { get; set; } = DateTime.Today + TimeSpan.FromDays(1);
 
+    /// <summary>
+    /// Defensive design: represents the maximum date that the user can choose so they can't add an extreme number of tasks to their timetable
+    /// </summary>
+    public DateTime MaxDate { get; set; } = DateTime.Today + TimeSpan.FromDays(365 * 2);
+
     public DateTime SelectedDate { get; set; } = DateTime.Today + TimeSpan.FromDays(1);
 
     public ICommand AddTopicsCommand { get; set; }

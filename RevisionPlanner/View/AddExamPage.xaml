@@ -9,6 +9,7 @@
         <Label Text="{Binding HeaderText}" FontSize="Title" />
         <Entry Placeholder="Custom name (optional)" Text="{Binding CustomName}" />
         <DatePicker MinimumDate="{Binding MinDate}"
+                    MaximumDate="{Binding MaxDate}"
                     Date="{Binding SelectedDate}" />
         <HorizontalStackLayout HorizontalOptions="Center" Padding="8">
             <Button Text="Add topics" Margin="4" Command="{Binding AddTopicsCommand}" />
