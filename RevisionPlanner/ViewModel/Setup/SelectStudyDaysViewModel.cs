@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using RevisionPlanner.Data;
 using RevisionPlanner.Model;
 using RevisionPlanner.Model.Enums;
@@ -97,6 +96,7 @@ public class SelectStudyDaysViewModel : ViewModelBase
         _userDatabase = userDatabase;
         _next = next;
 
+        // Initialise the command that will be executed when the next button is pressed.
         NextCommand = new Command(async () => await OnNext());
 
         Task.Run(SetCheckBoxes);
@@ -136,6 +136,7 @@ public class SelectStudyDaysViewModel : ViewModelBase
             return;
 	    }
 
+        // Set the study day in the database.
         await _userDatabase.SetStudyDayAsync(studyDay);
         _next();
     }
@@ -144,6 +145,7 @@ public class SelectStudyDaysViewModel : ViewModelBase
     {
         StudyDay days = StudyDay.Default;
 
+        // Convert the properties of this object into a StudyDay enum using bitwise OR comparisons.
         if (Monday)
             days |= StudyDay.Monday;
         if (Tuesday)

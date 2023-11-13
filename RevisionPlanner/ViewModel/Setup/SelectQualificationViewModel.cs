@@ -21,6 +21,7 @@ public class SelectQualificationViewModel : ViewModelBase
         _userDatabase = userDatabase;
         _next = next;
 
+        // Initialise the commands for each button.
         GcseCommand = new Command(async () => await OnQualificationSelected(UserQualification.Gcse));
         ALevelCommand = new Command(async () => await OnQualificationSelected(UserQualification.ALevel));
         OtherCommand = new Command(async () => await OnQualificationSelected(UserQualification.Other));
@@ -28,6 +29,7 @@ public class SelectQualificationViewModel : ViewModelBase
 
     private async Task OnQualificationSelected(UserQualification qualification)
     {
+        // Save the user's qualification to the database when a button is selected.
         await _userDatabase.SetUserQualificationAsync(qualification);
         _next();
 	}

@@ -1,8 +1,6 @@
-﻿using System.ComponentModel;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using RevisionPlanner.Data;
 using RevisionPlanner.Model;
-using RevisionPlanner.Model.Enums;
 
 namespace RevisionPlanner.ViewModel.Setup;
 
@@ -34,8 +32,10 @@ public class SelectSubjectsViewModel : ViewModelBase
         _staticDatabase = staticDatabase;
         _next = next;
 
+        // Initialise the command that is run when the next button is pressed.
         NextCommand = new Command(async () => await OnNext());
 
+        // Initialise the list of subject presets.
         Task.Run(InitPresetSubjectsAsync);
     }
 
@@ -139,4 +139,3 @@ public class SelectSubjectsViewModel : ViewModelBase
         _next?.Invoke();
     }
 }
-
