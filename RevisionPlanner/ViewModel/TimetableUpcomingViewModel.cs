@@ -6,6 +6,9 @@ namespace RevisionPlanner.ViewModel;
 
 public class TimetableUpcomingViewModel : ViewModelBase
 {
+    /// <summary>
+    /// Constant that represents the maximum number of days to display in the timetable.
+    /// </summary>
     private const int MAX_DAYS = 200;
 
     public ObservableCollection<UserTaskGroupingViewModel> UserTaskGroupingViewModels { get; set; } = new();
@@ -16,9 +19,10 @@ public class TimetableUpcomingViewModel : ViewModelBase
     {
         _userDatabase = userDatabase;
 
-        // Listen for when a new exam is added, and run this function when the event is recieved.
+        // Keep the timetable up to date by listening for when a new exam is added, and running this function when the event is recieved
         _userDatabase.ExamAdded += async () => await InitUserTasksAsync();
 
+        // Run the method that initialises the list of upcoming user tasks.
         Task.Run(InitUserTasksAsync);
     }
 

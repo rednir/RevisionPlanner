@@ -18,9 +18,10 @@ public class TimetableTodayViewModel : ViewModelBase
         _userDatabase = userDatabase;
         AddCustomTaskCommand = new Command(() => throw new NotImplementedException());
 
-        // Listen for when a new exam is added, and run this function when the event is recieved.
+        // Keep the timetable up to date by listening for when a new exam is added, and running this function when the event is recieved.
         _userDatabase.ExamAdded += async () => await InitUserTasksAsync();
 
+        // Run the method that initialises the list of user tasks.
         Task.Run(InitUserTasksAsync);
     }
 
@@ -31,6 +32,7 @@ public class TimetableTodayViewModel : ViewModelBase
 
         IEnumerable<UserTask> userTasksToday = await _userDatabase.GetUserTasksForDateAsync(DateTime.Today);
 
+        // Iterate through the user tasks due today and display each one to the user.
         foreach (UserTask task in userTasksToday)
         {
             UserTaskViewModel viewModel = new(task, _userDatabase);
