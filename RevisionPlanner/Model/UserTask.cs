@@ -6,7 +6,7 @@ public class UserTask
 
     public DateTime Deadline { get; set; }
 
-    public CourseContent CourseContent { get; set; }
+    public ICourseContent CourseContent { get; set; }
 
     public bool Completed { get; set; }
 

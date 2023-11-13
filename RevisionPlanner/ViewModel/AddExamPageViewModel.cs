@@ -97,12 +97,12 @@ public class AddExamPageViewModel : ViewModelBase
     /// <summary>
     /// Adds course content to the list of content for this exam. Content could be either a topic or a subtopic. so this method uses polymorpism to process all course content with the same code regardless of type.
     /// </summary>
-    private void AddCourseContent(string chosenContentName, IEnumerable<CourseContent> contentToAdd)
+    private void AddCourseContent(string chosenContentName, IEnumerable<ICourseContent> contentToAdd)
     {
         if (chosenContentName == SELECT_ALL_TEXT)
         {
             // Enumerate though all remaining content and add them to the list.
-            foreach (CourseContent content in contentToAdd)
+            foreach (ICourseContent content in contentToAdd)
             {
                 ExamContentViewModel thisContentViewModel = new(content, OnContentRemoveButtonPressed);
                 ContentViewModels.Add(thisContentViewModel);
@@ -112,7 +112,7 @@ public class AddExamPageViewModel : ViewModelBase
         }
 
         // Select the chosen content from its name and create the view model to show to the user in a list.
-        CourseContent chosenContent = contentToAdd.FirstOrDefault(s => s.Name == chosenContentName);
+        ICourseContent chosenContent = contentToAdd.FirstOrDefault(s => s.Name == chosenContentName);
 
         // Assume the user cancelled if null so do not continue.
         if (chosenContent is null)

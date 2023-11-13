@@ -95,7 +95,7 @@ public class UserDatabase
 
         foreach (UserSubtopic subtopic in userSubtopics)
         {
-            await _connection.ExecuteAsync(UserDatabaseStatements.AddUserSubtopic, subtopic.Id, userTopicId, subtopic.Name);
+            await _connection.ExecuteAsync(UserDatabaseStatements.AddUserSubtopic, subtopic.Id, subtopic.Confidence, userTopicId, subtopic.Name);
             Debug.WriteLine($"Added user subtopic {subtopic} to topic {userTopicId}");
         }
     }
@@ -180,7 +180,7 @@ public class UserDatabase
 	        exam.CustomName);
 
         // Iterate through the exam content and add each content to the database.
-        foreach (CourseContent content in exam.Content)
+        foreach (ICourseContent content in exam.Content)
         {
             // Polymorphism is used to treat exam topics and subtopics the same under the CourseContent object, however they should be stored seperately at a database level.
             if (content is UserTopic userTopic)
@@ -229,8 +229,8 @@ public class UserDatabase
     private async Task PopulateExamContent(Exam exam)
     {
         // Populate the course content of this exam. Use polymorphism to cast both topics and subtopics to the same type, so they can be stored in the same collection.
-        IEnumerable<CourseContent> topics = await GetUserTopicsFromExamAsync(exam.Id);
-        IEnumerable<CourseContent> subtopics = await GetUserSubtopicsFromExamAsync(exam.Id);
+        IEnumerable<ICourseContent> topics = await GetUserTopicsFromExamAsync(exam.Id);
+        IEnumerable<ICourseContent> subtopics = await GetUserSubtopicsFromExamAsync(exam.Id);
 
         exam.Content = topics.Concat(subtopics).ToArray();
     }

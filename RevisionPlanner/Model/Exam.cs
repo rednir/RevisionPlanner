@@ -1,9 +1,7 @@
 ﻿namespace RevisionPlanner.Model;
 
-public class Exam
+public class Exam : DatabaseObject
 {
-    public int Id { get; set; }
-
     public string Name => CustomName ?? $"{SubjectName} exam";
 
     public string CustomName { get; set; }
@@ -14,7 +12,7 @@ public class Exam
 
     public DateTime Deadline { get; set; }
 
-    public CourseContent[] Content { get; set; }
+    public ICourseContent[] Content { get; set; }
 
     public override string ToString() => Name;
 

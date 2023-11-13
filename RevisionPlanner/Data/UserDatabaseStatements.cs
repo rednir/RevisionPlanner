@@ -25,7 +25,7 @@ public static class UserDatabaseStatements
         @"
             CREATE TABLE IF NOT EXISTS UserTopic (
                 Id INT PRIMARY KEY,
-                UserSubjectId NOT NULL,
+                UserSubjectId INT NOT NULL,
                 Name VARCHAR(50) NOT NULL,
                 FOREIGN KEY (UserSubjectId) REFERENCES UserSubject(Id)
             );
@@ -33,7 +33,8 @@ public static class UserDatabaseStatements
         @"
             CREATE TABLE IF NOT EXISTS UserSubtopic (
                 Id INT PRIMARY KEY,
-                UserTopicId NOT NULL,
+                Confidence INT NOT NULL,
+                UserTopicId INT NOT NULL,
                 Name VARCHAR(50) NOT NULL,
                 FOREIGN KEY (UserTopicId) REFERENCES UserTopic(Id)
             );
@@ -133,8 +134,8 @@ public static class UserDatabaseStatements
 
     public const string AddUserSubtopic =
     @"
-        INSERT INTO UserSubtopic (Id, UserTopicId, Name)
-        VALUES (?, ?, ?)
+        INSERT INTO UserSubtopic (Id, Confidence, UserTopicId, Name)
+        VALUES (?, ?, ?, ?)
     ";
 
     public const string GetUserSubject =

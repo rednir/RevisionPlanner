@@ -1,8 +1,6 @@
 ﻿namespace RevisionPlanner.Model;
 
-public class PresetSubtopic
+public class PresetSubtopic : DatabaseObject
 {
-    public int Id { get; set; }
-
     public string Name { get; set; }
 }

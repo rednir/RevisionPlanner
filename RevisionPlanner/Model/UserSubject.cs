@@ -1,9 +1,7 @@
 ﻿namespace RevisionPlanner.Model;
 
-public class UserSubject
+public class UserSubject : DatabaseObject
 {
-    public int Id { get; set; }
-
     public string Name { get; set; }
 
     public string ExamBoard { get; set; }
