@@ -161,7 +161,7 @@ public class UserDatabase
     {
         await Init();
 
-        // Remove all subtopics and topics the subject contains first due to the composition relationship.
+        // Remove all subtopics and topics the subject contains first due to the foreign key composition relationship.
         await _connection.ExecuteAsync(UserDatabaseStatements.RemoveAllUserSubtopics);
         await _connection.ExecuteAsync(UserDatabaseStatements.RemoveAllUserTopics);
         await _connection.ExecuteAsync(UserDatabaseStatements.RemoveAllUserSubjects);
@@ -421,7 +421,7 @@ public class UserDatabase
     }
 
     /// <summary>
-    /// Initialises the SQL connection and creates the database tables if necessary.
+    /// Initialises the SQL connection and creates the database tables if necessary. This routine will be run every time a function is called that attempts to access the user database.
     /// </summary>
     private async Task Init()
     {
@@ -429,7 +429,7 @@ public class UserDatabase
         if (_connection is not null)
             return;
 
-        // Connect to the SQL database located in FilePath.
+        // Connect to the SQL database located in the FilePath constant.
         _connection = new SQLiteAsyncConnection(FilePath, Flags);
 
         // Create the database tables.

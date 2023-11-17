@@ -4,6 +4,7 @@ public static class UserDatabaseStatements
 {
     /// <summary>
     /// Represents a list of SQL statements which will initialise the required tables for the user database.
+    /// GROUP A: Complex data model, several interlinked tables.
     /// </summary>
     public static string[] CreateTables => new[]
     {

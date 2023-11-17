@@ -16,6 +16,9 @@ public class SelectSubjectsViewModel : ViewModelBase
 
     private IEnumerable<PresetSubjectGroupingViewModel> _presetSubjectGroupingViewModels;
 
+    /// <summary>
+    /// The collection of objects that will be displayed in the user interface as preset subjects.
+    /// </summary>
     public IEnumerable<PresetSubjectGroupingViewModel> PresetSubjectGroupingViewModels
     {
         get => _presetSubjectGroupingViewModels;
@@ -40,7 +43,7 @@ public class SelectSubjectsViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// Fetches the list of preset subjects and groups them by name to show to the user.
+    /// Generates objects from the list of preset subjects and uses them to display the preset subjects in the user interface.
     /// </summary>
     public async Task InitPresetSubjectsAsync()
     {
@@ -110,7 +113,7 @@ public class SelectSubjectsViewModel : ViewModelBase
     }
 
     /// <summary>
-    /// The method that gets called when the next button is pressed.
+    /// The function that gets called when the next button is pressed.
     /// </summary>
     private async Task OnNext()
     {
@@ -124,6 +127,7 @@ public class SelectSubjectsViewModel : ViewModelBase
             return;
 	    }
 
+        // Remove all of the user's existing subjects.
         await _userDatabase.RemoveAllUserSubjectsAsync();
 
         foreach (var selectedSubjectViewModel in selectedSubjects)

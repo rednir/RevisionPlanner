@@ -38,6 +38,7 @@ public class SubjectsPageViewModel : ViewModelBase
         IEnumerable<UserSubject> subjects = await _userDatabase.GetAllUserSubjectsAsync();
         foreach (var subject in subjects)
         {
+            // Initialise the view model object for the subject and add it to the list of subjects to be displayed.
             UserSubjectViewModel viewModel = new(subject);
             SubjectViewModels.Add(viewModel);
         }
