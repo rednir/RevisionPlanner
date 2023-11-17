@@ -16,7 +16,6 @@ public class TimetableTodayViewModel : ViewModelBase
     public TimetableTodayViewModel(UserDatabase userDatabase)
     {
         _userDatabase = userDatabase;
-        AddCustomTaskCommand = new Command(() => throw new NotImplementedException());
 
         // Keep the timetable up to date by listening for when a new exam is added, and running this function when the event is recieved.
         _userDatabase.ExamAdded += async () => await InitUserTasksAsync();

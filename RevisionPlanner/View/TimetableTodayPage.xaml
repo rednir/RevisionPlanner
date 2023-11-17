@@ -14,10 +14,5 @@
 	            </DataTemplate>
 	        </CollectionView.ItemTemplate>
         </CollectionView>
-        <Button Text="Add custom task"
-		        HorizontalOptions="End"
-		        VerticalOptions="End"
-		        Margin="16"
-		        Command="{Binding AddCustomTaskCommand}"/>
     </Grid>
 </ContentPage>
