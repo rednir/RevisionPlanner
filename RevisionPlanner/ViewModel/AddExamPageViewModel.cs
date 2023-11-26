@@ -15,14 +15,10 @@ public class AddExamPageViewModel : ViewModelBase
 
     public string CustomName { get; set; }
 
-    /// <summary>
-    /// Represents the minimum date that the user can choose. This validates that the user inputted date is tomorrow or later.
-    /// </summary>
+    // CODING STYLE: defensive design - Represents the minimum date that the user can choose. This validates that the user inputted date is tomorrow or later.
     public DateTime MinDate { get; set; } = DateTime.Today + TimeSpan.FromDays(1);
 
-    /// <summary>
-    /// Defensive design: represents the maximum date that the user can choose so they can't add an extreme number of tasks to their timetable
-    /// </summary>
+    // CODING STYLE: defensive design - represents the maximum date that the user can choose so they can't add an extreme number of tasks to their timetable
     public DateTime MaxDate { get; set; } = DateTime.Today + TimeSpan.FromDays(365 * 2);
 
     public DateTime SelectedDate { get; set; } = DateTime.Today + TimeSpan.FromDays(1);
@@ -35,11 +31,10 @@ public class AddExamPageViewModel : ViewModelBase
 
     public ICommand SaveExamCommand { get; set; }
 
+    // The list that will represent the content of the exam in the user interface.
     public ObservableCollection<ExamContentViewModel> ContentViewModels { get; set; } = new();
 
-    /// <summary>
-    /// When the user presses the save exam button, remove the exam with this ID, effectively replacing it.
-    /// </summary>
+    // When the user presses the save exam button, remove the exam with this ID, effectively replacing it.
     public int? ExamIdToReplace { get; set; } = null;
 
     private readonly UserDatabase _userDatabase;
@@ -51,6 +46,7 @@ public class AddExamPageViewModel : ViewModelBase
         _userDatabase = userDatabase;
         _examSubject = examSubject;
 
+        // Initialise the commands for each button press in this page.
         AddTopicsCommand = new Command(async () => await OnAddTopicsButtonPressed());
         AddSubtopicsCommand = new Command(async () => await OnAddSubtopicsButtonPressed());
         SaveExamCommand = new Command(async () => await OnSaveExamButtonPressed());
@@ -94,9 +90,8 @@ public class AddExamPageViewModel : ViewModelBase
         AddCourseContent(chosenSubtopicName, subtopics);
     }
 
-    /// <summary>
-    /// Adds course content to the list of content for this exam. Content could be either a topic or a subtopic. so this method uses polymorpism to process all course content with the same code regardless of type.
-    /// </summary>
+    // GROUP A: Complex user-defined use of OOP - Polymorphism
+    // Adds course content to the list of content for this exam. Content could be either a topic or a subtopic. so this method uses polymorpism to process all course content with the same code regardless of type.
     private void AddCourseContent(string chosenContentName, IEnumerable<ICourseContent> contentToAdd)
     {
         if (chosenContentName == SELECT_ALL_TEXT)
@@ -117,9 +112,11 @@ public class AddExamPageViewModel : ViewModelBase
         // Assume the user cancelled if null so do not continue.
         if (chosenContent is null)
             return;
-
+        
+        // Initialise the view model object that will represent this content in the user interface..
         ExamContentViewModel contentViewModel = new(chosenContent, OnContentRemoveButtonPressed);
 
+        // Add this content to be displayed in the user interface.
         ContentViewModels.Add(contentViewModel);
     }
 
@@ -130,7 +127,7 @@ public class AddExamPageViewModel : ViewModelBase
     {
         if (ContentViewModels.Count <= 0)
         {
-            // Validate user input, do not continue if no content is added to the exam.
+            // CODING STYLE: defensive design - validate user input, do not continue if no content is added to the exam.
             await Application.Current.MainPage.DisplayAlert("Error", "You must add at least one piece of content to the exam.", "OK");
             return;
         }
@@ -152,7 +149,7 @@ public class AddExamPageViewModel : ViewModelBase
         }
         catch
         {
-            // Exception handling: show an error message if the exam could not be added.
+            // CODING STYLE: exception handling - show an error message if the exam could not be added.
             await Application.Current.MainPage.DisplayAlert("Error", "The exam could not be added.", "OK");
             IsLoading = false;
             return;
@@ -164,6 +161,7 @@ public class AddExamPageViewModel : ViewModelBase
 
     private Exam BuildExamObject()
     {
+        // GROUP A: Dynamic generation of objects based on complex user-defined use of OOP model.
         // Initialise the exam object using the state of this view model from the user input.
         Exam exam = new()
         {

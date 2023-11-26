@@ -18,11 +18,12 @@ public class UserTask
 
     public int? ExamSubtopicId { get; set; }
 
+    // GROUP A: Hashing algorithm.
     public override int GetHashCode()
     {
         int hashCode = 0;
 
-        // Take into account deadline.
+        // Take into account the deadline.
         hashCode += (int)Deadline.ToFileTime();
 
         // Take into account the course content's name.
@@ -33,11 +34,4 @@ public class UserTask
         // Multiply by a prime number to reduce risk of collisions for the ID attribute.
         return hashCode * (CourseContent is UserSubtopic ? -7 : 7);
     }
-
-    internal void Run(Task task)
-    {
-        throw new NotImplementedException();
-    }
-
-    //public string Notes { get; set; }
 }

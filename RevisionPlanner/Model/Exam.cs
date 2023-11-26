@@ -16,17 +16,18 @@ public class Exam : DatabaseObject
 
     public override string ToString() => Name;
 
+    // GROUP A: Hashing algorithm.
     public override int GetHashCode()
     {
         int hashCode = 0;
 
-        // Take into account subject.
+        // Take into account the subject.
         foreach (char c in SubjectName)
             hashCode += c;
 
         string deadlineString = Deadline.ToShortDateString();
 
-        // Take into account deadline.
+        // Take into account the deadline.
         foreach (char c in deadlineString)
             hashCode += c;
 

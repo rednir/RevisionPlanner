@@ -182,7 +182,8 @@ public class UserDatabase
         // Iterate through the exam content and add each content to the database.
         foreach (ICourseContent content in exam.Content)
         {
-            // Polymorphism is used to treat exam topics and subtopics the same under the CourseContent object, however they should be stored seperately at a database level.
+            // GROUP A: Complex user-defined use of OOP - Polymorphism
+            // Polymorphism is used to process exam topics and subtopics differently but both under the CourseContent object, however they should be stored separately at a database level.
             if (content is UserTopic userTopic)
             {
                 await _connection.ExecuteAsync(UserDatabaseStatements.AddExamTopic, exam.Id, userTopic.Id);
@@ -228,7 +229,7 @@ public class UserDatabase
 
     private async Task PopulateExamContent(Exam exam)
     {
-        // GROUP A: Complex user-defined use of OOP: Polymorphism
+        // GROUP A: Complex user-defined use of OOP - Polymorphism
         // Populate the course content of this exam. Cast both topics and subtopics to the same type, so they can be stored in the same collection and processed together using polymorphism.
         IEnumerable<ICourseContent> topics = await GetUserTopicsFromExamAsync(exam.Id);
         IEnumerable<ICourseContent> subtopics = await GetUserSubtopicsFromExamAsync(exam.Id);
@@ -338,6 +339,8 @@ public class UserDatabase
         DateTime currentDate = DateTime.Today;
         int tasksForCurrentDate = 0;
         int currentExamIndex = 0;
+
+        // GROUP A: List data structure that keeps track of the content that has been added for the current date.
         List<int> contentAddedForCurrentDate = new();
 
         while (disabledExams.Any(b => !b))
@@ -359,6 +362,7 @@ public class UserDatabase
                 continue;
             }
 
+            // GROUP A: Dynamic generation of objects based on complex user-defined use of OOP model.
             // Initialise the user task object with the next content from the exam.
             int currentContentIndex = currentContentIndexForEachExam[currentExamIndex];
             UserTask userTask = new()
@@ -367,7 +371,6 @@ public class UserDatabase
                 Deadline = currentDate,
             };
             
-            // Use the user task hashing algorithm to set its primary key ID.
             userTask.Id = userTask.GetHashCode() + tasksForCurrentDate;
 
             // Add this user task to the database and increment the count of tasks for this day by 1.
@@ -388,7 +391,7 @@ public class UserDatabase
 
         Debug.WriteLine("Populated user tasks.");
 
-        // Recursive local function.
+        // GROUP A: Recursive algorithm as a local helper function.
         void moveToNextDay()
         {
             currentDate = currentDate.AddDays(1);
@@ -396,11 +399,12 @@ public class UserDatabase
             StudyDay currentStudyDay = ConvertDayOfWeekToStudyDay(currentDate.DayOfWeek);
             if ((currentStudyDay & userStudyDay) == 0)
             {
-                // If the current day is not a study day, move onto the next day.
+                // If the current day is not a study day, move onto the next day by calling this routine again, recursively.
                 moveToNextDay();
                 return;
             }
 
+            // Otherwise call the base case.
             contentAddedForCurrentDate.Clear();
             tasksForCurrentDate = 0;
         }
