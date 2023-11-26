@@ -7,6 +7,7 @@ namespace RevisionPlanner.ViewModel;
 
 public class TimetableTodayViewModel : ViewModelBase
 {
+    // The list of user tasks that will be displayed in the user interface.
     public ObservableCollection<UserTaskViewModel> UserTaskViewModels { get; set; } = new();
 
     public ICommand AddCustomTaskCommand { get; set; }

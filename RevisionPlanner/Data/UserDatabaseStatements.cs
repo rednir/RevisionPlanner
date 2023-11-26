@@ -2,10 +2,9 @@
 
 public static class UserDatabaseStatements
 {
-    /// <summary>
-    /// Represents a list of SQL statements which will initialise the required tables for the user database.
-    /// GROUP A: Complex data model, several interlinked tables.
-    /// </summary>
+    // Represents a list of SQL statements which will initialise the required tables for the user database.
+    // GROUP A: Complex data model, several interlinked tables.
+    // GROUP A: User-generated DDL script.
     public static string[] CreateTables => new[]
     {
         @"
@@ -213,7 +212,7 @@ public static class UserDatabaseStatements
         VALUES (?, ?)
     ";
 
-    // Cross-table statement
+    // GROUP A: Cross-table SQL statement
     public const string GetExams =
     @"
         SELECT Exam.Id, Exam.UserSubjectId, Exam.Deadline, Exam.CustomName, UserSubject.Id as SubjectId, UserSubject.Name as SubjectName
@@ -221,7 +220,7 @@ public static class UserDatabaseStatements
         INNER JOIN UserSubject ON Exam.UserSubjectId = UserSubject.Id
     ";
 
-    // Cross-table statement
+    // GROUP A: Cross-table parameterised SQL statement
     public const string GetExam =
     @"
         SELECT Exam.Id, Exam.UserSubjectId, Exam.Deadline, Exam.CustomName, UserSubject.Id as SubjectId, UserSubject.Name as SubjectName
@@ -230,7 +229,7 @@ public static class UserDatabaseStatements
         WHERE ExamId = ?
     ";
 
-    // Cross-table statement
+    // GROUP A: Cross-table parameterised SQL statement
     public const string GetUserTopicsFromExam =
     @"
         SELECT UserTopic.*
@@ -239,7 +238,7 @@ public static class UserDatabaseStatements
         WHERE ExamTopic.ExamId = ?
     ";
 
-    // Cross-table statement
+    // GROUP A: Cross-table parameterised SQL statement
     public const string GetUserSubtopicsFromExam =
     @"
         SELECT UserSubtopic.*

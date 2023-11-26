@@ -228,7 +228,8 @@ public class UserDatabase
 
     private async Task PopulateExamContent(Exam exam)
     {
-        // Populate the course content of this exam. Use polymorphism to cast both topics and subtopics to the same type, so they can be stored in the same collection.
+        // GROUP A: Complex user-defined use of OOP: Polymorphism
+        // Populate the course content of this exam. Cast both topics and subtopics to the same type, so they can be stored in the same collection and processed together using polymorphism.
         IEnumerable<ICourseContent> topics = await GetUserTopicsFromExamAsync(exam.Id);
         IEnumerable<ICourseContent> subtopics = await GetUserSubtopicsFromExamAsync(exam.Id);
 

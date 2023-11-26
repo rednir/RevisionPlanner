@@ -6,11 +6,10 @@ namespace RevisionPlanner.ViewModel;
 
 public class TimetableUpcomingViewModel : ViewModelBase
 {
-    /// <summary>
-    /// Constant that represents the maximum number of days to display in the timetable.
-    /// </summary>
+    // Constant that represents the maximum number of days to display in the timetable.
     private const int MAX_DAYS = 200;
 
+    // The list of user tasks that will be displayed in the user interface grouped by date.
     public ObservableCollection<UserTaskGroupingViewModel> UserTaskGroupingViewModels { get; set; } = new();
 
     private readonly UserDatabase _userDatabase;
@@ -63,7 +62,7 @@ public class TimetableUpcomingViewModel : ViewModelBase
 
             UserTaskGroupingViewModels.Add(grouping);
 
-            // Defensive design: if the user has too many tasks, no need to render them all.
+            // CODING STYLE: defensive design - if the user has too many tasks, no need to render them all as it can cause slowdowns and crashes.
             if (currentDate > DateTime.Today.AddDays(MAX_DAYS))
                 break;
 
