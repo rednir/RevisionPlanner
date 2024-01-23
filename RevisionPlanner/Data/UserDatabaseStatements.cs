@@ -220,6 +220,14 @@ public static class UserDatabaseStatements
         INNER JOIN UserSubject ON Exam.UserSubjectId = UserSubject.Id
     ";
 
+    // GROUP A: Aggregate SQL statement.
+    public const string GetExamCount =
+    @"
+        SELECT Count(*)
+        FROM Exam
+        INNER JOIN UserSubject ON Exam.UserSubjectId = UserSubject.Id
+    ";
+
     // GROUP A: Cross-table parameterised SQL statement
     public const string GetExam =
     @"

@@ -10,6 +10,8 @@ public class DashboardPageViewModel : ViewModelBase
 {
     public ICommand AddExamCommand { get; set; }
 
+    public string TotalExamCount { get; set; }
+
     // The list of upcoming exams to be displayed in the user interface.
     public ObservableCollection<UpcomingExamViewModel> UpcomingExamViewModels { get; set; } = new();
 
@@ -30,6 +32,10 @@ public class DashboardPageViewModel : ViewModelBase
     {
         // Avoid duplicates if this is not the first time this method has been run.
         UpcomingExamViewModels.Clear();
+
+        // Get total number of exams created by the user
+        int count = await _userDatabase.GetExamCountAsync();
+        TotalExamCount = $"Total exam count: {count}";
 
         IEnumerable<Exam> exams = await _userDatabase.GetExamsAsync();
 

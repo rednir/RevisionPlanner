@@ -214,6 +214,14 @@ public class UserDatabase
         return result;
     }
 
+    public async Task<int> GetExamCountAsync()
+    {
+        await Init();
+
+        var result = await _connection.ExecuteScalarAsync<int>(UserDatabaseStatements.GetExamCount);
+        return result;
+    }
+
     public async Task<Exam> GetExamAsync(int id)
     {
         await Init();

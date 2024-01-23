@@ -8,6 +8,7 @@
              Title="Dashboard">
     <VerticalStackLayout>
         <Button Text="Add exam" Command="{Binding AddExamCommand}" />
+        <Label FontSize="Subtitle" Text="{Binding TotalExamCount}" />
         <CollectionView ItemsSource="{Binding UpcomingExamViewModels}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
