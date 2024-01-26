@@ -1,5 +1,6 @@
 ﻿namespace RevisionPlanner.Model;
 
+// GROUP A: Complex user-defined use of OOP - Inheritance
 public class Exam : DatabaseObject
 {
     public string Name => CustomName ?? $"{SubjectName} exam";
@@ -16,7 +17,7 @@ public class Exam : DatabaseObject
 
     public override string ToString() => Name;
 
-    // GROUP A: Hashing algorithm.
+    // GROUP A: Hashing algorithm. Also, this overrides the default behaviour of this method.
     public override int GetHashCode()
     {
         int hashCode = 0;
